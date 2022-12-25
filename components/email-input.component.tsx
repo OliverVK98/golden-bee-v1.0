@@ -34,15 +34,16 @@ const Form = styled.form`
 `
 
 const EmailInputComponent = () => {
-    return(
-        <InputContainer>
-            <TextContainer>Subscribe for exclusive deals</TextContainer>
-            <Form onSubmit={(e)=>e.preventDefault()}>
-                <EmailInput placeholder="Your email" type="email"></EmailInput>
-                <SubmitButton>Subscribe</SubmitButton>
-            </Form>
-        </InputContainer>
-    )
+
+  return (
+    <InputContainer>
+      <TextContainer>Subscribe for exclusive deals</TextContainer>
+      <Form onSubmit={(e) => e.preventDefault()}>
+        <EmailInput placeholder="Your email" type="email"></EmailInput>
+        <SubmitButton>Subscribe</SubmitButton>
+      </Form>
+    </InputContainer>
+  )
 }
 
 export default EmailInputComponent

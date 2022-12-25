@@ -2,10 +2,14 @@ import Head from 'next/head'
 import MainPageBannerComponent from "../components/main-page-banner.component";
 import ItemsCarousel from "../components/items-carousel";
 import styled from "styled-components";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import ItemsByCollectionComponent from "../components/items-by-collection.component";
 import EmailInputComponent from "../components/email-input.component";
 import ItemsByStyleComponent from "../components/items-by-style.component";
+import {IDataItem} from "../data/data";
+import React from "react";
+import {gql, useApolloClient} from "@apollo/client";
+import apolloClient from "../lib/apollo";
 
 const MainPageContainer = styled.div`
   width: 100vw;
@@ -45,7 +49,40 @@ const SubscribeContainer = styled.div`
   align-items: center;
 `
 
-export default function Home() {
+export async function getStaticProps() {
+  const allProductDataQuery = gql`
+    query {
+      products {
+        productId
+        itemName
+        rating
+        price
+        discountedPrice
+        frontImageUrl
+        extraImageUrls
+        bannerImageUrls
+        isAvailable
+      }
+    }
+  `;
+
+  const {data} = await apolloClient.query({
+    query: allProductDataQuery
+  })
+
+  return {
+    props: {
+      data: data.products,
+    }
+  }
+}
+
+interface IStartProps {
+  data: IDataItem[]
+}
+
+const Home: React.FC<IStartProps> = ({data}) => {
+
   return (
     <div>
       <Head>
@@ -54,37 +91,39 @@ export default function Home() {
       </Head>
 
       <main>
-          <MainPageContainer>
-            <MainPageBannerComponent></MainPageBannerComponent>
-            <ItemsCarousel title={"Trending now"}/>
-            <BannerText>
-                <h1>
-                    Join our mission to save and protect our buzzy pollinators around the globe❤️
-                </h1>
-                <p>
-                    Wear your lovely Bee Kind accessories as a reminder of being part of the community. Every purchase saves the bees.
-                </p>
-            </BannerText>
-            <ItemsCarousel title={"New Arrivals"}/>
-            <ImageContainer>
-                <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758"
-                            alt="banner-image" layout={"fill"} objectFit="cover"/>
-            </ImageContainer>
-            <ItemsByCollectionComponent/>
-            <SubscribeContainer>
-                <EmailInputComponent/>
-            </SubscribeContainer>
-            <ItemsByStyleComponent/>
-              <ImageContainer>
-                  <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/Join_the_Movement_to_Save_Our_Buzzing_Friends_39a722de-5768-4689-84f6-6393f7c5088d_1728x.jpg?v=1623903777"
-                         alt="banner-image" layout={"fill"} objectFit="cover"/>
-              </ImageContainer>
-          </MainPageContainer>
+        <MainPageContainer>
+          <MainPageBannerComponent></MainPageBannerComponent>
+          <ItemsCarousel data={data} title={"Trending now"} />
+          <BannerText>
+            <h1>
+              Join our mission to save and protect our buzzy pollinators around the globe❤️
+            </h1>
+            <p>
+              Wear your lovely Bee Kind accessories as a reminder of being part of the community. Every purchase saves the bees.
+            </p>
+          </BannerText>
+          <ItemsCarousel data={data}  title={"New Arrivals"} />
+          <ImageContainer>
+            <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758"
+              alt="banner-image" layout={"fill"} objectFit="cover" />
+          </ImageContainer>
+          <ItemsByCollectionComponent />
+          <SubscribeContainer>
+            <EmailInputComponent />
+          </SubscribeContainer>
+          <ItemsByStyleComponent />
+          <ImageContainer>
+            <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/Join_the_Movement_to_Save_Our_Buzzing_Friends_39a722de-5768-4689-84f6-6393f7c5088d_1728x.jpg?v=1623903777"
+              alt="banner-image" layout={"fill"} objectFit="cover" />
+          </ImageContainer>
+        </MainPageContainer>
       </main>
 
-      <footer >
+      <footer>
 
       </footer>
     </div>
   )
 }
+
+export default Home

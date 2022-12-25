@@ -1,7 +1,7 @@
 import {FunctionComponent, ReactElement} from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 const HeaderContainer = styled.header`
   width: 100vw;

@@ -1,9 +1,8 @@
-import React, {FunctionComponent, ReactElement, useEffect, useRef, useState} from "react";
+import React, {useRef} from "react";
 import FrontPageItemComponent from "./front-page-item.component";
 import styled from "styled-components";
-import {data, dataTwo, dataThree} from '../data/data'
 import {IDataItem} from "../data/data";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import CustomRoundButton from "./round-button";
 import useCarousel from "../hooks/useCarousel";
 
@@ -60,11 +59,12 @@ const CarouselContainer = styled.div`
 `
 
 interface IItemsCarouselProps {
-    title: string
+    title: string,
+    data: IDataItem[]
 }
 
 
-const ItemsCarousel: React.FC<IItemsCarouselProps> = ({title}) => {
+const ItemsCarousel: React.FC<IItemsCarouselProps> = ( {data, title}) => {
     const elementRefs = [
         useRef<HTMLDivElement>(null),
         useRef<HTMLDivElement>(null),
@@ -80,6 +80,16 @@ const ItemsCarousel: React.FC<IItemsCarouselProps> = ({title}) => {
            currentSlideIndex,
            setCurrentSlideIndex} = useCarousel(elementRefs)
 
+    let dataOne;
+    let dataTwo;
+    let dataThree;
+
+    if (data) {
+        dataOne = data.slice(0, 4);
+        dataTwo = data.slice(4, 8);
+        dataThree = data.slice(8, 12);
+    }
+
     return (
         <Container>
             <h1>{title}</h1>
@@ -87,27 +97,27 @@ const ItemsCarousel: React.FC<IItemsCarouselProps> = ({title}) => {
                 <CarouselContainer >
                     <SlidesContainer transitionActive={transitionActive} ref={elementRefs[0]}>
                         {
-                            dataThree.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
+                            dataThree?.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
                         }
                     </SlidesContainer>
                     <SlidesContainer transitionActive={transitionActive} ref={elementRefs[1]}>
                         {
-                            data.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
+                            dataOne?.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
                         }
                     </SlidesContainer>
                     <SlidesContainer transitionActive={transitionActive} ref={elementRefs[2]}>
                         {
-                            dataTwo.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
+                            dataTwo?.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
                         }
                     </SlidesContainer>
                     <SlidesContainer transitionActive={transitionActive} ref={elementRefs[3]}>
                         {
-                            dataThree.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
+                            dataThree?.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
                         }
                     </SlidesContainer>
                     <SlidesContainer transitionActive={transitionActive} ref={elementRefs[4]}>
                         {
-                            data.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
+                            dataOne?.map((item: IDataItem, key) => <FrontPageItemComponent key={key} {...item}/>)
                         }
                     </SlidesContainer>
                 </CarouselContainer>

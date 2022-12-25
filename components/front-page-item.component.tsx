@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import styles from "../styles/FrontImage.module.css"
 import styled from "styled-components";
 import Link from "next/link";
@@ -75,21 +75,23 @@ const DiscountedPriceContainer = styled.span`
 `
 
 const FrontPageItemComponent: React.FC<IDataItem> = (props) => {
-
-    const {name, imageUrl, price, discountedPrice, rating} = props;
+    const {itemName, frontImageUrl, price, discountedPrice, rating, productId} = props;
+    const url = `/products/${productId}`;
 
     return (
         <ItemContainer>
             <ImageWrapper>
-                <Image className={styles.image}
-                   src={imageUrl}
-                   alt={"trending-image"}
-                   width={300} height={300}/>
+                <Link href={url}>
+                    <Image className={styles.image}
+                           src={frontImageUrl}
+                           alt={"trending-image"}
+                           width={300} height={300}/>
+                </Link>
             </ImageWrapper>
             <AddToCartButton>ADD TO CART</AddToCartButton>
-            <Link href="/">
+            <Link href={url}>
                 <BottomItemContainer>
-                    <ItemText>{name}</ItemText>
+                    <ItemText>{itemName}</ItemText>
                     <StarContainer>
                         <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
                         <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
