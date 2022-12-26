@@ -1,15 +1,16 @@
 import Head from 'next/head'
 import MainPageBannerComponent from "../components/main-page-banner.component";
-import ItemsCarousel from "../components/items-carousel";
+import ItemsCarouselComponent from "../components/items-carousel.component";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import ItemsByCollectionComponent from "../components/items-by-collection.component";
 import EmailInputComponent from "../components/email-input.component";
 import ItemsByStyleComponent from "../components/items-by-style.component";
-import {IDataItem} from "../data/data";
 import React from "react";
-import {gql, useApolloClient} from "@apollo/client";
+import {gql} from "@apollo/client";
 import apolloClient from "../lib/apollo";
+import prisma from "../lib/prisma";
+import {newData} from "../data/data";
 
 const MainPageContainer = styled.div`
   width: 100vw;
@@ -50,38 +51,71 @@ const SubscribeContainer = styled.div`
 `
 
 export async function getStaticProps() {
-  const allProductDataQuery = gql`
-    query {
-      products {
+  // await prisma.product.createMany({
+  //   data: newData
+  // })
+
+  const productsByIdsQuery = gql`
+    query ($id: [Int!]){
+      ProductsByMultipleIds(id: $id) {
         productId
         itemName
         rating
         price
         discountedPrice
         frontImageUrl
-        extraImageUrls
-        bannerImageUrls
         isAvailable
       }
     }
   `;
 
-  const {data} = await apolloClient.query({
-    query: allProductDataQuery
-  })
+  const dataOne = await apolloClient.query({
+    query: productsByIdsQuery,
+    variables: {
+      id: [144, 145, 146, 147]
+    }
+  }).then((data) => data.data.ProductsByMultipleIds);
+
+  const dataTwo = await apolloClient.query({
+    query: productsByIdsQuery,
+    variables: {
+      id: [148, 149, 150, 151]
+    }
+  }).then((data) => data.data.ProductsByMultipleIds);
+
+  const dataThree = await apolloClient.query({
+      query: productsByIdsQuery,
+      variables: {
+        id: [152, 153, 154, 155]
+      }
+    }).then((data) => data.data.ProductsByMultipleIds);
 
   return {
     props: {
-      data: data.products,
+      dataOne,
+      dataTwo,
+      dataThree,
     }
   }
 }
 
-interface IStartProps {
-  data: IDataItem[]
+interface IFrontPageItem{
+  productId: number,
+  price: number,
+  discountedPrice: number,
+  frontImageUrl: string,
+  rating: number,
+  itemName: string,
+  isAvailable: boolean
 }
 
-const Home: React.FC<IStartProps> = ({data}) => {
+interface IStartProps {
+  dataOne: IFrontPageItem[],
+  dataTwo: IFrontPageItem[],
+  dataThree: IFrontPageItem[]
+}
+
+const Home: React.FC<IStartProps> = ({dataOne, dataTwo, dataThree}) => {
 
   return (
     <div>
@@ -93,7 +127,7 @@ const Home: React.FC<IStartProps> = ({data}) => {
       <main>
         <MainPageContainer>
           <MainPageBannerComponent></MainPageBannerComponent>
-          <ItemsCarousel data={data} title={"Trending now"} />
+          <ItemsCarouselComponent  dataOne={dataOne} dataTwo={dataTwo} dataThree={dataThree} title={"Trending now"} />
           <BannerText>
             <h1>
               Join our mission to save and protect our buzzy pollinators around the globe❤️
@@ -102,7 +136,7 @@ const Home: React.FC<IStartProps> = ({data}) => {
               Wear your lovely Bee Kind accessories as a reminder of being part of the community. Every purchase saves the bees.
             </p>
           </BannerText>
-          <ItemsCarousel data={data}  title={"New Arrivals"} />
+          <ItemsCarouselComponent  dataOne={dataOne} dataTwo={dataTwo} dataThree={dataThree} title={"New Arrivals"} />
           <ImageContainer>
             <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758"
               alt="banner-image" layout={"fill"} objectFit="cover" />

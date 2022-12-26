@@ -3,13 +3,13 @@ import Image from "next/legacy/image";
 import styles from "../styles/FrontImage.module.css"
 import styled from "styled-components";
 import Link from "next/link";
-import {IDataItem} from "../data/data";
+import {IFrontPageItem} from "../pages/collections/all";
 
 const AddToCartButton = styled.button`
   color: rgb(58,170,53);
   background-color: transparent;
   border: 1px solid rgb(58,170,53);
-  width: 300px;
+  width: 250px;
   height: 40px;
   border-radius: 5px;
   font-weight: bold;
@@ -26,14 +26,14 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 300px;
+  width: 250px;
 `
 
 const BottomItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 300px;
+  width: 250px;
   
   :hover {
     opacity: 0.6;
@@ -43,14 +43,14 @@ const BottomItemContainer = styled.div`
 const ImageWrapper = styled.div`
   overflow: hidden;
   border-radius: 10px;
-  height: 300px;
-  width: 300px;
+  height: 250px;
+  width: 250px;
 `
 
 const ItemText = styled.p`
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: bold;
   align-self: center;
-  
 `
 
 const StarContainer = styled.div`
@@ -74,7 +74,7 @@ const DiscountedPriceContainer = styled.span`
   color: rgb(58,170,53);
 `
 
-const FrontPageItemComponent: React.FC<IDataItem> = (props) => {
+const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
     const {itemName, frontImageUrl, price, discountedPrice, rating, productId} = props;
     const url = `/products/${productId}`;
 
@@ -85,13 +85,16 @@ const FrontPageItemComponent: React.FC<IDataItem> = (props) => {
                     <Image className={styles.image}
                            src={frontImageUrl}
                            alt={"trending-image"}
-                           width={300} height={300}/>
+                           width={250} height={250}/>
                 </Link>
             </ImageWrapper>
             <AddToCartButton>ADD TO CART</AddToCartButton>
             <Link href={url}>
                 <BottomItemContainer>
                     <ItemText>{itemName}</ItemText>
+                    {/*TODO: CONDITIONAL STAR DISPLAY IF THE RATING IS NOT 0,
+                       IF THE DISCOUNTED PRICE IS 0, don't render it, if there's no
+                         extra images don't render them either*/}
                     <StarContainer>
                         <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
                         <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>

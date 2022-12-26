@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import React, {useState} from "react";
 import Image from "next/image";
-import {PrismaClient} from "@prisma/client";
 import {IDataItem} from "../../data/data";
 import styles from "../../styles/FrontImage.module.css"
+import PreviewFourItemsComponent from "../../components/preview-four-items.component";
+import {gql, useQuery} from "@apollo/client";
+import apolloClient from "../../lib/apollo";
 
 const ProductPageContainer = styled.div`
   display: flex;
@@ -134,72 +136,112 @@ const TextContainer = styled.p`
   font-size: 22px;
 `
 
+const ProposedItemsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const RelativeContainer = styled.div`
+  padding: 0;
+  margin: 0;
+  position: relative;
+  height: 390px;
+  width: 1060px;
+  display: block;
+  overflow: hidden;
+`
+
 export async function getStaticProps(staticProps: any) {
-
-    const prisma = new PrismaClient();
-    let productInfo;
-
-    try {
-        productInfo = await prisma.product.findFirst({
-            where: {
-                productId: {
-                    equals: +staticProps.params.id
-                }
+    const queryById = gql`
+        query($id: Int!) {
+            ProductById(id: $id) {
+                productId
+                bannerImageUrls
+                discountedPrice
+                extraImageUrls
+                frontImageUrl
+                itemName
+                price
+                rating
             }
-        });
-    } catch (e: any) {
-        console.log(e.message);
-    } finally {
-        await prisma.$disconnect();
-    }
+        }
+    `
 
+    const {data: {ProductById}} = await apolloClient.query({
+        query: queryById,
+        variables: {
+            id: +staticProps.params.id
+        }
+    })
 
     return {
         props: {
-            productInfo
+            ProductById
         },
     };
 }
 
+interface IOnlyIdProduct {
+    productId: String
+}
+
 export async function getStaticPaths() {
-    const prisma = new PrismaClient();
-    let productInfo;
+    const allIdsDataQuery = gql`
+        query {
+            ProductsList {
+                productId
+            }
+        }
+    `;
 
-    try {
-        productInfo = await prisma.product.findMany({});
-    } catch (e: any) {
-        console.log(e.message);
-    } finally {
-        await prisma.$disconnect();
-    }
+    const {data: {ProductsList}} = await apolloClient.query({
+        query: allIdsDataQuery
+    })
 
-    if (productInfo) {
-        const paths = productInfo.map((product) => {
-            return {
-                params: {
-                    id: product.productId.toString(),
-                },
-            };
-        });
+    const paths = ProductsList.map((product: IOnlyIdProduct) => {
         return {
-            paths,
-            fallback: false,
+            params: {
+                id: product.productId.toString(),
+            },
         };
-    }
+    });
+
 
     return {
+        paths,
+        fallback: false,
+    };
 
-    }
 }
 
 interface IProductPageProps {
-    productInfo: IDataItem
+    ProductById: IDataItem
 }
 
-const ProductPage:React.FC<IProductPageProps> = ({productInfo}) => {
+const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
     const [quantity, setQuantity] = useState<number>(1);
-    const {frontImageUrl, extraImageUrls, bannerImageUrls, itemName, rating, price, discountedPrice} = productInfo;
+    const {frontImageUrl, extraImageUrls, bannerImageUrls, itemName, rating, price, discountedPrice} = ProductById;
     const [mainImage, setMainImage] = useState<string>(frontImageUrl);
+
+    const productsByIdsQuery = gql`
+        query ($id: [Int!]){
+            ProductsByMultipleIds(id: $id) {
+                productId
+                itemName
+                rating
+                price
+                discountedPrice
+                frontImageUrl
+                isAvailable
+            }
+        }
+    `;
+
+    const {loading, data, error} = useQuery(productsByIdsQuery, {
+        variables: {id: [144, 145, 146, 147]}
+    })
 
     const handleAddButtonClick = () => {
         setQuantity(prevState => prevState+1);
@@ -263,6 +305,14 @@ const ProductPage:React.FC<IProductPageProps> = ({productInfo}) => {
                     bannerImageUrls.map((imageUrl, index)=> <Image key={index} src={imageUrl} alt="small-image" width={280} height={280} className={styles.imageRound}/>)
                 }
             </BottomSectionContainer>
+            <ProposedItemsContainer>
+                <p>
+                    You may also like
+                </p>
+                <RelativeContainer>
+                    <PreviewFourItemsComponent transitionActive={false} dataArr={data?.ProductsByMultipleIds}/>
+                </RelativeContainer>
+            </ProposedItemsContainer>
         </ProductPageContainer>
     )
 }

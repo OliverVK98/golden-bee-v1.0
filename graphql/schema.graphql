@@ -15,5 +15,7 @@ type Product {
 }
 
 type Query {
-  products: [Product]!
+  ProductById(id: Int!): Product
+  ProductsByMultipleIds(id: [Int!]): [Product]
+  ProductsList: [Product!]
 }

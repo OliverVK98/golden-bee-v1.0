@@ -1,7 +1,7 @@
 import {FunctionComponent, ReactElement, useState} from "react";
 import styled from "styled-components"
 import Image from "next/legacy/image";
-import CustomRoundButton from "./round-button";
+import CustomRoundButton from "./round-button.component";
 
 interface IButtonProps {
     isPrimary: boolean

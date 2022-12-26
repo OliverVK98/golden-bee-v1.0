@@ -1,7 +1,16 @@
-import prisma from "../lib/prisma";
-
 export const resolvers = {
     Query: {
-        products: () => prisma.product.findMany(),
-        },
+        ProductById: async (root: any, args: any, ctx: any) => await ctx.prisma.product.findUnique({
+            where: {productId: +args.id}
+        }),
+        ProductsList: async (root: any, args: any, ctx: any) => await ctx.prisma.product.findMany(),
+        ProductsByMultipleIds: async (root: any, args: any, ctx: any) => await ctx.prisma.product.findMany({
+            where: {
+                productId: {
+                    in: args.id
+                }
+            }
+        })
+    },
 }
+

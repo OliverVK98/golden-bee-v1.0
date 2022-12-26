@@ -1,4 +1,4 @@
-import {extendType, objectType} from "nexus";
+import {intArg, list, nonNull, objectType, queryField} from "nexus";
 
 export const Product = objectType({
     name: "Product",
@@ -15,14 +15,33 @@ export const Product = objectType({
     }
 })
 
-export const LinksQuery = extendType({
-    type: "Query",
-    definition(t) {
-        t.nonNull.list.field("products", {
-            type: "Product",
-            resolve(_parent, _args, ctx) {
-                return ctx.prisma.product.findMany();
+export const ProductsQuery = queryField("ProductsList", {
+    type: list(nonNull("Product")),
+    async resolve(_parent, _args, ctx) {
+        return await ctx.prisma.product.findMany();
+    }
+});
+
+export const ProductsByIdQuery = queryField("ProductById", {
+    type: "Product",
+    args: {id: nonNull(intArg())},
+    async resolve(_parent, args, ctx) {
+                    return await ctx.prisma.product.findUnique({
+                        where: {productId: +args.id}
+                });
+            }
+});
+
+export const ProductsByMultipleIdsQuery = queryField("ProductsByMultipleIds", {
+    type: list(Product),
+    args: {id: list(nonNull(intArg()))},
+    async resolve(_parent, args, ctx) {
+        return await ctx.prisma.product.findMany({
+            where: {
+                productId: {
+                    in: [...args.id as number[]]
+                }
             }
         });
     }
-})
+});
