@@ -2,6 +2,13 @@
 ### Do not make changes to this file directly
 
 
+type Collection {
+  collectionId: Int
+  imageUrl: String
+  isStyle: Boolean
+  name: String
+}
+
 type Product {
   bannerImageUrls: [String]
   discountedPrice: Float
@@ -15,6 +22,7 @@ type Product {
 }
 
 type Query {
+  CollectionsList(condition: Boolean!): [Collection!]
   ProductById(id: Int!): Product
   ProductsByMultipleIds(id: [Int!]): [Product]
   ProductsList: [Product!]

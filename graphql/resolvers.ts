@@ -10,7 +10,12 @@ export const resolvers = {
                     in: args.id
                 }
             }
-        })
+        }),
+        CollectionsList: async (root: any, args: any, ctx: any) => await ctx.prisma.collection.findMany({
+            where: {
+                isStyle: args.condition
+            }
+        }),
     },
 }
 

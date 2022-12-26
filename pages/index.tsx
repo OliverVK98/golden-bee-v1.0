@@ -3,14 +3,13 @@ import MainPageBannerComponent from "../components/main-page-banner.component";
 import ItemsCarouselComponent from "../components/items-carousel.component";
 import styled from "styled-components";
 import Image from "next/legacy/image";
-import ItemsByCollectionComponent from "../components/items-by-collection.component";
 import EmailInputComponent from "../components/email-input.component";
-import ItemsByStyleComponent from "../components/items-by-style.component";
 import React from "react";
 import {gql} from "@apollo/client";
 import apolloClient from "../lib/apollo";
 import prisma from "../lib/prisma";
 import {newData} from "../data/data";
+import ItemsByCollectionOrStyleComponent from "../components/items-by-collection-or-style.component";
 
 const MainPageContainer = styled.div`
   width: 100vw;
@@ -141,11 +140,9 @@ const Home: React.FC<IStartProps> = ({dataOne, dataTwo, dataThree}) => {
             <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758"
               alt="banner-image" layout={"fill"} objectFit="cover" />
           </ImageContainer>
-          <ItemsByCollectionComponent />
-          <SubscribeContainer>
-            <EmailInputComponent />
-          </SubscribeContainer>
-          <ItemsByStyleComponent />
+          <ItemsByCollectionOrStyleComponent isStyle={false}/>
+          <EmailInputComponent mainColor={"gray"} title={"Subscribe for exclusive deals"}/>
+          <ItemsByCollectionOrStyleComponent isStyle={true}/>
           <ImageContainer>
             <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/Join_the_Movement_to_Save_Our_Buzzing_Friends_39a722de-5768-4689-84f6-6393f7c5088d_1728x.jpg?v=1623903777"
               alt="banner-image" layout={"fill"} objectFit="cover" />

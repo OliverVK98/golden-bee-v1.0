@@ -6,6 +6,8 @@ import styles from "../../styles/FrontImage.module.css"
 import PreviewFourItemsComponent from "../../components/preview-four-items.component";
 import {gql, useQuery} from "@apollo/client";
 import apolloClient from "../../lib/apollo";
+import EmailInputComponent from "../../components/email-input.component";
+import FooterContainerComponent from "../../components/footer-container.component";
 
 const ProductPageContainer = styled.div`
   display: flex;
@@ -13,7 +15,7 @@ const ProductPageContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 50px;
-  gap: 20px;
+  gap: 30px;
 `
 
 const TopSectionContainer = styled.div`
@@ -139,8 +141,9 @@ const TextContainer = styled.p`
 const ProposedItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 20px;
+  margin-top: 30px;
 `
 
 const RelativeContainer = styled.div`
@@ -152,6 +155,20 @@ const RelativeContainer = styled.div`
   display: block;
   overflow: hidden;
 `
+
+const ProposedTextContainer = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255,222,89);
+  width: 300px;
+  height: 2rem;
+`
+
+
+
 
 export async function getStaticProps(staticProps: any) {
     const queryById = gql`
@@ -275,11 +292,8 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
                 <ItemInfoContainer>
                     <h1>{itemName}</h1>
                     <StarContainer>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
+                        {[0, 1, 2, 3, 4 ].map(el => <Image src="/icons/star.png" alt="star icon" width={24}
+                                                          height={24} key={el}/>)}
                         <span>
                             ({rating})
                         </span>
@@ -306,13 +320,15 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
                 }
             </BottomSectionContainer>
             <ProposedItemsContainer>
-                <p>
+                <ProposedTextContainer>
                     You may also like
-                </p>
+                </ProposedTextContainer>
                 <RelativeContainer>
                     <PreviewFourItemsComponent transitionActive={false} dataArr={data?.ProductsByMultipleIds}/>
                 </RelativeContainer>
             </ProposedItemsContainer>
+            <EmailInputComponent mainColor={"white"} title={"SUBSCRIBE FOR A CHANCE TO WIN A $100 GIFT CARD"}/>
+            <FooterContainerComponent/>
         </ProductPageContainer>
     )
 }

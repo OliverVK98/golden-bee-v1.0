@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React from "react";
 
 const EmailInput = styled.input`
   width: 500px;
@@ -6,6 +7,7 @@ const EmailInput = styled.input`
   border-radius: 10px;
   border: none;
   padding-left: 5px;
+  background-color: ${(props: IInputProps) => props.mainColor==="white" ? "rgb(247,247,247)" : "white"};;
 `
 
 const SubmitButton = styled.button`
@@ -21,11 +23,21 @@ const TextContainer = styled.h1`
   font-size: 22px;
 `
 
+interface IInputProps {
+    mainColor: "gray" | "white"
+}
+
 const InputContainer = styled.div`
+  width: 100vw;
+  background-color: ${(props: IInputProps) => props.mainColor==="gray" ? "rgb(247,247,247)" : "white"};
+  padding: 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  border-top: 1px solid rgb(247,247,247);
+  height: 200px;
 `
 
 const Form = styled.form`
@@ -33,13 +45,18 @@ const Form = styled.form`
   gap: 10px;
 `
 
-const EmailInputComponent = () => {
+interface IEmailProps {
+    mainColor: "gray" | "white",
+    title: string
+}
+
+const EmailInputComponent: React.FC<IEmailProps> = ({mainColor, title}) => {
 
   return (
-    <InputContainer>
-      <TextContainer>Subscribe for exclusive deals</TextContainer>
+    <InputContainer mainColor={mainColor}>
+      <TextContainer>{title}</TextContainer>
       <Form onSubmit={(e) => e.preventDefault()}>
-        <EmailInput placeholder="Your email" type="email"></EmailInput>
+        <EmailInput mainColor={mainColor} placeholder="Your email" type="email"></EmailInput>
         <SubmitButton>Subscribe</SubmitButton>
       </Form>
     </InputContainer>
