@@ -19,6 +19,12 @@ const CustomHeaderRight = styled.header`
   gap: 15px;
 `
 
+const CustomHeaderLeft = styled.header`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`
+
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -41,7 +47,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
                 <Link href="/">
                     <LogoContainer>
                         <LeftLogoText>Bee</LeftLogoText>
-                        <Image src="/logo/logo.jpg" height={50} width={50} alt="bee logo"/>
+                        <Image src="/icons/logo.jpg" height={50} width={50} alt="bee logo"/>
                         <RightLogoText>Kind</RightLogoText>
                     </LogoContainer>
                 </Link>
@@ -50,10 +56,12 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
                 <Link href='/all'>All Products</Link>
                 <Link href='/'>Help</Link>
             </CustomHeaderRight>
-            <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>
+            <CustomHeaderLeft>
+                <div>Sign In</div>
+                <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>
+            </CustomHeaderLeft>
         </HeaderContainer>
     )
 }
-//
 
 export default HeaderComponent;

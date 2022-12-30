@@ -5,6 +5,7 @@ interface IButtonProps {
     mainColor: string;
     secondaryColor: string;
     borderColor: string;
+    type?: string
 }
 
 const CustomRoundButton = styled.button`
