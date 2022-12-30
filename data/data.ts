@@ -10,7 +10,7 @@ export interface IDataItem {
     isAvailable: boolean
 }
 
-export const newData: IDataItem[] = [
+export const productData: IDataItem[] = [
     {
         itemName: `"You Are My Sunshine" Necklace`,
         price: 99.99,
@@ -966,4 +966,49 @@ export const newData: IDataItem[] = [
         bannerImageUrls: [],
         isAvailable: true
     },
+]
+
+interface ICollectionData {
+    collectionId?: number,
+    name: string,
+    isStyle: boolean,
+    imageUrl: string
+}
+
+export const collectionData: ICollectionData[] = [
+    {
+        name: "Bracelets With Notes",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/Bee_Bright_Flower_2_540x.jpg?v=1636309843"
+    },
+    {
+        name: "Silver Style Jewelry",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/You_Are_My_Sunshine_Bee_Kind_540x.png?v=1636307309"
+    },
+    {
+        name: "Bee Theme",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/IMG_0827_540x.jpg?v=1636308760"
+    },
+    {
+        name: "Sunflower Theme",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/ScreenShot2020-11-19at9.14.49PM_540x.jpg?v=1636308416"
+    },
+    {
+        name: "Modern Styles",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/LSP06218_360x.jpg?v=1613282854"
+    },
+    {
+        name: "Nature Lovers",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/yy_360x.png?v=1613355260"
+    },
+    {
+        name: "Silver Style Jewelry",
+        isStyle: false,
+        imageUrl: "https://cdn.shopify.com/s/files/1/0457/5648/1703/collections/Untitled_design_540x.png?v=1613355900"
+    }
 ]

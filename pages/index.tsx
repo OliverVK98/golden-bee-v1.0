@@ -8,7 +8,7 @@ import React from "react";
 import {gql} from "@apollo/client";
 import apolloClient from "../lib/apollo";
 import prisma from "../lib/prisma";
-import {newData} from "../data/data";
+import {productData, collectionData} from "../data/data";
 import ItemsByCollectionOrStyleComponent from "../components/items-by-collection-or-style.component";
 
 const MainPageContainer = styled.div`
@@ -51,11 +51,15 @@ const SubscribeContainer = styled.div`
 
 export async function getStaticProps() {
   // await prisma.product.createMany({
-  //   data: newData
+  //   data: productData
+  // })
+  //
+  // await prisma.collection.createMany({
+  //   data: collectionData
   // })
 
   const productsByIdsQuery = gql`
-    query ($id: [Int!]){
+    query ($id: [Int]!){
       ProductsByMultipleIds(id: $id) {
         productId
         itemName
@@ -71,21 +75,21 @@ export async function getStaticProps() {
   const dataOne = await apolloClient.query({
     query: productsByIdsQuery,
     variables: {
-      id: [144, 145, 146, 147]
+      id: [1, 2, 3, 4]
     }
   }).then((data) => data.data.ProductsByMultipleIds);
 
   const dataTwo = await apolloClient.query({
     query: productsByIdsQuery,
     variables: {
-      id: [148, 149, 150, 151]
+      id: [5, 6, 7, 8]
     }
   }).then((data) => data.data.ProductsByMultipleIds);
 
   const dataThree = await apolloClient.query({
       query: productsByIdsQuery,
       variables: {
-        id: [152, 153, 154, 155]
+        id: [9, 10, 11, 12]
       }
     }).then((data) => data.data.ProductsByMultipleIds);
 

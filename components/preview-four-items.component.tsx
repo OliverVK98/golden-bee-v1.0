@@ -1,7 +1,7 @@
 import FrontPageItemComponent from "./front-page-item.component";
 import React, {forwardRef, Ref, RefObject} from "react";
 import styled from "styled-components";
-import {IFrontPageItem} from "../pages/collections/all";
+import {IFrontPageItem} from "../pages/all";
 
 const SlidesContainer = styled.div`
   display: flex;

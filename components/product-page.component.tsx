@@ -1,54 +1,32 @@
 import styled from "styled-components";
-import {gql} from "@apollo/client";
-import apolloClient from "../../lib/apollo";
 import React, {useState} from "react";
-import FrontPageItemComponent from "../../components/front-page-item.component";
-import PaginationComponent from "../../components/pagination.component";
-import chunkArray from "../../utils/chunk-array";
-import FooterContainerComponent from "../../components/footer-container.component";
+import chunkArray from "../utils/chunk-array";
+import FrontPageItemComponent from "./front-page-item.component";
+import PaginationComponent from "./pagination.component";
+import FooterContainerComponent from "./footer-container.component";
 
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  max-width: 250px;
   justify-items: center;
-  align-items: center;
+  min-width: 1200px;
+  margin-top: 20px;
 `
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 `
 
-export async function getStaticProps() {
-    const frontPageProductDataQuery = gql`
-        query {
-            ProductsList {
-                productId
-                itemName
-                rating
-                price
-                discountedPrice
-                frontImageUrl
-                isAvailable
-            }
-        }
-    `;
-
-    const {data} = await apolloClient.query({
-        query: frontPageProductDataQuery
-    })
-
-    return {
-        props: {
-            data: data.ProductsList,
-        }
-    }
-}
+const CustomTitle = styled.h1`
+  margin-top: 20px;
+  margin-bottom: -10px;
+  font-size: 40px;
+`
 
 export interface IFrontPageItem{
     productId: number,
@@ -60,11 +38,12 @@ export interface IFrontPageItem{
     isAvailable: boolean
 }
 
-interface IAllProductsProps {
-    data: IFrontPageItem[]
+interface IProductPageProps {
+    data: IFrontPageItem[],
+    title: string
 }
 
-const AllProducts: React.FC<IAllProductsProps> = ({data}) => {
+const ProductPageComponent: React.FC<IProductPageProps> = ({data, title}) => {
     const itemsPerPage: number = 20;
     const totalPages = Math.ceil(data.length/itemsPerPage);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -72,14 +51,15 @@ const AllProducts: React.FC<IAllProductsProps> = ({data}) => {
 
     return (
         <Container>
+            <CustomTitle>{title}</CustomTitle>
             <GridContainer>
                 {chunkedArr[currentPage-1].map((itemInfo) => <FrontPageItemComponent key={itemInfo.productId} {...itemInfo}/>)}
             </GridContainer>
             <PaginationComponent totalPages={totalPages} dataArr={data} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
-            <FooterContainerComponent/>
+            <FooterContainerComponent />
         </Container>
 
     )
 }
 
-export default AllProducts
+export default ProductPageComponent

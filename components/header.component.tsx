@@ -47,7 +47,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
                 </Link>
 
                 <Link href='/'>Home</Link>
-                <Link href='/collections/all'>All Products</Link>
+                <Link href='/all'>All Products</Link>
                 <Link href='/'>Help</Link>
             </CustomHeaderRight>
             <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>

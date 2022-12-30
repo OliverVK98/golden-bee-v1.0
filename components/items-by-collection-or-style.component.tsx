@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SectionPreviewComponent from "./section-preview.component";
 import React from "react";
 import {gql, useQuery} from "@apollo/client";
+import Link from "next/link";
 
 const Container = styled.div`
   display: flex;
@@ -50,15 +51,21 @@ const ItemsByCollectionOrStyleComponent: React.FC<IItemsProps> = ({isStyle}) => 
     })
 
     return (
-       <Container>
-           <h1>Shop By {isStyle ? "Style" : "Collection"}</h1>
-           <GridContainer isStyle={isStyle}>
-               {
-                   data?.CollectionsList.map((element: ICollectionItem) => <SectionPreviewComponent title="Bracelets With Note" height={300} width={isStyle ? 330: 450}
-                                                                                   key={element.collectionId} imageUrl={element.imageUrl}/>)
-               }
-           </GridContainer>
-       </Container>
+           <Container>
+               <h1>Shop By {isStyle ? "Style" : "Collection"}</h1>
+               <GridContainer isStyle={isStyle}>
+                   {
+                       data?.CollectionsList.map((element: ICollectionItem) => {
+                           return (
+                               <Link key={element.collectionId} href={`${isStyle ? "styles" : "collections"}/${element.name.toLowerCase().replace(/ /g, "-")}`}>
+                                   <SectionPreviewComponent title={element.name} height={300} width={isStyle ? 330 : 450}
+                                                         imageUrl={element.imageUrl}/>
+                               </Link>
+                           )
+                       })
+                   }
+               </GridContainer>
+           </Container>
    )
 }
 

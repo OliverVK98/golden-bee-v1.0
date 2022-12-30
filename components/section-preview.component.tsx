@@ -18,7 +18,7 @@ const TextContainer= styled.p`
   top: 50%; 
   left: 50%; 
   font-weight: bold;
-  font-size: 22px;
+  font-size: 18px;
   transform: translate(-50%, -50%)
 `
 

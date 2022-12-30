@@ -26,31 +26,31 @@ model Cart {
 }
 
 model Product {
-  productId          Int                  @id @default(autoincrement())
-  itemName           String
-  price              Float
-  discountedPrice    Float
-  rating             Int
-  frontImageUrl      String
-  extraImageUrls     String[]
-  bannerImageUrls    String[]
-  isAvailable        Boolean
-  Cart               Cart[]
-  Product_Collection Product_Collection[]
+  productId       Int                     @id @default(autoincrement())
+  itemName        String
+  price           Float
+  discountedPrice Float
+  rating          Int
+  frontImageUrl   String
+  extraImageUrls  String[]
+  bannerImageUrls String[]
+  isAvailable     Boolean
+  Cart            Cart[]
+  collections     CollectionsOfProducts[]
 }
 
 model Collection {
-  collectionId       Int                  @id @default(autoincrement())
-  name               String
-  isStyle            Boolean
-  imageUrl           String
-  Product_Collection Product_Collection[]
+  collectionId Int                     @id @default(autoincrement())
+  name         String
+  isStyle      Boolean
+  imageUrl     String
+  products     CollectionsOfProducts[]
 }
 
-model Product_Collection {
-  id            Int        @id @default(autoincrement())
-  productIdF    Product    @relation(fields: [productId], references: [productId])
-  productId     Int
-  collectionIdF Collection @relation(fields: [collectionId], references: [collectionId])
-  collectionId  Int
+model CollectionsOfProducts {
+  relationId   Int        @id @default(autoincrement())
+  products     Product    @relation(fields: [productId], references: [productId])
+  productId    Int[]
+  collections  Collection @relation(fields: [collectionId], references: [collectionId])
+  collectionId Int
 }

@@ -16,6 +16,13 @@ export const resolvers = {
                 isStyle: args.condition
             }
         }),
+        SpecificCollectionQuery: async (root: any, args: any, ctx: any) => await ctx.prisma.collectionsOfProducts.findMany(
+            {
+                where: {
+                    collectionId: args.collectionId
+                }
+            }
+        )
     },
 }
 

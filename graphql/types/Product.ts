@@ -34,7 +34,7 @@ export const ProductsByIdQuery = queryField("ProductById", {
 
 export const ProductsByMultipleIdsQuery = queryField("ProductsByMultipleIds", {
     type: list(Product),
-    args: {id: list(nonNull(intArg()))},
+    args: {id: nonNull(list(intArg()))},
     async resolve(_parent, args, ctx) {
         return await ctx.prisma.product.findMany({
             where: {

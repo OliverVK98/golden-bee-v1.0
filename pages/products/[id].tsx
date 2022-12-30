@@ -257,7 +257,7 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
     `;
 
     const {loading, data, error} = useQuery(productsByIdsQuery, {
-        variables: {id: [144, 145, 146, 147]}
+        variables: {id: [1, 2, 3, 4]}
     })
 
     const handleAddButtonClick = () => {
@@ -266,7 +266,7 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
 
     const handleRemoveButtonClick = () => {
         if (quantity===1) return;
-        setQuantity(prevState => prevState-1);
+        setQuantity(prevState => prevState-1)
     }
 
     const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -291,17 +291,27 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
                 </ImagesContainer>
                 <ItemInfoContainer>
                     <h1>{itemName}</h1>
-                    <StarContainer>
-                        {[0, 1, 2, 3, 4 ].map(el => <Image src="/icons/star.png" alt="star icon" width={24}
+                    {rating!=0 && <StarContainer>
+                        {[0, 1, 2, 3, 4].map(el => <Image src="/icons/star.png" alt="star icon" width={24}
                                                           height={24} key={el}/>)}
                         <span>
                             ({rating})
                         </span>
-                    </StarContainer>
-                    <PriceContainer>
-                        <OriginalPriceContainer>${price}</OriginalPriceContainer>
-                        <DiscountedPriceContainer>${discountedPrice}</DiscountedPriceContainer>
-                    </PriceContainer>
+                    </StarContainer>}
+                    {
+                        discountedPrice===0 ?
+                            (
+                                <PriceContainer>
+                                    <span>${price}</span>
+                                </PriceContainer>
+                            ) :
+                            (
+                                <PriceContainer>
+                                    <OriginalPriceContainer>${price}</OriginalPriceContainer>
+                                    <DiscountedPriceContainer>${discountedPrice}</DiscountedPriceContainer>
+                                </PriceContainer>
+                            )
+                    }
                     <QuantityContainer>Quantity</QuantityContainer>
                     <InputContainer>
                         <ButtonLeft onClick={handleRemoveButtonClick}>-</ButtonLeft>

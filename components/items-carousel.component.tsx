@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Image from "next/legacy/image";
 import CustomRoundButton from "./round-button.component";
 import useCarousel from "../hooks/useCarousel";
-import {IFrontPageItem} from "../pages/collections/all";
+import {IFrontPageItem} from "../pages/all";
 import PreviewFourItemsComponent from "./preview-four-items.component";
 
 const Container = styled.div`

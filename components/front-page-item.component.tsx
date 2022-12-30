@@ -3,7 +3,7 @@ import Image from "next/legacy/image";
 import styles from "../styles/FrontImage.module.css"
 import styled from "styled-components";
 import Link from "next/link";
-import {IFrontPageItem} from "../pages/collections/all";
+import {IFrontPageItem} from "../pages/all";
 
 const AddToCartButton = styled.button`
   color: rgb(58,170,53);
@@ -92,23 +92,28 @@ const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
             <Link href={url}>
                 <BottomItemContainer>
                     <ItemText>{itemName}</ItemText>
-                    {/*TODO: CONDITIONAL STAR DISPLAY IF THE RATING IS NOT 0,
-                       IF THE DISCOUNTED PRICE IS 0, don't render it, if there's no
-                         extra images don't render them either*/}
-                    <StarContainer>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
-                        <Image src="/icons/star.png" alt="star icon" width={24} height={24}/>
+                    {/*TODO:  if there's no extra images don't render them either*/}
+                    {rating!=0 && <StarContainer>
+                        {[0, 1, 2, 3, 4].map(el => <Image src="/icons/star.png" alt="star icon" width={24}
+                                                          height={24} key={el}/>)}
                         <p>
                             ({rating})
                         </p>
-                    </StarContainer>
-                    <PriceContainer>
-                        <OriginalPriceContainer>${price}</OriginalPriceContainer>
-                        <DiscountedPriceContainer>${discountedPrice}</DiscountedPriceContainer>
-                    </PriceContainer>
+                    </StarContainer>}
+                        {
+                            discountedPrice===0 ?
+                                (
+                                    <PriceContainer>
+                                        <span>${price}</span>
+                                    </PriceContainer>
+                                ) :
+                                (
+                                    <PriceContainer>
+                                        <OriginalPriceContainer>${price}</OriginalPriceContainer>
+                                        <DiscountedPriceContainer>${discountedPrice}</DiscountedPriceContainer>
+                                    </PriceContainer>
+                                )
+                        }
                 </BottomItemContainer>
             </Link>
         </ItemContainer>
