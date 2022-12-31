@@ -1,7 +1,8 @@
-import {FunctionComponent, ReactElement} from "react";
+import {FunctionComponent, ReactElement, useContext} from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/legacy/image";
+import {ModalSignInContext} from "../contexts/sign-in-modal.context";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -41,6 +42,8 @@ const RightLogoText = styled.span`
 `
 
 const HeaderComponent: FunctionComponent = (): ReactElement => {
+    const {isModalOpen, setIsModalOpen} = useContext(ModalSignInContext);
+
     return(
         <HeaderContainer>
             <CustomHeaderRight>
@@ -57,7 +60,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
                 <Link href='/'>Help</Link>
             </CustomHeaderRight>
             <CustomHeaderLeft>
-                <div>Sign In</div>
+                <div onClick={()=>setIsModalOpen(!isModalOpen)}>Sign In</div>
                 <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>
             </CustomHeaderLeft>
         </HeaderContainer>

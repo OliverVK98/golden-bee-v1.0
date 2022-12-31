@@ -4,12 +4,10 @@ class MyDocument extends Document {
     render() {
         return (
             <Html lang="en">
-                <Head>
-                    <link rel="preload" href="/fonts/MartianMono-VariableFont_wdth,wght.ttf"
-                          as="font" crossOrigin="anonymous"/>
-                </Head>
+                <Head/>
                 <body>
                     <Main/>
+                    <div id="modal-portal"/>
                     <NextScript/>
                 </body>
             </Html>

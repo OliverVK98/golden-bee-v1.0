@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import Image from "next/image";
 import InputComponent from "./input.component";
+import {useContext} from "react";
+import {ModalSignInContext} from "../contexts/sign-in-modal.context";
+import {createPortal} from "react-dom";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -64,27 +67,45 @@ const ButtonsContainer = styled.div`
   gap: 10px;
 `
 
+const BlackBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999;
+`
+
 const SignInModalComponent = () => {
-    return (
-        <ModalContainer>
-            <TopPartContainer>
-                <TextContainer>
-                    Sign In
-                </TextContainer>
-                <ImageContainer>
-                    <Image src="/icons/close.svg" alt="close-icon" height={20} width={20}/>
-                </ImageContainer>
-            </TopPartContainer>
-            <FormContainer onSubmit={(e)=>e.preventDefault()}>
-                <InputComponent imageUrl="/icons/person.svg" type="email" placeholder="Your email"/>
-                <InputComponent imageUrl="/icons/password.svg" type="password" placeholder="Your password"/>
-                <ButtonsContainer>
-                    <CustomShopButton type="submit">Sign In</CustomShopButton>
-                    <CustomShopButton type="submit">Sign In With Google</CustomShopButton>
-                    <CustomShopButton type="submit">Sign In With Github</CustomShopButton>
-                </ButtonsContainer>
-            </FormContainer>
-        </ModalContainer>
+    const {isModalOpen, setIsModalOpen} = useContext(ModalSignInContext);
+
+    if (!isModalOpen) return null
+
+    return createPortal(
+        <>
+            <BlackBackground/>
+            <ModalContainer>
+                <TopPartContainer>
+                    <TextContainer>
+                        Sign In
+                    </TextContainer>
+                    <ImageContainer>
+                        <Image src="/icons/close.svg" alt="close-icon" height={20} width={20}
+                                onClick={()=>setIsModalOpen(!isModalOpen)}/>
+                    </ImageContainer>
+                </TopPartContainer>
+                <FormContainer onSubmit={(e)=>e.preventDefault()}>
+                    <InputComponent imageUrl="/icons/person.svg" type="email" placeholder="Your email"/>
+                    <InputComponent imageUrl="/icons/password.svg" type="password" placeholder="Your password"/>
+                    <ButtonsContainer>
+                        <CustomShopButton type="submit">Sign In</CustomShopButton>
+                        <CustomShopButton type="submit">Sign In With Google</CustomShopButton>
+                        <CustomShopButton type="submit">Sign In With Github</CustomShopButton>
+                    </ButtonsContainer>
+                </FormContainer>
+            </ModalContainer>
+        </>, document.getElementById('modal-portal') as HTMLElement
     )
 }
 
