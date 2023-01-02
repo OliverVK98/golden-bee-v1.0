@@ -41,8 +41,12 @@ const RightLogoText = styled.span`
   z-index: 2;
 `
 
+const SignInContainer = styled.div`
+  cursor: pointer;
+`
+
 const HeaderComponent: FunctionComponent = (): ReactElement => {
-    const {isModalOpen, setIsModalOpen} = useContext(ModalSignInContext);
+    const {isSignInModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
 
     return(
         <HeaderContainer>
@@ -60,7 +64,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
                 <Link href='/'>Help</Link>
             </CustomHeaderRight>
             <CustomHeaderLeft>
-                <div onClick={()=>setIsModalOpen(!isModalOpen)}>Sign In</div>
+                <SignInContainer onClick={()=>setIsSignInModalOpen(!isSignInModalOpen)}>Sign In</SignInContainer>
                 <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>
             </CustomHeaderLeft>
         </HeaderContainer>

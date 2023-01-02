@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Image from "next/image";
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import {ModalSignInContext} from "../contexts/sign-in-modal.context";
 import {createPortal} from "react-dom";
-import SignInFormComponent from "./sign-in-form.component";
+import SignUpFormComponent from "./sign-up-form.component";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -50,32 +50,10 @@ const BlackBackground = styled.div`
   z-index: 999;
 `
 
-const SignInModalComponent = () => {
-    const {isSignInModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
+const SignUpModalComponent = () => {
+    const {isSignUpModalOpen, setIsSignUpModalOpen} = useContext(ModalSignInContext);
 
-    const handleEscapeKeyPress = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-            setIsSignInModalOpen(false);
-        }
-    };
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (event.target !== event.currentTarget) {
-            setIsSignInModalOpen(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("keydown", handleEscapeKeyPress);
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("keydown", handleEscapeKeyPress);
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    if (!isSignInModalOpen) return null
+    if (!isSignUpModalOpen) return null
 
     return createPortal(
         <>
@@ -83,17 +61,17 @@ const SignInModalComponent = () => {
             <ModalContainer>
                 <TopPartContainer>
                     <TextContainer>
-                        Sign In
+                        Sign Up
                     </TextContainer>
                     <ImageContainer>
                         <Image src="/icons/close.svg" alt="close-icon" height={20} width={20}
-                                onClick={()=>setIsSignInModalOpen(!isSignInModalOpen)}/>
+                               onClick={()=>setIsSignUpModalOpen(!isSignUpModalOpen)}/>
                     </ImageContainer>
                 </TopPartContainer>
-                <SignInFormComponent/>
+                <SignUpFormComponent/>
             </ModalContainer>
         </>, document.getElementById('modal-portal') as HTMLElement
     )
 }
 
-export default SignInModalComponent
+export default SignUpModalComponent

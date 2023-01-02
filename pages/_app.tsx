@@ -5,6 +5,7 @@ import {ApolloProvider} from "@apollo/client";
 import apolloClient from "../lib/apollo";
 import SignInModalComponent from "../components/sign-in-modal.component";
 import {ModalSignInProvider} from "../contexts/sign-in-modal.context";
+import SignUpModalComponent from "../components/sign-up-modal.component";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <HeaderComponent/>
             <Component {...pageProps} />
             <SignInModalComponent/>
+            <SignUpModalComponent/>
           </ApolloProvider>
       </ModalSignInProvider>
   )

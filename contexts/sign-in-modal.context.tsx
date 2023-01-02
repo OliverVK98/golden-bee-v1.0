@@ -1,21 +1,29 @@
 import React, { createContext, useState } from 'react';
 
+
 interface ContextProps {
-    isModalOpen: boolean;
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isSignInModalOpen: boolean;
+    setIsSignInModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isSignUpModalOpen: boolean;
+    setIsSignUpModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ModalSignInContext = createContext<ContextProps>({
-    isModalOpen: false,
-    setIsModalOpen: () => {}
+    isSignInModalOpen: false,
+    setIsSignInModalOpen: () => {},
+    isSignUpModalOpen: false,
+    setIsSignUpModalOpen: () => {}
 });
 
 export function ModalSignInProvider({ children }: { children: React.ReactNode }) {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
+    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState<boolean>(false);
 
     const value: ContextProps = {
-        isModalOpen,
-        setIsModalOpen
+        isSignInModalOpen,
+        setIsSignInModalOpen,
+        isSignUpModalOpen,
+        setIsSignUpModalOpen
     }
 
     return (
