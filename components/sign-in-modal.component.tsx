@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useRef} from "react";
 import {ModalSignInContext} from "../contexts/sign-in-modal.context";
 import {createPortal} from "react-dom";
 import SignInFormComponent from "./sign-in-form.component";
@@ -59,19 +59,10 @@ const SignInModalComponent = () => {
         }
     };
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if (event.target !== event.currentTarget) {
-            setIsSignInModalOpen(false);
-        }
-    };
-
     useEffect(() => {
         document.addEventListener("keydown", handleEscapeKeyPress);
-        document.addEventListener("mousedown", handleClickOutside);
-
         return () => {
             document.removeEventListener("keydown", handleEscapeKeyPress);
-            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
@@ -79,7 +70,7 @@ const SignInModalComponent = () => {
 
     return createPortal(
         <>
-            <BlackBackground/>
+            <BlackBackground onClick={()=>setIsSignInModalOpen(false)}/>
             <ModalContainer>
                 <TopPartContainer>
                     <TextContainer>

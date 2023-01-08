@@ -14,6 +14,10 @@ type CollectionOfProducts {
   productId: Int
 }
 
+type Mutation {
+  CreateUser(email: String!, firstName: String!, lastName: String!, password: String!): User
+}
+
 type Product {
   bannerImageUrls: [String]
   discountedPrice: Float
@@ -28,8 +32,17 @@ type Product {
 
 type Query {
   CollectionsList(condition: Boolean!): [Collection!]
+  GetUserInfoByEmail(email: String!): User!
   ProductById(id: Int!): Product
   ProductsByMultipleIds(id: [Int]!): [Product]
   ProductsList: [Product!]
   SpecificCollectionQuery(collectionId: Int!): [CollectionOfProducts]!
+}
+
+type User {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  userId: Int
 }

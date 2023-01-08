@@ -4,6 +4,8 @@ import {useForm, FormProvider} from "react-hook-form";
 import {signInResolver} from "../utils/yup-form-schemas/sign-in-schema";
 import {useContext} from "react";
 import {ModalSignInContext} from "../contexts/sign-in-modal.context";
+import {useSession, signIn, signOut} from "next-auth/react";
+import {UserContext} from "../contexts/user.context";
 
 const FormContainer = styled.form`
   display: flex;
@@ -45,9 +47,17 @@ interface IFormValues {
 const SignInFormComponent = () => {
     const methods = useForm<IFormValues>({resolver: signInResolver});
     const {setIsSignUpModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
+    const {setIsUserAuthenticated} = useContext(UserContext);
     const createAccountClickHandler = () => {
         setIsSignInModalOpen(false);
         setIsSignUpModalOpen(true);
+    }
+
+    const {data: session} = useSession();
+    console.log(session);
+    const handleGoogleSignIn = async () => {
+        await signIn('google', {callbackUrl: "http://localhost:3000"});
+        setIsUserAuthenticated(true);
     }
 
     return(
@@ -57,8 +67,8 @@ const SignInFormComponent = () => {
                 <InputComponent imageUrl="/icons/password.svg" type="password" name="password" placeholder="Your password..."/>
                 <ButtonsContainer>
                     <CustomShopButton type="submit">Sign In</CustomShopButton>
-                    <CustomShopButton type="submit">Sign In With Google</CustomShopButton>
-                    <CustomShopButton type="submit">Sign In With Github</CustomShopButton>
+                    <CustomShopButton type="button" onClick={handleGoogleSignIn}>Sign In With Google</CustomShopButton>
+                    <CustomShopButton type="button">Sign In With Github</CustomShopButton>
                     <OrContainer>Don't have an account?</OrContainer>
                     <CustomShopButton type="button" onClick={createAccountClickHandler}>Create an account</CustomShopButton>
                 </ButtonsContainer>

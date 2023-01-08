@@ -1,8 +1,10 @@
-import {FunctionComponent, ReactElement, useContext} from "react";
+import {FunctionComponent, ReactElement, useContext, useEffect} from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import {ModalSignInContext} from "../contexts/sign-in-modal.context";
+import {UserContext} from "../contexts/user.context";
+import {signOut, useSession} from "next-auth/react";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -41,12 +43,25 @@ const RightLogoText = styled.span`
   z-index: 2;
 `
 
-const SignInContainer = styled.div`
+const AuthContainer = styled.div`
   cursor: pointer;
 `
 
 const HeaderComponent: FunctionComponent = (): ReactElement => {
     const {isSignInModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
+    const {isUserAuthenticated,setIsUserAuthenticated} = useContext(UserContext);
+    const handleUserSignOut = async () => {
+        await signOut();
+        setIsUserAuthenticated(false);
+    }
+
+    const {data: session} = useSession();
+
+    useEffect(()=>{
+        if(session?.user) {
+            setIsUserAuthenticated(true);
+        }
+    }, [session])
 
     return(
         <HeaderContainer>
@@ -64,8 +79,9 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
                 <Link href='/'>Help</Link>
             </CustomHeaderRight>
             <CustomHeaderLeft>
-                <SignInContainer onClick={()=>setIsSignInModalOpen(!isSignInModalOpen)}>Sign In</SignInContainer>
                 <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>
+                {!isUserAuthenticated && <AuthContainer onClick={() => setIsSignInModalOpen(!isSignInModalOpen)}>Sign In</AuthContainer>}
+                {isUserAuthenticated && <AuthContainer onClick={handleUserSignOut}>Sign Out</AuthContainer>}
             </CustomHeaderLeft>
         </HeaderContainer>
     )

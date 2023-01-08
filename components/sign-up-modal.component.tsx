@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {ModalSignInContext} from "../contexts/sign-in-modal.context";
 import {createPortal} from "react-dom";
 import SignUpFormComponent from "./sign-up-form.component";
@@ -52,12 +52,24 @@ const BlackBackground = styled.div`
 
 const SignUpModalComponent = () => {
     const {isSignUpModalOpen, setIsSignUpModalOpen} = useContext(ModalSignInContext);
+    const handleEscapeKeyPress = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            setIsSignUpModalOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleEscapeKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleEscapeKeyPress);
+        };
+    }, []);
 
     if (!isSignUpModalOpen) return null
 
     return createPortal(
         <>
-            <BlackBackground/>
+            <BlackBackground onClick={()=>setIsSignUpModalOpen(false)}/>
             <ModalContainer>
                 <TopPartContainer>
                     <TextContainer>

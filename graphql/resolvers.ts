@@ -1,3 +1,5 @@
+import {GetUserInfoByEmail} from "./types";
+
 export const resolvers = {
     Query: {
         ProductById: async (root: any, args: any, ctx: any) => await ctx.prisma.product.findUnique({
@@ -22,7 +24,32 @@ export const resolvers = {
                     collectionId: args.collectionId
                 }
             }
+        ),
+        GetUserInfoByEmail: async (root: any, args: any, ctx: any) => await ctx.prisma.user.findFirst(
+            {
+                where: {
+                    email: args.email
+                }
+            }
         )
     },
+
+    Mutation: {
+        CreateUser: async (root: any, { email, password, lastName, firstName }: IUser, ctx: any) => ctx.prisma.user.create({
+                data: {
+                    email,
+                    password,
+                    firstName,
+                    lastName
+                },
+            })
+    }
+}
+
+interface IUser {
+    email: string,
+    password: string,
+    lastName: string,
+    firstName: string
 }
 

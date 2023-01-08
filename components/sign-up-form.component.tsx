@@ -2,6 +2,8 @@ import InputComponent from "./input.component";
 import styled from "styled-components";
 import {useForm, FormProvider} from "react-hook-form";
 import {signUpResolver} from "../utils/yup-form-schemas/sign-up-schema";
+import {useContext} from "react";
+import {ModalSignInContext} from "../contexts/sign-in-modal.context";
 
 const FormContainer = styled.form`
   display: flex;
@@ -32,15 +34,39 @@ const ButtonsContainer = styled.div`
 
 interface IFormValues {
     email: string,
-    password: string
+    password: string,
+    firstName: string,
+    lastName: string
 }
 
 const SignUpFormComponent = () => {
     const methods = useForm<IFormValues>({resolver: signUpResolver});
+    const {setIsSignUpModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
+    const haveAccountClickHandler = () => {
+        setIsSignInModalOpen(true);
+        setIsSignUpModalOpen(false);
+    }
+
+    const signUpUserHandler = async ({password, lastName, email, firstName}: IFormValues) => {
+        await fetch("http://localhost:3000/api/auth/sign-up", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+                lastName,
+                firstName
+            })
+        })
+            .then((res)=>console.log(res))
+            .catch((error: Error) => console.log(error));
+    }
 
     return(
         <FormProvider {...methods}>
-            <FormContainer onSubmit={methods.handleSubmit((data)=>console.log(data))}>
+            <FormContainer onSubmit={methods.handleSubmit(async (data)=>await signUpUserHandler(data))}>
                 <InputComponent imageUrl="/icons/person.svg" type="text" name="firstName" placeholder="Your First Name..."/>
                 <InputComponent imageUrl="/icons/person.svg" type="text" name="lastName" placeholder="Your Last Name..."/>
                 <InputComponent imageUrl="/icons/email.svg" type="text" name="email" placeholder="Your email..."/>
@@ -48,7 +74,7 @@ const SignUpFormComponent = () => {
                 <InputComponent imageUrl="/icons/password.svg" type="password" name="confirmPassword" placeholder="Confirm your password..."/>
                 <ButtonsContainer>
                     <CustomShopButton type="submit">Register</CustomShopButton>
-                    <CustomShopButton type="submit">Already have an account? Sign In</CustomShopButton>
+                    <CustomShopButton type="button" onClick={haveAccountClickHandler}>Already have an account? Sign In</CustomShopButton>
                 </ButtonsContainer>
             </FormContainer>
         </FormProvider>

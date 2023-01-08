@@ -9,24 +9,32 @@ datasource db {
 }
 
 model User {
-  userId    Int    @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String
+  userId    Int     @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  email     String  @unique
   password  String
   Cart      Cart[]
+  Token     Token[]
+}
+
+model Token {
+  tokenId      Int    @id @default(autoincrement())
+  refreshToken String @unique
+  userId       Int    @unique
+  userIdF      User   @relation(fields: [userId], references: [userId])
 }
 
 model Cart {
   cartId     Int     @id @default(autoincrement())
-  userIdF    User    @relation(fields: [userId], references: [userId])
   userId     Int
-  productIdF Product @relation(fields: [productId], references: [productId])
   productId  Int
+  productIdF Product @relation(fields: [productId], references: [productId])
+  userIdF    User    @relation(fields: [userId], references: [userId])
 }
 
 model Product {
-  productId       Int                     @id @default(autoincrement())
+  productId       Int      @id @default(autoincrement())
   itemName        String
   price           Float
   discountedPrice Float
@@ -36,7 +44,6 @@ model Product {
   bannerImageUrls String[]
   isAvailable     Boolean
   Cart            Cart[]
-  collections     CollectionsOfProducts[]
 }
 
 model Collection {
@@ -48,9 +55,8 @@ model Collection {
 }
 
 model CollectionsOfProducts {
+  collectionId Int
   relationId   Int        @id @default(autoincrement())
-  products     Product    @relation(fields: [productId], references: [productId])
   productId    Int[]
   collections  Collection @relation(fields: [collectionId], references: [collectionId])
-  collectionId Int
 }
