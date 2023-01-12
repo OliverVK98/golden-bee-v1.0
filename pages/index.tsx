@@ -49,7 +49,7 @@ const SubscribeContainer = styled.div`
   align-items: center;
 `
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // await prisma.product.createMany({
   //   data: productData
   // })

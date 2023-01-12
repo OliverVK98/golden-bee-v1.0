@@ -4,6 +4,7 @@ import {IDtoUser, IUser, userDto} from "../../../utils/auth-api-helpers/user-dto
 import TokenService from "../../../utils/auth-api-helpers/token-service";
 import Cookie from "cookies";
 import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-cors";
+import generateTokensCookiesAndRespond from "../../../utils/auth-api-helpers/generate-tokens-cookies-and-respond";
 
 export default async function handler(
     req: NextApiRequest,
@@ -11,7 +12,7 @@ export default async function handler(
 ) {
     await runMiddlewareCors(req, res)
 
-    if (req.method === 'POST') {
+    if (req.method === 'GET') {
         const cookies = new Cookie(req, res);
         const refreshToken: string | undefined = cookies.get('refreshToken');
 
@@ -28,20 +29,15 @@ export default async function handler(
                     error: "User is not authorized"
                 })
             } else {
-                const user = prisma.user.findFirst({
+                const user = await prisma.user.findFirst({
                     where: {
                         userId: userData.userId
                     }
                 })
 
                 const userDtoInfo = userDto(user as unknown as IUser)
-                const tokens  = TokenService.generateTokens(userDtoInfo)
-                await TokenService.saveToken(userDtoInfo.userId, tokens.refreshToken)
 
-                res.status(200).json({
-                    user: {...userDtoInfo},
-                    ...tokens
-                });
+                await generateTokensCookiesAndRespond(userDtoInfo, req, res);
             }
         }
 

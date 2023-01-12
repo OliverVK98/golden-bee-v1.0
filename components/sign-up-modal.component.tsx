@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import {useContext, useEffect} from "react";
-import {ModalSignInContext} from "../contexts/sign-in-modal.context";
+import {ModalSignInContext} from "../contexts/modal.context";
 import {createPortal} from "react-dom";
 import SignUpFormComponent from "./sign-up-form.component";
 

@@ -3,7 +3,9 @@ import styled from "styled-components";
 import {useForm, FormProvider} from "react-hook-form";
 import {signUpResolver} from "../utils/yup-form-schemas/sign-up-schema";
 import {useContext} from "react";
-import {ModalSignInContext} from "../contexts/sign-in-modal.context";
+import {ModalSignInContext} from "../contexts/modal.context";
+import AuthService from "../utils/auth-api-helpers/auth-service";
+import {IUserData, UserContext} from "../contexts/user.context";
 
 const FormContainer = styled.form`
   display: flex;
@@ -46,22 +48,18 @@ const SignUpFormComponent = () => {
         setIsSignInModalOpen(true);
         setIsSignUpModalOpen(false);
     }
+    const {setUserData, setIsUserAuthenticated, userData} = useContext(UserContext)
 
     const signUpUserHandler = async ({password, lastName, email, firstName}: IFormValues) => {
-        await fetch("http://localhost:3000/api/auth/sign-up", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email,
-                password,
-                lastName,
-                firstName
-            })
-        })
-            .then((res)=>console.log(res))
-            .catch((error: Error) => console.log(error));
+        try {
+            const response  = await AuthService.registration(email, password, firstName, lastName);
+            localStorage.setItem("accessToken", response.data.accessToken);
+            setIsUserAuthenticated(true);
+            setUserData(response.data.user);
+            setIsSignUpModalOpen(false);
+        } catch (e: any) {
+            console.log(e.response?.data?.message)
+        }
     }
 
     return(

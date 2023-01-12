@@ -2,9 +2,11 @@ import {FunctionComponent, ReactElement, useContext, useEffect} from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/legacy/image";
-import {ModalSignInContext} from "../contexts/sign-in-modal.context";
-import {UserContext} from "../contexts/user.context";
+import {ModalSignInContext} from "../contexts/modal.context";
+import {IUserData, UserContext} from "../contexts/user.context";
 import {signOut, useSession} from "next-auth/react";
+import AuthService, {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
+import axios from "axios";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -49,19 +51,18 @@ const AuthContainer = styled.div`
 
 const HeaderComponent: FunctionComponent = (): ReactElement => {
     const {isSignInModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
-    const {isUserAuthenticated,setIsUserAuthenticated} = useContext(UserContext);
+    const {isUserAuthenticated, setIsUserAuthenticated, setUserData} = useContext(UserContext);
+
     const handleUserSignOut = async () => {
-        await signOut();
-        setIsUserAuthenticated(false);
-    }
-
-    const {data: session} = useSession();
-
-    useEffect(()=>{
-        if(session?.user) {
-            setIsUserAuthenticated(true);
+        try {
+            const response  = await AuthService.logout();
+            localStorage.removeItem("accessToken");
+            setIsUserAuthenticated(false);
+            setUserData({} as IUserData);
+        } catch (e: any) {
+            console.log(e.response?.data?.message)
         }
-    }, [session])
+    }
 
     return(
         <HeaderContainer>
@@ -76,7 +77,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
 
                 <Link href='/'>Home</Link>
                 <Link href='/all'>All Products</Link>
-                <Link href='/'>Help</Link>
+                <Link href='/'  onClick={async () => console.log(await AuthService.getCart())}>Help</Link>
             </CustomHeaderRight>
             <CustomHeaderLeft>
                 <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>

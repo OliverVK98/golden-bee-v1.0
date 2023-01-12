@@ -15,7 +15,7 @@ model User {
   email     String  @unique
   password  String
   Cart      Cart[]
-  Token     Token[]
+  Token     Token?
 }
 
 model Token {
@@ -26,15 +26,14 @@ model Token {
 }
 
 model Cart {
-  cartId     Int     @id @default(autoincrement())
-  userId     Int
-  productId  Int
-  productIdF Product @relation(fields: [productId], references: [productId])
-  userIdF    User    @relation(fields: [userId], references: [userId])
+  cartId   Int              @id @default(autoincrement())
+  userId   Int?
+  User     User?            @relation(fields: [userId], references: [userId])
+  products ProductsInCart[]
 }
 
 model Product {
-  productId       Int      @id @default(autoincrement())
+  productId       Int              @id @default(autoincrement())
   itemName        String
   price           Float
   discountedPrice Float
@@ -43,7 +42,16 @@ model Product {
   extraImageUrls  String[]
   bannerImageUrls String[]
   isAvailable     Boolean
-  Cart            Cart[]
+  cart            ProductsInCart[]
+}
+
+model ProductsInCart {
+  cartId    Int
+  productId Int
+  cart      Cart    @relation(fields: [cartId], references: [cartId])
+  product   Product @relation(fields: [productId], references: [productId])
+
+  @@id([productId, cartId])
 }
 
 model Collection {
