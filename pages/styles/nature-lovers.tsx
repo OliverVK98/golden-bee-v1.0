@@ -15,7 +15,7 @@ export async function getStaticProps() {
     const {data: {ProductsByMultipleIds}} = await apolloClient.query({
         query: specificCollectionProductsDataQuery,
         variables: {
-            id: SpecificCollectionQuery.map((arr: {productId: number}) => arr.productId)
+            id: SpecificCollectionQuery[0].productId
         }
     })
 

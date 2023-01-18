@@ -11,7 +11,7 @@ type Collection {
 
 type CollectionOfProducts {
   collectionId: Int
-  productId: Int
+  productId: [Int!]
 }
 
 type Mutation {

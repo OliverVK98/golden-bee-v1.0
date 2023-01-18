@@ -72,7 +72,7 @@ const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo
             <TrendingItemsContainer>
                 <CarouselContainer >
                     <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree} ref={elementRefs[0]} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataOne} ref={elementRefs[1]} />
+                    <PreviewFourItemsComponent isImageLoadPriority={true} transitionActive={transitionActive} dataArr={dataOne} ref={elementRefs[1]} />
                     <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataTwo} ref={elementRefs[2]} />
                     <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree} ref={elementRefs[3]} />
                     <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataOne} ref={elementRefs[4]} />
@@ -80,7 +80,7 @@ const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo
             </TrendingItemsContainer>
             <NavContainer>
                 <Image src="/icons/arrow-back.svg" alt="pointer-back" width={36} height={36}
-                       onClick={handleBackwardButtonClick}/>
+                       onClick={handleBackwardButtonClick} priority={true}style={{cursor: "pointer"}} />
                 <ButtonContainer>
                     <CustomRoundButton mainColor="green" secondaryColor="transparent"
                                        borderColor="green" isPrimary={currentSlideIndex===1}
@@ -102,7 +102,7 @@ const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo
                                        }}/>
                 </ButtonContainer>
                 <Image src="/icons/arrow-forward.svg" alt="pointer-forward" width={36} height={36}
-                        onClick={handleForwardButtonClick}/>
+                        onClick={handleForwardButtonClick} style={{cursor: "pointer"}}/>
             </NavContainer>
         </Container>
     )

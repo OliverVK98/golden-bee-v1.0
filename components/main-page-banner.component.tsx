@@ -2,6 +2,7 @@ import {FunctionComponent, ReactElement, useState} from "react";
 import styled from "styled-components"
 import Image from "next/legacy/image";
 import CustomRoundButton from "./round-button.component";
+import Link from "next/link";
 
 interface IButtonProps {
     isPrimary: boolean
@@ -37,6 +38,7 @@ const CustomShopButton = styled.button`
   font-style: normal;
   text-transform: initial;
   letter-spacing: .5px;
+  cursor: pointer;
 `
 
 const ButtonContainer = styled.div`
@@ -83,18 +85,22 @@ const MainPageBannerComponent: FunctionComponent = (): ReactElement => {
         <Banner>
             <AnimationContainer key={Math.random()}>
                 {isPrimary ? "Holiday Gift Guide" : "Share Your Love"}
-                <CustomShopButton>Shop now</CustomShopButton>
+                <Link href="/all">
+                    <CustomShopButton>Shop now</CustomShopButton>
+                </Link>
             </AnimationContainer>
             {isPrimary && <Image
                 src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/Bee_Kind_Gifts_1476b296-308e-477c-9afe-c1c50cb668e8_1728x.jpg?v=1616179446"
                 alt="cover image"
                 layout={"fill"}
-                objectFit={"cover"}/>}
+                objectFit={"cover"}
+                priority={true}/>}
             {!isPrimary && <Image
                 src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/LSP06126.jpg?v=1614308356"
                 alt="cover image"
                 layout={"fill"}
-                objectFit={"cover"}/>}
+                objectFit={"cover"}
+                priority={true}/>}
             <ButtonContainer>
                 <CustomRoundButton isPrimary={isPrimary} mainColor="white" secondaryColor="transparent"
                                    borderColor="white" onClick={() => setIsPrimary(true)}/>

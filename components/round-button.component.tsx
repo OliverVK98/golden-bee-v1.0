@@ -18,6 +18,7 @@ const CustomRoundButton = styled.button`
   width: 10px;
   height: 10px;
   border-radius: 100px;
+  cursor: pointer;
 `
 
 export default CustomRoundButton;

@@ -23,14 +23,15 @@ interface ITransition {
 interface IPreviewComponentProps {
     transitionActive: boolean
     dataArr: IFrontPageItem[] | undefined,
-    ref?: Ref<HTMLDivElement>
+    ref?: Ref<HTMLDivElement>,
+    isImageLoadPriority?: boolean
 }
 
-const PreviewFourItemsComponent: React.FC<IPreviewComponentProps> = forwardRef(({transitionActive, dataArr}, ref) => {
+const PreviewFourItemsComponent: React.FC<IPreviewComponentProps> = forwardRef(({transitionActive, dataArr, isImageLoadPriority=false}, ref, ) => {
     return (
         <SlidesContainer transitionActive={transitionActive} ref={ref}>
             {
-                dataArr?.map((item, key) => <FrontPageItemComponent key={key} {...item}/>)
+                dataArr?.map((item, key) => <FrontPageItemComponent isImageLoadPriority={isImageLoadPriority} key={key} {...item}/>)
             }
         </SlidesContainer>
     )

@@ -34,6 +34,7 @@ export default class MyDocument extends Document {
                 <body>
                     <Main/>
                     <div id="modal-portal"/>
+                    <div id="cart-portal"/>
                     <NextScript/>
                 </body>
             </Html>

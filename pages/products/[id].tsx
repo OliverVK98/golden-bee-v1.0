@@ -8,6 +8,8 @@ import {gql, useQuery} from "@apollo/client";
 import apolloClient from "../../lib/apollo";
 import EmailInputComponent from "../../components/email-input.component";
 import FooterContainerComponent from "../../components/footer-container.component";
+import {useDispatch} from "react-redux";
+import {addCartItems, addOneCartItemById} from "../../redux/slices/cartSlice";
 
 const ProductPageContainer = styled.div`
   display: flex;
@@ -86,6 +88,8 @@ const AddToCartButton = styled.button`
   border: none;
   border-radius: 10px;
   font-size: 24px;
+  cursor: pointer;
+  font-weight: bold;
 `
 
 const CustomInput = styled.input`
@@ -115,6 +119,7 @@ const ButtonLeft  = styled.button`
   font-weight: bold;
   width: 20px;
   z-index: 2;
+  cursor: pointer;
 `
 
 const ButtonRight  = styled.button`
@@ -129,6 +134,7 @@ const ButtonRight  = styled.button`
   font-weight: bold;
   width: 20px;
   z-index: 2;
+  cursor: pointer;
 `
 
 const TextContainer = styled.p`
@@ -166,9 +172,6 @@ const ProposedTextContainer = styled.div`
   width: 300px;
   height: 2rem;
 `
-
-
-
 
 export async function getStaticProps(staticProps: any) {
     const queryById = gql`
@@ -239,11 +242,20 @@ interface IProductPageProps {
 
 const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
     const [quantity, setQuantity] = useState<number>(1);
-    const {frontImageUrl, extraImageUrls, bannerImageUrls, itemName, rating, price, discountedPrice} = ProductById;
+    const {frontImageUrl, extraImageUrls, bannerImageUrls, itemName, rating, price, discountedPrice, productId} = ProductById;
     const [mainImage, setMainImage] = useState<string>(frontImageUrl);
+    const infoToAdd = {
+        frontImageUrl,
+        itemName,
+        price,
+        discountedPrice,
+        productId: productId as number,
+        quantity
+    }
+    const dispatch = useDispatch();
 
     const productsByIdsQuery = gql`
-        query ($id: [Int!]){
+        query ($id: [Int]!){
             ProductsByMultipleIds(id: $id) {
                 productId
                 itemName
@@ -283,10 +295,13 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
         <ProductPageContainer>
             <TopSectionContainer>
                 <ImagesContainer>
-                    <Image src={mainImage} alt="product-image" width={623} height={623} className={styles.imageRound}/>
+                    <Image src={mainImage} alt="product-image" width={623} height={623}
+                           className={styles.imageRound} priority={true}/>
                     <MultipleImageContainer>
                         {extraImageUrls.map((imageUrl, index) =>
-                            <Image key={index} src={imageUrl} alt="small-image" width={109} height={109} className={styles.imageRound} onClick={()=>handleImageClick(index)}/>)}
+                            <Image key={index} src={imageUrl} alt="small-image" width={109} height={109}
+                                   className={styles.imageRound} onClick={()=>handleImageClick(index)}
+                                   priority={true} style={{cursor: "pointer"}}/>)}
                     </MultipleImageContainer>
                 </ImagesContainer>
                 <ItemInfoContainer>
@@ -318,7 +333,10 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
                         <CustomInput onChange={handleInputChange} type="text" value={quantity}/>
                         <ButtonRight onClick={handleAddButtonClick}>+</ButtonRight>
                     </InputContainer>
-                    <AddToCartButton>
+                    <AddToCartButton onClick={()=> {
+                        dispatch(addCartItems(infoToAdd));
+                        setQuantity(1);
+                    }}>
                         ADD TO CART
                     </AddToCartButton>
                 </ItemInfoContainer>
@@ -326,7 +344,8 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
             <TextContainer>A portion of every purchase at Bee Kind Shop is donated to Pollinator Partnership and other non-profit organizations that help save bee colonies around the globe.</TextContainer>
             <BottomSectionContainer>
                 {
-                    bannerImageUrls.map((imageUrl, index)=> <Image key={index} src={imageUrl} alt="small-image" width={280} height={280} className={styles.imageRound}/>)
+                    bannerImageUrls.map((imageUrl, index)=> <Image key={index} src={imageUrl} alt="small-image"
+                                                                   width={280} height={280} className={styles.imageRound} priority={true}/>)
                 }
             </BottomSectionContainer>
             <ProposedItemsContainer>

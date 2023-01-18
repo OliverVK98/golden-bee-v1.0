@@ -4,7 +4,7 @@ import ProductPageComponent from "../../components/product-page.component";
 import {getProductsByCollectionIdQuery, specificCollectionProductsDataQuery} from "../../graphql/queries/queries";
 import {IFrontPageItem} from "../all";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const {data: {SpecificCollectionQuery}} = await apolloClient.query({
         query: getProductsByCollectionIdQuery,
         variables: {
@@ -15,7 +15,7 @@ export async function getStaticProps() {
     const {data: {ProductsByMultipleIds}} = await apolloClient.query({
         query: specificCollectionProductsDataQuery,
         variables: {
-            id: SpecificCollectionQuery.map((arr: {productId: number}) => arr.productId)
+            id: SpecificCollectionQuery[0].productId
         }
     })
 
@@ -31,6 +31,7 @@ interface IAllProductsProps {
 }
 
 const BraceletsWithNotesCollectionComponent: React.FC<IAllProductsProps> = ({data}) => {
+
     return (
         <ProductPageComponent data={data} title="Bracelets With Notes"/>
     )

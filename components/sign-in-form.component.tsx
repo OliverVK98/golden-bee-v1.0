@@ -2,11 +2,10 @@ import InputComponent from "./input.component";
 import styled from "styled-components";
 import {useForm, FormProvider} from "react-hook-form";
 import {signInResolver} from "../utils/yup-form-schemas/sign-in-schema";
-import {useContext} from "react";
-import {ModalSignInContext} from "../contexts/modal.context";
-import {useSession, signIn, signOut} from "next-auth/react";
-import {UserContext} from "../contexts/user.context";
+import {useDispatch} from "react-redux"
 import AuthService from "../utils/auth-api-helpers/auth-service";
+import {setIsUserAuthenticated, setUserData} from "../redux/slices/userSlice";
+import {setIsSignInModalOpen, setIsSignUpModalOpen} from "../redux/slices/modalSlice";
 
 const FormContainer = styled.form`
   display: flex;
@@ -48,31 +47,23 @@ interface IFormValues {
 
 const SignInFormComponent = () => {
     const methods = useForm<IFormValues>({resolver: signInResolver});
-    const {setIsSignUpModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
-    const {setIsUserAuthenticated, setUserData} = useContext(UserContext);
+    const dispatch = useDispatch();
     const createAccountClickHandler = () => {
-        setIsSignInModalOpen(false);
-        setIsSignUpModalOpen(true);
+        dispatch(setIsSignInModalOpen(false));
+        dispatch(setIsSignUpModalOpen(true));
     }
 
     const signInHandler = async ({email, password}: IFormValues) => {
         try {
             const response  = await AuthService.login(email, password);
             localStorage.setItem("accessToken", response.data.accessToken);
-            setIsUserAuthenticated(true);
-            setUserData(response.data.user);
-            setIsSignInModalOpen(false);
+            dispatch(setIsUserAuthenticated(true));
+            dispatch(setUserData(response.data.user));
+            dispatch(setIsSignInModalOpen(false));
         } catch (e: any) {
             console.log(e.response?.data?.message)
         }
     }
-
-    // const {data: session} = useSession();
-    // console.log(session);
-    // const handleGoogleSignIn = async () => {
-    //     await signIn('google', {callbackUrl: "http://localhost:3000"});
-    //     setIsUserAuthenticated(true);
-    // }
 
     return(
         <FormProvider {...methods}>

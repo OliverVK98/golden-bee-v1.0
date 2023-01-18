@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import Image from "next/image";
 import {useContext, useEffect, useRef} from "react";
-import {ModalSignInContext} from "../contexts/modal.context";
 import {createPortal} from "react-dom";
 import SignInFormComponent from "./sign-in-form.component";
+import {useSelector, useDispatch} from "react-redux";
+import {RootState} from "../redux/store";
+import {setIsSignInModalOpen} from "../redux/slices/modalSlice";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -51,11 +53,12 @@ const BlackBackground = styled.div`
 `
 
 const SignInModalComponent = () => {
-    const {isSignInModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
+    const isSignInModalOpen = useSelector((state: RootState) => state.modalState.isSignInModalOpen)
+    const dispatch = useDispatch();
 
     const handleEscapeKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
-            setIsSignInModalOpen(false);
+            dispatch(setIsSignInModalOpen(false));
         }
     };
 
@@ -70,7 +73,7 @@ const SignInModalComponent = () => {
 
     return createPortal(
         <>
-            <BlackBackground onClick={()=>setIsSignInModalOpen(false)}/>
+            <BlackBackground onClick={()=>dispatch(setIsSignInModalOpen(!isSignInModalOpen))}/>
             <ModalContainer>
                 <TopPartContainer>
                     <TextContainer>
@@ -78,7 +81,7 @@ const SignInModalComponent = () => {
                     </TextContainer>
                     <ImageContainer>
                         <Image src="/icons/close.svg" alt="close-icon" height={20} width={20}
-                                onClick={()=>setIsSignInModalOpen(!isSignInModalOpen)}/>
+                                onClick={()=>dispatch(setIsSignInModalOpen(!isSignInModalOpen))}/>
                     </ImageContainer>
                 </TopPartContainer>
                 <SignInFormComponent/>

@@ -68,3 +68,8 @@ model CollectionsOfProducts {
   productId    Int[]
   collections  Collection @relation(fields: [collectionId], references: [collectionId])
 }
+
+model SubscribptionEmailList {
+  id    Int    @id @default(autoincrement())
+  email String
+}

@@ -40,7 +40,6 @@ const useCarousel = ([containerZero, containerOne, containerTwo, containerThree,
         if (!transitionActive) setTransitionActive(true);
     }, [transitionActive]);
 
-
     const handleForwardButtonClick = () => {
         if (currentSlideIndex==3) {
             moveToSlide(4);

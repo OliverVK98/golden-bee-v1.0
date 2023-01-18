@@ -21,3 +21,25 @@ export const getProductsByCollectionIdQuery = gql`
         }
     }
 `;
+
+export const getProductsByCollectionIdQueryString = gql`
+    query($collectionId: Int!) {
+        SpecificCollectionQuery(collectionId: $collectionId) {
+            productId
+        }
+    }
+`;
+
+export const frontPageProductDataQuery = gql`
+    query {
+        ProductsList {
+            productId
+            itemName
+            rating
+            price
+            discountedPrice
+            frontImageUrl
+            isAvailable
+        }
+    }
+`;

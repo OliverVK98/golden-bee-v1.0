@@ -10,6 +10,7 @@ import apolloClient from "../lib/apollo";
 import prisma from "../lib/prisma";
 import {productData, collectionData} from "../data/data";
 import ItemsByCollectionOrStyleComponent from "../components/items-by-collection-or-style.component";
+import CartComponent from "../components/cart.component";
 
 const MainPageContainer = styled.div`
   width: 100vw;
@@ -50,14 +51,6 @@ const SubscribeContainer = styled.div`
 `
 
 export async function getServerSideProps() {
-  // await prisma.product.createMany({
-  //   data: productData
-  // })
-  //
-  // await prisma.collection.createMany({
-  //   data: collectionData
-  // })
-
   const productsByIdsQuery = gql`
     query ($id: [Int]!){
       ProductsByMultipleIds(id: $id) {

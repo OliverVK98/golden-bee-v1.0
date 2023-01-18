@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import React from "react";
+import React, {useState} from "react";
+import {FieldError, useForm} from "react-hook-form";
+import {emailResolver} from "../utils/yup-form-schemas/email-schema";
+import EmailService from "../utils/email-api-helpers/email-service";
 
 const EmailInput = styled.input`
   width: 500px;
@@ -45,22 +48,46 @@ const Form = styled.form`
   gap: 10px;
 `
 
+const ErrorContainer = styled.div`
+  justify-self: center;
+  margin-top: -18px;
+  font-size: 14px;
+  color: red;
+`
+
 interface IEmailProps {
     mainColor: "gray" | "white",
     title: string
 }
 
-const EmailInputComponent: React.FC<IEmailProps> = ({mainColor, title}) => {
+interface IFormValues {
+    email: string
+}
 
-  return (
-    <InputContainer mainColor={mainColor}>
-      <TextContainer>{title}</TextContainer>
-      <Form onSubmit={(e) => e.preventDefault()}>
-        <EmailInput mainColor={mainColor} placeholder="Your email" type="email"></EmailInput>
-        <SubmitButton>Subscribe</SubmitButton>
-      </Form>
-    </InputContainer>
-  )
+const EmailInputComponent: React.FC<IEmailProps> = ({mainColor, title}) => {
+    const {register, formState: {errors}, handleSubmit} = useForm<IFormValues>({resolver: emailResolver});
+    const [emailExists, setEmailExists] = useState(false)
+
+    const submitEmail = async (email: string) => {
+        try {
+            setEmailExists(false);
+            await EmailService.submitUserEmail(email);
+        } catch (e: any) {
+            if (e.response.data.error === "User already subscribed") setEmailExists(true);
+        }
+    }
+
+    return (
+        <InputContainer mainColor={mainColor}>
+          <TextContainer>{title}</TextContainer>
+          <Form onSubmit={handleSubmit(async (data) => await submitEmail(data.email))}>
+            <EmailInput mainColor={mainColor} placeholder="Your email" {...register("email")}/>
+            <SubmitButton>Subscribe</SubmitButton>
+          </Form>
+            {errors["email"]?.message && <ErrorContainer>{(errors["email"] as FieldError).message }</ErrorContainer>}
+            {emailExists && <ErrorContainer>This email is already subscribed</ErrorContainer>}
+        </InputContainer>
+      )
 }
 
 export default EmailInputComponent

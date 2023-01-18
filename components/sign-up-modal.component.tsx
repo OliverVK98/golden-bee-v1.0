@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import Image from "next/image";
 import {useContext, useEffect} from "react";
-import {ModalSignInContext} from "../contexts/modal.context";
 import {createPortal} from "react-dom";
 import SignUpFormComponent from "./sign-up-form.component";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../redux/store";
+import {setIsSignUpModalOpen} from "../redux/slices/modalSlice";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -51,10 +53,12 @@ const BlackBackground = styled.div`
 `
 
 const SignUpModalComponent = () => {
-    const {isSignUpModalOpen, setIsSignUpModalOpen} = useContext(ModalSignInContext);
+    const isSignUpModalOpen = useSelector((state: RootState) => state.modalState.isSignUpModalOpen);
+    const dispatch = useDispatch();
+
     const handleEscapeKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
-            setIsSignUpModalOpen(false);
+            dispatch(setIsSignUpModalOpen(false));
         }
     };
 
@@ -69,7 +73,7 @@ const SignUpModalComponent = () => {
 
     return createPortal(
         <>
-            <BlackBackground onClick={()=>setIsSignUpModalOpen(false)}/>
+            <BlackBackground onClick={()=>dispatch(setIsSignUpModalOpen(!setIsSignUpModalOpen))}/>
             <ModalContainer>
                 <TopPartContainer>
                     <TextContainer>
@@ -77,7 +81,7 @@ const SignUpModalComponent = () => {
                     </TextContainer>
                     <ImageContainer>
                         <Image src="/icons/close.svg" alt="close-icon" height={20} width={20}
-                               onClick={()=>setIsSignUpModalOpen(!isSignUpModalOpen)}/>
+                               onClick={()=>dispatch(setIsSignUpModalOpen(!setIsSignUpModalOpen))}/>
                     </ImageContainer>
                 </TopPartContainer>
                 <SignUpFormComponent/>

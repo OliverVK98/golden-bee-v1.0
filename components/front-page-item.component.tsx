@@ -4,6 +4,8 @@ import styles from "../styles/FrontImage.module.css"
 import styled from "styled-components";
 import Link from "next/link";
 import {IFrontPageItem} from "../pages/all";
+import {useDispatch} from "react-redux";
+import {addCartItems} from "../redux/slices/cartSlice";
 
 const AddToCartButton = styled.button`
   color: rgb(58,170,53);
@@ -75,8 +77,19 @@ const DiscountedPriceContainer = styled.span`
 `
 
 const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
-    const {itemName, frontImageUrl, price, discountedPrice, rating, productId} = props;
+    const {itemName, frontImageUrl, price, discountedPrice, rating, productId, isImageLoadPriority=false} = props;
     const url = `/products/${productId}`;
+    const dispatch = useDispatch();
+
+    const addToCartHandler = () => {
+        dispatch(addCartItems({
+            itemName,
+            frontImageUrl,
+            price,
+            discountedPrice,
+            productId,
+        }))
+    }
 
     return (
         <ItemContainer>
@@ -85,14 +98,14 @@ const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
                     <Image className={styles.image}
                            src={frontImageUrl}
                            alt={"trending-image"}
-                           width={250} height={250}/>
+                           width={250} height={250}
+                           priority={isImageLoadPriority}/>
                 </Link>
             </ImageWrapper>
-            <AddToCartButton>ADD TO CART</AddToCartButton>
+            <AddToCartButton onClick={()=>addToCartHandler()}>ADD TO CART</AddToCartButton>
             <Link href={url}>
                 <BottomItemContainer>
                     <ItemText>{itemName}</ItemText>
-                    {/*TODO:  if there's no extra images don't render them either*/}
                     {rating!=0 && <StarContainer>
                         {[0, 1, 2, 3, 4].map(el => <Image src="/icons/star.png" alt="star icon" width={24}
                                                           height={24} key={el}/>)}

@@ -87,6 +87,8 @@ const PaginationComponent: React.FC<IPaginationProps> = ({totalPages, setCurrent
         });
     }, [currentPage])
 
+    if (totalPages===1) return null
+
     return(
         <ButtonContainer>
             {currentPage!=1 && <ButtonArrowLeft onClick={()=>handleButtonClick(-1)}/>}

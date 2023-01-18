@@ -3,9 +3,11 @@ import styled from "styled-components";
 import {useForm, FormProvider} from "react-hook-form";
 import {signUpResolver} from "../utils/yup-form-schemas/sign-up-schema";
 import {useContext} from "react";
-import {ModalSignInContext} from "../contexts/modal.context";
 import AuthService from "../utils/auth-api-helpers/auth-service";
-import {IUserData, UserContext} from "../contexts/user.context";
+import {useDispatch} from "react-redux"
+import {setIsUserAuthenticated, setUserData} from "../redux/slices/userSlice";
+import {setIsSignInModalOpen, setIsSignUpModalOpen} from "../redux/slices/modalSlice";
+
 
 const FormContainer = styled.form`
   display: flex;
@@ -43,20 +45,20 @@ interface IFormValues {
 
 const SignUpFormComponent = () => {
     const methods = useForm<IFormValues>({resolver: signUpResolver});
-    const {setIsSignUpModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
+    const dispatch = useDispatch();
+
     const haveAccountClickHandler = () => {
-        setIsSignInModalOpen(true);
-        setIsSignUpModalOpen(false);
+        dispatch(setIsSignInModalOpen(true));
+        dispatch(setIsSignUpModalOpen(false));
     }
-    const {setUserData, setIsUserAuthenticated, userData} = useContext(UserContext)
 
     const signUpUserHandler = async ({password, lastName, email, firstName}: IFormValues) => {
         try {
             const response  = await AuthService.registration(email, password, firstName, lastName);
             localStorage.setItem("accessToken", response.data.accessToken);
-            setIsUserAuthenticated(true);
-            setUserData(response.data.user);
-            setIsSignUpModalOpen(false);
+            dispatch(setIsUserAuthenticated(true));
+            dispatch(setUserData(response.data.user));
+            dispatch(setIsSignUpModalOpen(false));
         } catch (e: any) {
             console.log(e.response?.data?.message)
         }

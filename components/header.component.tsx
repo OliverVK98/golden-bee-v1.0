@@ -1,12 +1,15 @@
-import {FunctionComponent, ReactElement, useContext, useEffect} from "react";
+import { FunctionComponent, ReactElement, useEffect } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/legacy/image";
-import {ModalSignInContext} from "../contexts/modal.context";
-import {IUserData, UserContext} from "../contexts/user.context";
-import {signOut, useSession} from "next-auth/react";
-import AuthService, {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
+import AuthService from "../utils/auth-api-helpers/auth-service";
+import { useSelector, useDispatch } from "react-redux"
+import { IUserData, setIsUserAuthenticated, setUserData } from "../redux/slices/userSlice";
+import { RootState } from "../redux/store";
+import { setIsSignInModalOpen } from "../redux/slices/modalSlice";
 import axios from "axios";
+import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
+import {setIsCartOpen} from "../redux/slices/cartSlice";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -49,43 +52,69 @@ const AuthContainer = styled.div`
   cursor: pointer;
 `
 
+const CursorPointerWrapper = styled.div`
+  cursor: pointer;
+`
+
 const HeaderComponent: FunctionComponent = (): ReactElement => {
-    const {isSignInModalOpen, setIsSignInModalOpen} = useContext(ModalSignInContext);
-    const {isUserAuthenticated, setIsUserAuthenticated, setUserData} = useContext(UserContext);
+  const isCartOpen = useSelector((state: RootState) => state.cartState.isCartOpen)
+  const isUserAuthenticated = useSelector(
+    (state: RootState) => state.userState.isUserAuthenticated
+  )
+  const isSignInModalOpen = useSelector((state: RootState) => state.modalState.isSignInModalOpen);
+  const dispatch = useDispatch();
 
-    const handleUserSignOut = async () => {
-        try {
-            const response  = await AuthService.logout();
-            localStorage.removeItem("accessToken");
-            setIsUserAuthenticated(false);
-            setUserData({} as IUserData);
-        } catch (e: any) {
-            console.log(e.response?.data?.message)
-        }
+  const handleUserSignOut = async () => {
+    try {
+      const response = await AuthService.logout();
+      localStorage.removeItem("accessToken");
+      dispatch(setIsUserAuthenticated(false));
+      dispatch(setUserData({} as IUserData));
+    } catch (e: any) {
+      console.log(e.response?.data?.message)
     }
+  }
 
-    return(
-        <HeaderContainer>
-            <CustomHeaderRight>
-                <Link href="/">
-                    <LogoContainer>
-                        <LeftLogoText>Bee</LeftLogoText>
-                        <Image src="/icons/logo.jpg" height={50} width={50} alt="bee logo"/>
-                        <RightLogoText>Kind</RightLogoText>
-                    </LogoContainer>
-                </Link>
+  useEffect( ()=> {
+      const isLoggedIn = async () => {
+          if (localStorage.getItem("accessToken")) {
+              try {
+                  const response =  await axios.get<IAuthResponse>("http://localhost:3000/api/auth/refresh", {withCredentials: true});
+                  localStorage.setItem("accessToken", response.data.accessToken);
+                  setUserData(response.data.user);
+              } catch (e: any) {
+                  setIsUserAuthenticated(false);
+                setUserData({});
+              }
+          }
+      }
+      isLoggedIn();
+  }, [])
 
-                <Link href='/'>Home</Link>
-                <Link href='/all'>All Products</Link>
-                <Link href='/'  onClick={async () => console.log(await AuthService.getCart())}>Help</Link>
-            </CustomHeaderRight>
-            <CustomHeaderLeft>
-                <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon"/>
-                {!isUserAuthenticated && <AuthContainer onClick={() => setIsSignInModalOpen(!isSignInModalOpen)}>Sign In</AuthContainer>}
-                {isUserAuthenticated && <AuthContainer onClick={handleUserSignOut}>Sign Out</AuthContainer>}
-            </CustomHeaderLeft>
-        </HeaderContainer>
-    )
+  return (
+    <HeaderContainer>
+      <CustomHeaderRight>
+        <Link href="/">
+          <LogoContainer>
+            <LeftLogoText>Bee</LeftLogoText>
+            <Image src="/icons/logo.jpg" height={50} width={50} alt="bee logo" />
+            <RightLogoText>Kind</RightLogoText>
+          </LogoContainer>
+        </Link>
+
+        <Link href='/checkout'>Home</Link>
+        <Link href='/all'>All Products</Link>
+        <Link href='/' onClick={async () => console.log(await AuthService.getCart())}>Help</Link>
+      </CustomHeaderRight>
+      <CustomHeaderLeft>
+        <CursorPointerWrapper>
+          <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon" onClick={() => dispatch(setIsCartOpen(!isCartOpen))} />
+        </CursorPointerWrapper>
+        {!isUserAuthenticated && <AuthContainer onClick={() => dispatch(setIsSignInModalOpen(!isSignInModalOpen))}>Sign In</AuthContainer>}
+        {isUserAuthenticated && <AuthContainer onClick={handleUserSignOut}>Sign Out</AuthContainer>}
+      </CustomHeaderLeft>
+    </HeaderContainer>
+  )
 }
 
 export default HeaderComponent;

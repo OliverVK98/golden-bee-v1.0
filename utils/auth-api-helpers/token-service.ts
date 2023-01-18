@@ -4,10 +4,10 @@ import prisma from "../../lib/prisma";
 class TokenService {
     generateTokens = (payload: JwtPayload) => {
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET as Secret, {
-            expiresIn: '5s'
+            expiresIn: '1h'
         })
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as Secret, {
-            expiresIn: '10s'
+            expiresIn: '24h'
         })
         return {
             accessToken,

@@ -1,33 +1,15 @@
-import {gql} from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 import apolloClient from "../lib/apollo";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ProductPageComponent from "../components/product-page.component";
-
-export async function getStaticProps() {
-    const frontPageProductDataQuery = gql`
-        query {
-            ProductsList {
-                productId
-                itemName
-                rating
-                price
-                discountedPrice
-                frontImageUrl
-                isAvailable
-            }
-        }
-    `;
-
-    const {data} = await apolloClient.query({
-        query: frontPageProductDataQuery
-    })
-
-    return {
-        props: {
-            data: data.ProductsList,
-        }
-    }
-}
+import {
+    frontPageProductDataQuery,
+    getProductsByCollectionIdQuery,
+    getProductsByCollectionIdQueryString
+} from "../graphql/queries/queries";
+import SearchBarComponent from "../components/search-bar.component";
+import axios from "axios";
+import styled from "styled-components";
 
 export interface IFrontPageItem{
     productId: number,
@@ -36,16 +18,61 @@ export interface IFrontPageItem{
     frontImageUrl: string,
     rating: number,
     itemName: string,
-    isAvailable: boolean
+    isAvailable: boolean,
+    isImageLoadPriority?: boolean
 }
 
 interface IAllProductsProps {
-    data: IFrontPageItem[]
+    initialData: IFrontPageItem[]
 }
 
-const AllProductsComponent: React.FC<IAllProductsProps> = ({data}) => {
+const CustomTitle = styled.h1`
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 40px;
+`
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`
+
+export async function getStaticProps() {
+    const {data} = await apolloClient.query({
+        query: frontPageProductDataQuery
+    })
+
+    return {
+        props: {
+            initialData: data.ProductsList,
+        }
+    }
+}
+
+
+const AllProductsComponent: React.FC<IAllProductsProps> = ({initialData}) => {
+    const [displayData, setDisplayData] = useState(initialData);
+    const [displayDataIndex, setDisplayDataIndex] = useState<number>(3);
+    const {data, loading} = useQuery(getProductsByCollectionIdQuery, {
+        variables: {
+            collectionId: displayDataIndex
+        }
+    });
+
+    useEffect(()=> {
+        console.log(data?.productId);
+    }, [data])
+
+
     return (
-        <ProductPageComponent data={data} title="Save Bees Collection"/>
+        <ContentContainer>
+            <CustomTitle>Save Bees Collection</CustomTitle>
+            <SearchBarComponent setDisplayDataIndex={setDisplayDataIndex} setDisplayData={setDisplayData}/>
+            <ProductPageComponent dataIsLoading={displayDataIndex!=0 && loading} data={displayData}/>
+        </ContentContainer>
     )
 }
 
