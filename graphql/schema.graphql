@@ -34,6 +34,7 @@ type Query {
   CollectionsList(condition: Boolean!): [Collection!]
   GetUserInfoByEmail(email: String!): User!
   ProductById(id: Int!): Product
+  ProductsByCollectionId(collectionId: Int!): [Product]
   ProductsByMultipleIds(id: [Int]!): [Product]
   ProductsList: [Product!]
   SpecificCollectionQuery(collectionId: Int!): [CollectionOfProducts]!

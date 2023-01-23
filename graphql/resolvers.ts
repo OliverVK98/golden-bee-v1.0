@@ -1,4 +1,4 @@
-import {GetUserInfoByEmail} from "./types";
+import {ProductsByCollectionId} from "./types";
 
 export const resolvers = {
     Query: {
@@ -25,6 +25,21 @@ export const resolvers = {
                 }
             }
         ),
+        ProductsByCollectionId: async (root: any, args: any, ctx: any) => {
+            const productsToFetch = await ctx.prisma.collectionsOfProducts.findMany({
+                where: {
+                    collectionId: args.collectionId
+                }
+            })
+
+            return await ctx.prisma.product.findMany({
+                where: {
+                    productId: {
+                        in: productsToFetch[0].productId
+                    }
+                }
+            });
+        },
         GetUserInfoByEmail: async (root: any, args: any, ctx: any) => await ctx.prisma.user.findFirst(
             {
                 where: {

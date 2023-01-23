@@ -5,6 +5,8 @@ import {IFrontPageItem} from "../pages/all";
 const ButtonContainer = styled.div`
   display: flex;
   gap: 7px;
+  margin-bottom: 120px;
+  margin-top: -120px;
 `
 
 interface IButtonProps {
@@ -62,14 +64,14 @@ const ButtonArrowLeft = styled(ButtonArrowRight)`
 `
 
 interface IPaginationProps {
-    totalPages: number,
+    totalPages: number | null,
     dataArr: IFrontPageItem[],
     currentPage: number,
     setCurrentPage: (index: number) => void,
 }
 
 const PaginationComponent: React.FC<IPaginationProps> = ({totalPages, setCurrentPage, currentPage}) => {
-    const arrPages = new Array(totalPages).fill("page");
+    const arrPages = new Array(totalPages).fill(0);
 
     const handleClick = (index: number) => {
         setCurrentPage(index+1);
@@ -88,6 +90,7 @@ const PaginationComponent: React.FC<IPaginationProps> = ({totalPages, setCurrent
     }, [currentPage])
 
     if (totalPages===1) return null
+    if (totalPages===null) return null
 
     return(
         <ButtonContainer>

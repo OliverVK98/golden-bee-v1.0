@@ -43,3 +43,17 @@ export const frontPageProductDataQuery = gql`
         }
     }
 `;
+
+export const productsFromSpecificCollection = gql`
+    query($collectionId: Int!) {
+        ProductsByCollectionId(collectionId: $collectionId) {
+            productId
+            itemName
+            rating
+            price
+            discountedPrice
+            frontImageUrl
+            isAvailable
+        }
+    }
+`;

@@ -22,7 +22,7 @@ const CartContainer = styled.div`
   background-color: white;
   z-index: 1000;
   width: 400px;
-  animation: ${(props: ICartProps) => props.isCartOpen ? "fadeIn 0.5s ease-out;" : "fadeOut 0.5s ease-out;"}
+  animation: ${(props: ICartProps) => !props.isCartOpen ? "fadeOut 0.5s ease-out;" : "fadeIn 0.5s ease-out;"}
   animation-fill-mode: forwards;
 
   @keyframes fadeIn {

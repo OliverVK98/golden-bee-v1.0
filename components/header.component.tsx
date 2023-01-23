@@ -13,7 +13,7 @@ import {setIsCartOpen} from "../redux/slices/cartSlice";
 
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: 5vw;
+  height: 5vh;
   display: flex;
   align-items: center;
   justify-content: space-between;

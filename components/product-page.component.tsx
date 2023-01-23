@@ -5,6 +5,12 @@ import FrontPageItemComponent from "./front-page-item.component";
 import PaginationComponent from "./pagination.component";
 import FooterContainerComponent from "./footer-container.component";
 import SearchBarComponent from "./search-bar.component";
+import {useQuery} from "@apollo/client";
+import {
+    getProductsByCollectionIdQuery,
+    productsFromSpecificCollection,
+    specificCollectionProductsDataQuery
+} from "../graphql/queries/queries";
 
 const GridContainer = styled.div`
   display: grid;
@@ -13,6 +19,7 @@ const GridContainer = styled.div`
   justify-items: center;
   min-width: 1200px;
   margin-top: 20px;
+  margin-bottom: 120px;
 `
 
 const Container = styled.div`
@@ -34,24 +41,22 @@ export interface IFrontPageItem{
 }
 
 interface IProductPageProps {
-    data: IFrontPageItem[],
-    dataIsLoading?: boolean
+    initialData: IFrontPageItem[],
 }
 
-const ProductPageComponent: React.FC<IProductPageProps> = ({data, dataIsLoading}) => {
-    if (dataIsLoading) return <div>Loading...</div>;
+const ProductPageComponent: React.FC<IProductPageProps> = ({initialData}) => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const itemsPerPage: number = 20;
-    const totalPages = Math.ceil(data.length/itemsPerPage);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const chunkedArr = chunkArray(data, itemsPerPage);
+    const totalPages = Math.ceil(initialData.length/itemsPerPage);
+    const chunkedArr = chunkArray(initialData, itemsPerPage);
 
     return (
         <Container>
             <GridContainer>
                 {chunkedArr[currentPage-1].map((itemInfo) => <FrontPageItemComponent key={itemInfo.productId} {...itemInfo}/>)}
             </GridContainer>
-            <PaginationComponent totalPages={totalPages} dataArr={data} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+            <PaginationComponent totalPages={totalPages} dataArr={initialData} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             <FooterContainerComponent />
         </Container>
 

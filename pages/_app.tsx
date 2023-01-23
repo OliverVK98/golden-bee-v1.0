@@ -23,18 +23,17 @@ export default function App({ Component, pageProps}: AppProps) {
     const persistor = persistStore(store);
 
     return (
-                <Provider store={store}>
-                    <PersistGate persistor={persistor}>
-                      <ApolloProvider client={apolloClient}>
-                        <HeaderComponent/>
-                        <Component {...pageProps} />
-                        <SignInModalComponent/>
-                        <SignUpModalComponent/>
-                        <CartComponent/>
-                      </ApolloProvider>
-                    </PersistGate>
-                </Provider>
-
+                    <Provider store={store}>
+                        <PersistGate persistor={persistor}>
+                          <ApolloProvider client={apolloClient}>
+                            <HeaderComponent/>
+                            <Component {...pageProps} />
+                            <SignInModalComponent/>
+                            <SignUpModalComponent/>
+                            <CartComponent/>
+                          </ApolloProvider>
+                        </PersistGate>
+                    </Provider>
       )
 }
 

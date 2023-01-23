@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import React, {Dispatch, SetStateAction} from "react";
-import {IFrontPageItem} from "./product-page.component";
+import React, {Dispatch, ForwardedRef, forwardRef, SetStateAction} from "react";
 
 interface IDropdownContainerProps {
     dropdownOpen: boolean
@@ -9,8 +8,7 @@ interface IDropdownContainerProps {
 const DropDownContainer = styled.div`
   height: ${(props: IDropdownContainerProps) => props.dropdownOpen ? '245px' : '0'};
   overflow: hidden;
-  width: 150px;
-  background-color: lightgreen;
+  width: 175px;
   position: absolute;
   z-index: 4;
   top: 40px;
@@ -18,7 +16,7 @@ const DropDownContainer = styled.div`
   left: 5px;
   display: flex;
   flex-direction: column;
-  transition: height 0.4s ease-in-out;
+  transition: height 0.3s ease-in-out;
 `
 
 const SelectButton = styled.button`
@@ -26,7 +24,9 @@ const SelectButton = styled.button`
   border: none;
   cursor: pointer;
   content: "\\25b6";
-  background-color: rgb(254,189,105);
+  background-color: rgb(82,170,90);
+  color: white;
+  font-weight: bold;
 `
 
 interface IDropdownProps {
@@ -34,11 +34,12 @@ interface IDropdownProps {
     setDropdownOpen: Dispatch<SetStateAction<boolean>>,
     dropdownOpen: boolean,
     dropdownValue: string,
-    setDisplayData?: React.Dispatch<React.SetStateAction<IFrontPageItem[]>>,
-    setDisplayDataIndex?: React.Dispatch<React.SetStateAction<number>>
+    setDisplayDataIndex: React.Dispatch<React.SetStateAction<number>>,
+    ref: any
 }
 
-const DropdownComponent: React.FC<IDropdownProps> = ({setDropdownValue, setDisplayDataIndex, setDropdownOpen, dropdownOpen, dropdownValue}) => {
+const DropdownComponent: React.FC<IDropdownProps> = forwardRef((props, ref: ForwardedRef<HTMLDivElement>) => {
+    const {setDropdownValue, setDisplayDataIndex, setDropdownOpen, dropdownOpen, dropdownValue} = props;
     const categories: {[key:string]:number} = {
         "All Products": 0,
         "Bracelets With Notes" : 1,
@@ -51,18 +52,18 @@ const DropdownComponent: React.FC<IDropdownProps> = ({setDropdownValue, setDispl
     }
 
     return (
-        <DropDownContainer dropdownOpen={dropdownOpen}>
+        <DropDownContainer ref={ref} dropdownOpen={dropdownOpen}>
         {
             Object.keys(categories).map((category: string, index) =>
-                    <SelectButton key={index} style={dropdownValue===category ? {border: "1px solid black"} : {}}
+                    <SelectButton key={index} style={dropdownValue===category ? {border: "1px solid white"} : {}}
                                   onClick={()=> {
                         setDropdownValue(category);
-                        setDropdownOpen(!dropdownOpen);
-                        setDisplayDataIndex && setDisplayDataIndex(categories[category]);
+                        setDropdownOpen(false);
+                        setDisplayDataIndex(categories[category]);
                     }}>{category}</SelectButton>)
             }
         </DropDownContainer>
     )
-}
+})
 
 export default DropdownComponent

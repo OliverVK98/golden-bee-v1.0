@@ -45,3 +45,23 @@ export const ProductsByMultipleIdsQuery = queryField("ProductsByMultipleIds", {
         });
     }
 });
+
+export const ProductsByCollectionId = queryField("ProductsByCollectionId", {
+    type: list(Product),
+    args: {collectionId: nonNull(intArg())},
+    async resolve(_parent, args, ctx) {
+        const productsToFetch = await ctx.prisma.collectionsOfProducts.findMany({
+            where: {
+                collectionId: args.collectionId
+            }
+        })
+
+        return await ctx.prisma.product.findMany({
+            where: {
+                productId: {
+                    in: productsToFetch[0].productId
+                }
+            }
+        });
+    }
+});

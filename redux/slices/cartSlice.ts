@@ -25,7 +25,6 @@ export const cartSlice = createSlice({
     reducers: {
         setIsCartOpen: (state, action) => {
             state.isCartOpen = action.payload;
-            console.log('test');
         },
         addCartItems: (state, action: PayloadAction<ICartItem>) => {
             const itemExists = state.cartItems.filter((item) => item.productId === action.payload.productId);
