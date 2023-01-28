@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import {useContext, useEffect} from "react";
+import {useEffect} from "react";
 import {createPortal} from "react-dom";
 import SignUpFormComponent from "./sign-up-form.component";
 import {useDispatch, useSelector} from "react-redux";

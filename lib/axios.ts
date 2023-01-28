@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig} from "axios";
+import axios from "axios";
 import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
 
 export const API_URL="http://localhost:3000"

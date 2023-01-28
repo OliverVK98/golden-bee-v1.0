@@ -9,7 +9,7 @@ import { RootState } from "../redux/store";
 import { setIsSignInModalOpen } from "../redux/slices/modalSlice";
 import axios from "axios";
 import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
-import {setIsCartOpen} from "../redux/slices/cartSlice";
+import {setIsCartOpen} from "../redux/slices/isCartOpenSlice";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -57,7 +57,7 @@ const CursorPointerWrapper = styled.div`
 `
 
 const HeaderComponent: FunctionComponent = (): ReactElement => {
-  const isCartOpen = useSelector((state: RootState) => state.cartState.isCartOpen)
+  const isCartOpen = useSelector((state: RootState) => state.isCartOpenState.isCartOpen)
   const isUserAuthenticated = useSelector(
     (state: RootState) => state.userState.isUserAuthenticated
   )
@@ -102,7 +102,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
           </LogoContainer>
         </Link>
 
-        <Link href='/checkout'>Home</Link>
+        <Link href='/'>Home</Link>
         <Link href='/all'>All Products</Link>
         <Link href='/' onClick={async () => console.log(await AuthService.getCart())}>Help</Link>
       </CustomHeaderRight>

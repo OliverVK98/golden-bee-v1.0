@@ -10,12 +10,10 @@ export interface ICartItem {
 }
 
 interface IInitialState {
-    isCartOpen: boolean,
     cartItems: ICartItem[]
 }
 
 const initialState: IInitialState = {
-    isCartOpen: false,
     cartItems: [] as ICartItem[]
 }
 
@@ -23,9 +21,6 @@ export const cartSlice = createSlice({
     name: "cartState",
     initialState,
     reducers: {
-        setIsCartOpen: (state, action) => {
-            state.isCartOpen = action.payload;
-        },
         addCartItems: (state, action: PayloadAction<ICartItem>) => {
             const itemExists = state.cartItems.filter((item) => item.productId === action.payload.productId);
             if (itemExists.length > 0) {
@@ -91,6 +86,6 @@ export const cartSlice = createSlice({
     }
 })
 
-export const {setIsCartOpen, addCartItems, addOneCartItemById, deleteOneCartItemById, deleteCartItemById} = cartSlice.actions
+export const {addCartItems, addOneCartItemById, deleteOneCartItemById, deleteCartItemById} = cartSlice.actions
 
 export default cartSlice.reducer

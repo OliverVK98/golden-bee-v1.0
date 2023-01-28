@@ -7,10 +7,7 @@ import EmailInputComponent from "../components/email-input.component";
 import React from "react";
 import {gql} from "@apollo/client";
 import apolloClient from "../lib/apollo";
-import prisma from "../lib/prisma";
-import {productData, collectionData} from "../data/data";
 import ItemsByCollectionOrStyleComponent from "../components/items-by-collection-or-style.component";
-import CartComponent from "../components/cart.component";
 
 const MainPageContainer = styled.div`
   width: 100vw;

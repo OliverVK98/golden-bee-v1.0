@@ -8,42 +8,42 @@ import Link from "next/link";
 import CartItemComponent from "./cart-item.component";
 import roundDecimals from "../utils/round-decimals";
 import {useRouter} from "next/router";
-import {setIsCartOpen} from "../redux/slices/cartSlice";
+import {setIsCartOpen} from "../redux/slices/isCartOpenSlice";
 
 interface ICartProps {
-    isCartOpen: boolean
+    isCartOpen: boolean | null
 }
 
 const CartContainer = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
-  right: 0;
+  right: -400px;
   background-color: white;
   z-index: 1000;
   width: 400px;
-  animation: ${(props: ICartProps) => !props.isCartOpen ? "fadeOut 0.5s ease-out;" : "fadeIn 0.5s ease-out;"}
+  ${(props: ICartProps) => props.isCartOpen!=null ? !props.isCartOpen ? "animation: fadeOut 0.5s ease-out;" : "animation: fadeIn 0.5s ease-out;" : ""}
   animation-fill-mode: forwards;
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateX(100%);
+      right: -400px;
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      right: 0;
     }
   }
   
   @keyframes fadeOut {
     from {
       opacity: 1;
-      transform: translateX(0);
+      right: 0;
     }
     to {
       opacity: 0;
-      transform: translateX(100%);
+      right: -400px;
     }
   }
 `
@@ -166,7 +166,7 @@ const TotalPriceAmountContainer = styled.div`
 `
 
 const CartComponent = () => {
-    const { isCartOpen = false } = useSelector((state: RootState) => state.cartState);
+    const isCartOpen = useSelector((state: RootState) => state.isCartOpenState.isCartOpen);
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cartState.cartItems);
     const pathName = useRouter().pathname;

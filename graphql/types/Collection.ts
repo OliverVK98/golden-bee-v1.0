@@ -1,4 +1,4 @@
-import {booleanArg, intArg, list, nonNull, objectType, queryField} from "nexus";
+import {booleanArg, list, nonNull, objectType, queryField} from "nexus";
 
 export const Collection = objectType({
     name: "Collection",

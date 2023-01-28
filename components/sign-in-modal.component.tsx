@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import {useContext, useEffect, useRef} from "react";
+import {useEffect} from "react";
 import {createPortal} from "react-dom";
 import SignInFormComponent from "./sign-in-form.component";
 import {useSelector, useDispatch} from "react-redux";

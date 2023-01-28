@@ -1,5 +1,5 @@
 import FrontPageItemComponent from "./front-page-item.component";
-import React, {forwardRef, Ref, RefObject} from "react";
+import React, {forwardRef, Ref} from "react";
 import styled from "styled-components";
 import {IFrontPageItem} from "../pages/all";
 
@@ -9,7 +9,7 @@ const SlidesContainer = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: ${(props: ITransition)=>props.left}px;
   right: 0;
   height: 700px;
   z-index: 3;
@@ -18,18 +18,20 @@ const SlidesContainer = styled.div`
 
 interface ITransition {
     transitionActive: boolean;
+    left: number
 }
 
 interface IPreviewComponentProps {
     transitionActive: boolean
     dataArr: IFrontPageItem[] | undefined,
     ref?: Ref<HTMLDivElement>,
-    isImageLoadPriority?: boolean
+    isImageLoadPriority?: boolean,
+    left: number
 }
 
-const PreviewFourItemsComponent: React.FC<IPreviewComponentProps> = forwardRef(({transitionActive, dataArr, isImageLoadPriority=false}, ref, ) => {
+const PreviewFourItemsComponent: React.FC<IPreviewComponentProps> = forwardRef(({left, transitionActive, dataArr, isImageLoadPriority=false}, ref, ) => {
     return (
-        <SlidesContainer transitionActive={transitionActive} ref={ref}>
+        <SlidesContainer left={left} transitionActive={transitionActive} ref={ref}>
             {
                 dataArr?.map((item, key) => <FrontPageItemComponent isImageLoadPriority={isImageLoadPriority} key={key} {...item}/>)
             }

@@ -1,4 +1,4 @@
-import {intArg, list, nonNull, objectType, queryField, stringArg, mutationField} from "nexus";
+import {nonNull, objectType, queryField, stringArg, mutationField} from "nexus";
 
 export const User = objectType({
     name: "User",

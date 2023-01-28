@@ -38,7 +38,7 @@ const CarouselContainer = styled.div`
   position: relative;
   height: 390px;
   width: 1060px;
-  display: block;
+  display: flex;
   overflow: hidden;
 `
 
@@ -71,11 +71,16 @@ const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo
             <h1>{title}</h1>
             <TrendingItemsContainer>
                 <CarouselContainer >
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree} ref={elementRefs[0]} />
-                    <PreviewFourItemsComponent isImageLoadPriority={true} transitionActive={transitionActive} dataArr={dataOne} ref={elementRefs[1]} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataTwo} ref={elementRefs[2]} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree} ref={elementRefs[3]} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataOne} ref={elementRefs[4]} />
+                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree}
+                                               ref={elementRefs[0]} left={-1060} />
+                    <PreviewFourItemsComponent isImageLoadPriority={true} transitionActive={transitionActive}
+                                               dataArr={dataOne} ref={elementRefs[1]} left={0} />
+                    <PreviewFourItemsComponent transitionActive={transitionActive}
+                                               dataArr={dataTwo} ref={elementRefs[2]} left={1060} />
+                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree}
+                                               ref={elementRefs[3]} left={1060*2} />
+                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataOne}
+                                               ref={elementRefs[4]} left={1060*3} />
                 </CarouselContainer>
             </TrendingItemsContainer>
             <NavContainer>

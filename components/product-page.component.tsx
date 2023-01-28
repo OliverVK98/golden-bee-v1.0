@@ -4,13 +4,6 @@ import chunkArray from "../utils/chunk-array";
 import FrontPageItemComponent from "./front-page-item.component";
 import PaginationComponent from "./pagination.component";
 import FooterContainerComponent from "./footer-container.component";
-import SearchBarComponent from "./search-bar.component";
-import {useQuery} from "@apollo/client";
-import {
-    getProductsByCollectionIdQuery,
-    productsFromSpecificCollection,
-    specificCollectionProductsDataQuery
-} from "../graphql/queries/queries";
 
 const GridContainer = styled.div`
   display: grid;

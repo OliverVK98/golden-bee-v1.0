@@ -2,7 +2,6 @@ import InputComponent from "./input.component";
 import styled from "styled-components";
 import {useForm, FormProvider} from "react-hook-form";
 import {signUpResolver} from "../utils/yup-form-schemas/sign-up-schema";
-import {useContext} from "react";
 import AuthService from "../utils/auth-api-helpers/auth-service";
 import {useDispatch} from "react-redux"
 import {setIsUserAuthenticated, setUserData} from "../redux/slices/userSlice";
