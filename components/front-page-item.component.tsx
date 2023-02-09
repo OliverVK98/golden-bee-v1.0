@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import {IFrontPageItem} from "../pages/all";
 import {useDispatch} from "react-redux";
-import {addCartItems} from "../redux/slices/cartSlice";
+import {addCartItems} from "../store/slices/cartSlice";
 
 const AddToCartButton = styled.button`
   color: rgb(58,170,53);

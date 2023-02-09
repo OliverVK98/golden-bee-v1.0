@@ -4,8 +4,8 @@ import {useEffect} from "react";
 import {createPortal} from "react-dom";
 import SignUpFormComponent from "./sign-up-form.component";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/store";
-import {setIsSignUpModalOpen} from "../redux/slices/modalSlice";
+import {RootState} from "../store/store";
+import {setIsSignUpModalOpen} from "../store/slices/modalSlice";
 
 const ModalContainer = styled.div`
   position: fixed;

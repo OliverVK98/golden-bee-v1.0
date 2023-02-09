@@ -8,14 +8,18 @@ export interface IUser{
 
 export interface IDtoUser {
     email: string,
-    userId: number
+    userId: number,
+    lastName: string,
+    firstName: string
 }
 
 export const userDto = (userInfo: IUser) => {
-    const {email, userId} = userInfo
+    const {email, userId, lastName, firstName} = userInfo
 
     return {
         email,
-        userId
+        userId,
+        lastName,
+        firstName
     } as IDtoUser
 }

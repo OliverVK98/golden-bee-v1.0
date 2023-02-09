@@ -4,8 +4,8 @@ import {useForm, FormProvider} from "react-hook-form";
 import {signInResolver} from "../utils/yup-form-schemas/sign-in-schema";
 import {useDispatch} from "react-redux"
 import AuthService from "../utils/auth-api-helpers/auth-service";
-import {setIsUserAuthenticated, setUserData} from "../redux/slices/userSlice";
-import {setIsSignInModalOpen, setIsSignUpModalOpen} from "../redux/slices/modalSlice";
+import {setIsUserAuthenticated, setUserData} from "../store/slices/userSlice";
+import {setIsSignInModalOpen, setIsSignUpModalOpen} from "../store/slices/modalSlice";
 
 const FormContainer = styled.form`
   display: flex;

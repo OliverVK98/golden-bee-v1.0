@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/store";
-import {setIsSignInModalOpen} from "../redux/slices/modalSlice";
+import {RootState} from "../store/store";
+import {setIsSignInModalOpen} from "../store/slices/modalSlice";
 import axios from "axios";
-import {ICartItem} from "../redux/slices/cartSlice";
+import {ICartItem} from "../store/slices/cartSlice";
 import React, {useState} from "react";
 import ButtonLoaderComponent from "./button-loader.component";
+import {useRouter} from "next/router";
 
 const CustomShopButton = styled.button`
   border: none;
@@ -38,14 +39,30 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
     const dispatch = useDispatch();
     const userInfo = useSelector((state: RootState) => state.userState.userData);
     const [checkoutLoading, setCheckoutLoading] = useState(false);
+    const router = useRouter();
 
     const handleCheckout = async () => {
         try {
             setCheckoutLoading(true);
-            console.log(cartItems);
-            const response = await axios.post("http://localhost:3000/api/checkout_session", {
+            const response = await axios.post("http://localhost:3000/api/stripe/checkout_session", {
                 cartItems
             });
+            setCheckoutLoading(false);
+            if (response.data.url) {
+                router.push(response.data.url);
+            }
+        } catch (e: any) {
+            console.log(e)
+        }
+    }
+
+    const handleAuthCheckout = async () => {
+        try {
+            setCheckoutLoading(true);
+            const response = await axios.post("http://localhost:3000/api/stripe/checkout_session", {
+                cartItems,
+                userId: userInfo.userId
+            })
             setCheckoutLoading(false);
             if (response.data.url) {
                 window.location.href = response.data.url;
@@ -55,17 +72,10 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
         }
     }
 
-    const handleAuthCheckout = async () => {
-        await axios.post("http://localhost:3000/api/checkout_session", {
-            cartItems,
-            userId: userInfo.userId
-        })
-    }
-
     if(isUserAuthenticated) return(
         <ButtonsContainer>
             <CustomShopButton onClick={()=> handleAuthCheckout()}>
-                Checkout
+                {!checkoutLoading ? "Checkout" : <ButtonLoaderComponent/>}
             </CustomShopButton>
         </ButtonsContainer>
     )

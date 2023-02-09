@@ -4,8 +4,8 @@ import {useEffect} from "react";
 import {createPortal} from "react-dom";
 import SignInFormComponent from "./sign-in-form.component";
 import {useSelector, useDispatch} from "react-redux";
-import {RootState} from "../redux/store";
-import {setIsSignInModalOpen} from "../redux/slices/modalSlice";
+import {RootState} from "../store/store";
+import {setIsSignInModalOpen} from "../store/slices/modalSlice";
 
 const ModalContainer = styled.div`
   position: fixed;

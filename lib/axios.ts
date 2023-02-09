@@ -5,7 +5,8 @@ export const API_URL="http://localhost:3000"
 
 const $api = axios.create({
     withCredentials: true,
-    baseURL: API_URL
+    baseURL: API_URL,
+    validateStatus: (status) => status === 400 || status === 200
 })
 
 $api.interceptors.request.use((config: any) => {

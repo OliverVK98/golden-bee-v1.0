@@ -73,3 +73,10 @@ model SubscribptionEmailList {
   id    Int    @id @default(autoincrement())
   email String
 }
+
+model PastOrders {
+  orderId     Int   @id @default(autoincrement())
+  userId      Int
+  productList Int[]
+  quantity    Int[]
+}

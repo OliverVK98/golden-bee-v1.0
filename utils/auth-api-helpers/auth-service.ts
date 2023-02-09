@@ -18,6 +18,21 @@ export default class AuthService {
     static async getCart(): Promise<AxiosResponse<any>> {
         return $api.get('/api/user-cart')
     }
+
+    static async updateUserInformation(firstName: string, lastName: string, email: string) {
+        return await $api.post("/api/auth/update-user-information", {
+            firstName,
+            lastName,
+            email,
+        });
+    }
+
+    static async changePassword(userPassword: string, currentPassword: string) {
+        return await $api.post("/api/auth/change-password", {
+            userPassword,
+            currentPassword
+        });
+    }
 }
 
 export interface IAuthResponse {

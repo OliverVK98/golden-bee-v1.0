@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
 import {useDispatch} from "react-redux";
-import {deleteOneCartItemById, addOneCartItemById, deleteCartItemById} from "../redux/slices/cartSlice";
+import {deleteOneCartItemById, addOneCartItemById, deleteCartItemById} from "../store/slices/cartSlice";
 import roundDecimals from "../utils/round-decimals";
 
 const ComponentContainer = styled.div`

@@ -9,7 +9,7 @@ import apolloClient from "../../lib/apollo";
 import EmailInputComponent from "../../components/email-input.component";
 import FooterContainerComponent from "../../components/footer-container.component";
 import {useDispatch} from "react-redux";
-import {addCartItems} from "../../redux/slices/cartSlice";
+import {addCartItems} from "../../store/slices/cartSlice";
 
 const ProductPageContainer = styled.div`
   display: flex;

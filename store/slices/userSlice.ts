@@ -2,7 +2,9 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export interface IUserData {
     userId: number,
-    email: string
+    email: string,
+    firstName: string,
+    lastName: string
 }
 
 interface IInitialState {

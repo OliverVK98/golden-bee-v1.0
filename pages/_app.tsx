@@ -6,7 +6,7 @@ import apolloClient from "../lib/apollo";
 import SignInModalComponent from "../components/sign-in-modal.component";
 import SignUpModalComponent from "../components/sign-up-modal.component";
 import {Provider} from "react-redux"
-import {store} from "../redux/store";
+import {store} from "../store/store";
 import CartComponent from "../components/cart.component";
 import {PersistGate} from "redux-persist/integration/react";
 import {persistStore} from "redux-persist";

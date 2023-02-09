@@ -2,13 +2,13 @@ import styled from "styled-components";
 import Image from "next/image";
 import {createPortal} from "react-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/store";
+import {RootState} from "../store/store";
 import {useEffect} from "react";
 import Link from "next/link";
 import CartItemComponent from "./cart-item.component";
 import roundDecimals from "../utils/round-decimals";
 import {useRouter} from "next/router";
-import {setIsCartOpen} from "../redux/slices/isCartOpenSlice";
+import {setIsCartOpen} from "../store/slices/isCartOpenSlice";
 
 interface ICartProps {
     isCartOpen: boolean | null
@@ -171,9 +171,10 @@ const CartComponent = () => {
     const cartItems = useSelector((state: RootState) => state.cartState.cartItems);
     const pathName = useRouter().pathname;
 
+    //TODO: fix cart closing animation on first escape
     const handleEscapeKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
-            dispatch(setIsCartOpen(false));
+             dispatch(setIsCartOpen(false));
         }
     };
 

@@ -4,12 +4,13 @@ import styled from "styled-components";
 import Image from "next/legacy/image";
 import AuthService from "../utils/auth-api-helpers/auth-service";
 import { useSelector, useDispatch } from "react-redux"
-import { IUserData, setIsUserAuthenticated, setUserData } from "../redux/slices/userSlice";
-import { RootState } from "../redux/store";
-import { setIsSignInModalOpen } from "../redux/slices/modalSlice";
+import { IUserData, setIsUserAuthenticated, setUserData } from "../store/slices/userSlice";
+import { RootState } from "../store/store";
+import { setIsSignInModalOpen } from "../store/slices/modalSlice";
 import axios from "axios";
 import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
-import {setIsCartOpen} from "../redux/slices/isCartOpenSlice";
+import {setIsCartOpen} from "../store/slices/isCartOpenSlice";
+import UserAccountComponent from "./user-account.component";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -31,6 +32,7 @@ const CustomHeaderLeft = styled.header`
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
 `
 
 const LogoContainer = styled.div`
@@ -63,17 +65,6 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
   )
   const isSignInModalOpen = useSelector((state: RootState) => state.modalState.isSignInModalOpen);
   const dispatch = useDispatch();
-
-  const handleUserSignOut = async () => {
-    try {
-      const response = await AuthService.logout();
-      localStorage.removeItem("accessToken");
-      dispatch(setIsUserAuthenticated(false));
-      dispatch(setUserData({} as IUserData));
-    } catch (e: any) {
-      console.log(e.response?.data?.message)
-    }
-  }
 
   useEffect( ()=> {
       const isLoggedIn = async () => {
@@ -111,7 +102,7 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
           <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon" onClick={() => dispatch(setIsCartOpen(!isCartOpen))} />
         </CursorPointerWrapper>
         {!isUserAuthenticated && <AuthContainer onClick={() => dispatch(setIsSignInModalOpen(!isSignInModalOpen))}>Sign In</AuthContainer>}
-        {isUserAuthenticated && <AuthContainer onClick={handleUserSignOut}>Sign Out</AuthContainer>}
+        {isUserAuthenticated && <UserAccountComponent/>}
       </CustomHeaderLeft>
     </HeaderContainer>
   )

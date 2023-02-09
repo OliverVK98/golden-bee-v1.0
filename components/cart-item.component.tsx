@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import {addOneCartItemById, deleteOneCartItemById, ICartItem} from "../redux/slices/cartSlice";
+import {addOneCartItemById, deleteOneCartItemById, ICartItem} from "../store/slices/cartSlice";
 import Image from "next/image";
 import {useDispatch} from "react-redux";
 
