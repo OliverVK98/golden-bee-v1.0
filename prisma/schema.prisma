@@ -75,8 +75,23 @@ model SubscribptionEmailList {
 }
 
 model PastOrders {
-  orderId     Int   @id @default(autoincrement())
+  orderId     Int      @id @default(autoincrement())
   userId      Int
   productList Int[]
   quantity    Int[]
+  createdAt   DateTime @default(now())
+}
+
+model ProviderUser {
+  providerId Int     @id @default(autoincrement())
+  name       String?
+  email      String  @unique
+}
+
+model ProviderPastOrders {
+  orderId     Int      @id @default(autoincrement())
+  providerId  Int
+  productList Int[]
+  quantity    Int[]
+  createdAt   DateTime @default(now())
 }

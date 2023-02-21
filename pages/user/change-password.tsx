@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import styled from "styled-components";
 import {FieldError, useForm} from "react-hook-form";
 import {changePasswordResolver} from "../../utils/yup-form-schemas/change-password-schema";
-import ButtonLoaderComponent from "../../components/button-loader.component";
+import ButtonLoaderWhiteComponent from "../../components/button-loader-white.component";
 import AuthService from "../../utils/auth-api-helpers/auth-service";
 
 const TopLevelContainer = styled.div`
@@ -78,14 +78,15 @@ const ChangePassword = () => {
     const router = useRouter();
     const [isPasswordIncorrect, setIsPasswordIncorrect] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const userId = useSelector((state: RootState) => state.userState.userData.userId);
 
     useEffect(() => {
-        if (!isAuth) {
+        if (!isAuth || !userId) {
             router.push('/404');
         }
     }, [isAuth]);
 
-    if (!isAuth) {
+    if (!isAuth || !userId) {
         return null;
     }
 
@@ -131,7 +132,7 @@ const ChangePassword = () => {
                 {errors["confirmNewPassword"]?.message && <ErrorContainer>{(errors["confirmNewPassword"] as FieldError).message }</ErrorContainer>}
                 <CustomButton>
                     {
-                        isLoading ? <ButtonLoaderComponent/> : "Update Password"
+                        isLoading ? <ButtonLoaderWhiteComponent/> : "Update Password"
                     }
                 </CustomButton>
             </FormContainer>

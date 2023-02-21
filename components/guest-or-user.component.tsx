@@ -5,8 +5,9 @@ import {setIsSignInModalOpen} from "../store/slices/modalSlice";
 import axios from "axios";
 import {ICartItem} from "../store/slices/cartSlice";
 import React, {useState} from "react";
-import ButtonLoaderComponent from "./button-loader.component";
+import ButtonLoaderWhiteComponent from "./button-loader-white.component";
 import {useRouter} from "next/router";
+import {setOrderData} from "../store/slices/orderSlice";
 
 const CustomShopButton = styled.button`
   border: none;
@@ -37,7 +38,8 @@ interface IProps {
 const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
     const isUserAuthenticated = useSelector((state: RootState) => state.userState.isUserAuthenticated);
     const dispatch = useDispatch();
-    const userInfo = useSelector((state: RootState) => state.userState.userData);
+    const userData = useSelector((state: RootState) => state.userState.userData);
+    const providerUserData = useSelector((state: RootState) => state.userState.providerUserData);
     const [checkoutLoading, setCheckoutLoading] = useState(false);
     const router = useRouter();
 
@@ -49,6 +51,7 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
             });
             setCheckoutLoading(false);
             if (response.data.url) {
+                dispatch(setOrderData(response.data.cartItems));
                 router.push(response.data.url);
             }
         } catch (e: any) {
@@ -61,11 +64,12 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
             setCheckoutLoading(true);
             const response = await axios.post("http://localhost:3000/api/stripe/checkout_session", {
                 cartItems,
-                userId: userInfo.userId
+                [Object.keys(userData).length > 0 ? "userId" : "providerId"]: Object.keys(userData).length > 0 ? userData.userId : providerUserData.providerId
             })
             setCheckoutLoading(false);
             if (response.data.url) {
-                window.location.href = response.data.url;
+                dispatch(setOrderData(response.data.cartItems));
+                router.push(response.data.url);
             }
         } catch (e: any) {
             console.log(e)
@@ -75,7 +79,7 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
     if(isUserAuthenticated) return(
         <ButtonsContainer>
             <CustomShopButton onClick={()=> handleAuthCheckout()}>
-                {!checkoutLoading ? "Checkout" : <ButtonLoaderComponent/>}
+                {!checkoutLoading ? "Checkout" : <ButtonLoaderWhiteComponent/>}
             </CustomShopButton>
         </ButtonsContainer>
     )
@@ -86,7 +90,7 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
                 Sign In
             </CustomShopButton>
             <CustomShopButton onClick={()=>handleCheckout()}>
-                {!checkoutLoading ? "Checkout as a Guest" : <ButtonLoaderComponent/>}
+                {!checkoutLoading ? "Checkout as a Guest" : <ButtonLoaderWhiteComponent/>}
             </CustomShopButton>
         </ButtonsContainer>
     )

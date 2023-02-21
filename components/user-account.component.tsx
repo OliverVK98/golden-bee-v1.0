@@ -19,15 +19,18 @@ const UserAccountContainer = styled.div`
 `
 
 const UserAccountComponent = () => {
-    const {lastName, firstName} = useSelector((state: RootState) => state.userState.userData);
+    const providerUserData = useSelector((state: RootState) => state.userState.providerUserData);
+    const userData = useSelector((state: RootState) => state.userState.userData);
     const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
     return (
         <>
             <UserAccountContainer onClick={()=>setIsDropDownOpen(!isDropDownOpen)}>
-                {firstName[0]}{lastName[0]}
+                {
+                    Object.keys(providerUserData).length > 0 ? providerUserData.name[0] : `${userData.firstName[0]}${userData.lastName[0]}`
+                }
             </UserAccountContainer>
-            {isDropDownOpen && <UserDropdownComponent setIsDropDownOpen={setIsDropDownOpen} lastName={lastName} firstName={firstName}/>}
+            {isDropDownOpen && <UserDropdownComponent setIsDropDownOpen={setIsDropDownOpen}/>}
         </>
     )
 }

@@ -7,16 +7,16 @@ export default class AuthService {
         return $api.post<IAuthResponse>('/api/auth/sign-in', {email, password})
     }
 
+    static async socialLogin(email: string, name: string) {
+        return $api.post('/api/auth/social-sign-in', {email, name})
+    }
+
     static async registration(email: string, password: string, firstName: string, lastName: string): Promise<AxiosResponse<IAuthResponse>> {
         return $api.post<IAuthResponse>('/api/auth/sign-up', {email, password, firstName, lastName})
     }
 
     static async logout(): Promise<void> {
         return $api.post('/api/auth/logout')
-    }
-
-    static async getCart(): Promise<AxiosResponse<any>> {
-        return $api.get('/api/user-cart')
     }
 
     static async updateUserInformation(firstName: string, lastName: string, email: string) {
@@ -27,10 +27,10 @@ export default class AuthService {
         });
     }
 
-    static async changePassword(userPassword: string, currentPassword: string) {
+    static async changePassword(userPassword: string, newPassword: string) {
         return await $api.post("/api/auth/change-password", {
             userPassword,
-            currentPassword
+            newPassword
         });
     }
 }
@@ -40,3 +40,5 @@ export interface IAuthResponse {
     refreshToken: string;
     user: IDtoUser
 }
+
+

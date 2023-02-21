@@ -22,7 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const buf = await buffer(req);
         const sig = req.headers['stripe-signature'];
         const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-        
         let event;
         
         try {
@@ -51,8 +50,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 })
             }
 
+            if("providerId" in event.data.object.metadata) {
+                const productsData: IProductData = {...event.data.object.metadata};
+                delete productsData.providerId;
+                const providerId = Number(event.data.object.metadata.providerId);
+                const productList = Object.keys(productsData).map(key => Number(key));
+                const quantity = Object.values(productsData).map(value => Number(value));
+
+                await prisma.providerPastOrders.create({
+                    data: {
+                        providerId,
+                        productList,
+                        quantity
+                    }
+                })
+            }
+
             return res.status(200).end();
         }
+
+        return res.status(200).end();
     } else {
         res.status(405).end('Method Not Allowed');
     }

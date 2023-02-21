@@ -7,14 +7,22 @@ export interface IUserData {
     lastName: string
 }
 
+export interface IProviderUserData {
+    providerId: number,
+    email: string,
+    name: string
+}
+
 interface IInitialState {
     isUserAuthenticated: boolean,
-    userData: IUserData
+    userData: IUserData,
+    providerUserData: IProviderUserData
 }
 
 const initialState: IInitialState = {
     isUserAuthenticated: false,
-    userData: {} as IUserData
+    userData: {} as IUserData,
+    providerUserData: {} as IProviderUserData
 }
 
 export const userSlice = createSlice({
@@ -26,10 +34,13 @@ export const userSlice = createSlice({
         },
         setUserData: (state, action) => {
             state.userData = action.payload
+        },
+        setProviderUserData: (state, action) => {
+            state.providerUserData = action.payload
         }
     }
 })
 
-export const {setIsUserAuthenticated, setUserData} = userSlice.actions
+export const {setIsUserAuthenticated, setUserData, setProviderUserData} = userSlice.actions
 
 export default userSlice.reducer

@@ -57,3 +57,37 @@ export const productsFromSpecificCollection = gql`
         }
     }
 `;
+
+export const productsByIdsQuery = gql`
+    query ($id: [Int]!){
+        ProductsByMultipleIds(id: $id) {
+            productId
+            itemName
+            rating
+            price
+            discountedPrice
+            frontImageUrl
+            isAvailable
+        }
+    }
+`;
+
+export const pastOrdersByUserId = gql`
+    query ($userId: Int!) {
+        PastOrdersQuery(userId: $userId) {
+            productList,
+            quantity,
+            createdAt
+        }
+    }
+`
+
+export const providerPastOrdersByUserId = gql`
+    query ($providerId: Int!) {
+        ProviderPastOrdersQuery(providerId: $providerId) {
+            productList,
+            quantity,
+            createdAt
+        }
+    }
+`

@@ -38,10 +38,11 @@ interface ICheckoutComponentProps {
     price: number,
     discountedPrice: number
     productId: number,
-    quantity?: number
+    quantity?: number,
+    isOrder?: boolean
 }
 
-const CheckoutItemComponent: React.FC<ICheckoutComponentProps> = ({itemName, frontImageUrl, quantity, productId, price, discountedPrice}) => {
+const CheckoutItemComponent: React.FC<ICheckoutComponentProps> = ({isOrder,itemName, frontImageUrl, quantity, productId, price, discountedPrice}) => {
     const dispatch = useDispatch();
 
     return (
@@ -53,19 +54,19 @@ const CheckoutItemComponent: React.FC<ICheckoutComponentProps> = ({itemName, fro
                 {itemName}
             </ContentContainer>
             <ContentContainer isCenter={true} width={150}>
-                <Image src="/icons/cart-arrow-left.png" alt="arrow-left" width={24} height={24}
-                       style={{cursor: "pointer"}} onClick={()=>dispatch(deleteOneCartItemById(productId))}/>
+                {!isOrder&&<Image src="/icons/cart-arrow-left.png" alt="arrow-left" width={24} height={24}
+                        style={{cursor: "pointer"}} onClick={() => dispatch(deleteOneCartItemById(productId))}/>}
                 {quantity}
-                <Image src="/icons/cart-arrow-right.png" alt="arrow-left" width={24} height={24}
-                       style={{cursor: "pointer"}} onClick={()=>dispatch(addOneCartItemById(productId))}/>
+                {!isOrder&&<Image src="/icons/cart-arrow-right.png" alt="arrow-left" width={24} height={24}
+                        style={{cursor: "pointer"}} onClick={() => dispatch(addOneCartItemById(productId))}/>}
             </ContentContainer>
             <ContentContainer isCenter={true} width={150}>
                 ${discountedPrice ? roundDecimals(discountedPrice*(quantity as number)) : roundDecimals(price*(quantity as number))}
             </ContentContainer>
-            <ContentContainer isCenter={true} width={150}>
+            {!isOrder&&<ContentContainer isCenter={true} width={150}>
                 <Image src="/icons/red-cross.png" alt="red-cross" width={24} height={24}
-                       style={{cursor: "pointer"}} onClick={()=>dispatch(deleteCartItemById(productId))}/>
-            </ContentContainer>
+                       style={{cursor: "pointer"}} onClick={() => dispatch(deleteCartItemById(productId))}/>
+            </ContentContainer>}
         </ComponentContainer>
     )
 }

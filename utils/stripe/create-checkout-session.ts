@@ -4,7 +4,7 @@ import {NextApiResponse} from "next";
 
 const stripe = require('stripe')(process.env.STRIPE_KEY_SECRET);
 
-const createCheckoutSession = async (cartItems: ICartItem[], res: NextApiResponse, userId: null | number) => {
+const createCheckoutSession = async (cartItems: ICartItem[], res: NextApiResponse, id: null | number, userType: "user" | "provider" | null) => {
 
     const metadata = cartItems.reduce((acc: any, item) => {
         if (acc[item.productId] !== undefined) {
@@ -20,7 +20,10 @@ const createCheckoutSession = async (cartItems: ICartItem[], res: NextApiRespons
         };
     }, {});
 
-    if (userId!=null) metadata.userId = userId;
+    if (id!=null) {
+        if (userType==="user") metadata.userId = id;
+        if (userType==="provider") metadata.providerId = id;
+    }
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -32,17 +35,17 @@ const createCheckoutSession = async (cartItems: ICartItem[], res: NextApiRespons
                             name: item.itemName,
                             images: [item.frontImageUrl],
                         },
-                        unit_amount: item.discountedPrice ? roundDecimals(item.discountedPrice) * 100 : roundDecimals(item.price) * 100,
+                        unit_amount: item.discountedPrice ? Math.round(roundDecimals(item.discountedPrice) * 100) : Math.round(roundDecimals(item.price) * 100),
                     },
                     quantity: item.quantity,
                 }
             }),
             mode: 'payment',
             success_url: `http://localhost:3000/user/order-successful`,
-            cancel_url: `http://localhost:3000/checkout`,
+            cancel_url: `http://localhost:3000/user/order-failed`,
             metadata,
         });
-        res.status(200).json({url: session.url});
+        res.status(200).json({url: session.url, cartItems});
         return;
     } catch (err: any) {
         res.status(err.statusCode || 500).json(err.message);

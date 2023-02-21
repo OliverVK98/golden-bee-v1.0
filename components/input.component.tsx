@@ -8,11 +8,12 @@ interface ICustomProps {
 }
 
 const CustomInput = styled.input`
-  height: 30px;
+  height: 50px;
   border-radius: 10px;
   padding: 5px;
   width: 90%;
   border: ${(props: ICustomProps) => props.isError ? "1px solid red" : "1px solid rgb(222,226,230)"};
+  font-size: 20px;
 `
 
 const InputContainer = styled.div`
@@ -49,7 +50,7 @@ const InputComponent: React.FC<ICustomInputProps> = ({imageUrl, placeholder, nam
     return(
         <>
             <InputContainer>
-                <Image src={imageUrl} alt="sign-in-logo" height={30} width={30}/>
+                <Image src={imageUrl} alt="sign-in-logo" height={50} width={50}/>
                 <CustomInput isError={isInputError} type={type} {...register(name)} name={name} placeholder={placeholder}/>
             </InputContainer>
             {errors[name]?.message && <ErrorContainer>{(errors[name] as FieldError).message }</ErrorContainer>}

@@ -16,22 +16,23 @@ const ModalContainer = styled.div`
   border-radius: 10px;
   z-index: 1000;
   height: fit-content;
-  width: 380px;
+  width: 450px;
   box-shadow: 0px 0px 10px 1px rgb(222,226,230);
 `
 
 const TopPartContainer = styled.div`
   display: flex;
-  height: 45px;
-  border-bottom: 1px solid rgb(222,226,230);
+  height: 60px;
+  border-bottom: 1px solid rgb(222,226,230);;
 `
 
 const TextContainer = styled.div`
   width: 95%;
+  margin-right: -20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
 `
 
@@ -80,7 +81,7 @@ const SignUpModalComponent = () => {
                         Sign Up
                     </TextContainer>
                     <ImageContainer>
-                        <Image src="/icons/close.svg" alt="close-icon" height={20} width={20}
+                        <Image src="/icons/close.svg" alt="close-icon" height={30} width={30}
                                onClick={()=>dispatch(setIsSignUpModalOpen(!setIsSignUpModalOpen))}/>
                     </ImageContainer>
                 </TopPartContainer>

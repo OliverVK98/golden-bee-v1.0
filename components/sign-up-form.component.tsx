@@ -6,6 +6,8 @@ import AuthService from "../utils/auth-api-helpers/auth-service";
 import {useDispatch} from "react-redux"
 import {setIsUserAuthenticated, setUserData} from "../store/slices/userSlice";
 import {setIsSignInModalOpen, setIsSignUpModalOpen} from "../store/slices/modalSlice";
+import {useState} from "react";
+import ButtonLoaderWhiteComponent from "./button-loader-white.component";
 
 
 const FormContainer = styled.form`
@@ -19,14 +21,15 @@ const CustomShopButton = styled.button`
   border: 1px solid rgb(58,167,51);
   background-color: rgb(58,167,51);
   color: white;
-  height: 30px;
+  height: 50px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
   width: 100%;
+  cursor: pointer;
 `
 
 const ButtonsContainer = styled.div`
@@ -45,6 +48,7 @@ interface IFormValues {
 const SignUpFormComponent = () => {
     const methods = useForm<IFormValues>({resolver: signUpResolver});
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const haveAccountClickHandler = () => {
         dispatch(setIsSignInModalOpen(true));
@@ -53,10 +57,12 @@ const SignUpFormComponent = () => {
 
     const signUpUserHandler = async ({password, lastName, email, firstName}: IFormValues) => {
         try {
+            setIsLoading(true);
             const response  = await AuthService.registration(email, password, firstName, lastName);
             localStorage.setItem("accessToken", response.data.accessToken);
             dispatch(setIsUserAuthenticated(true));
             dispatch(setUserData(response.data.user));
+            setIsLoading(false);
             dispatch(setIsSignUpModalOpen(false));
         } catch (e: any) {
             console.log(e.response?.data?.message)
@@ -72,7 +78,11 @@ const SignUpFormComponent = () => {
                 <InputComponent imageUrl="/icons/password.svg" type="password" name="password" placeholder="Your password..."/>
                 <InputComponent imageUrl="/icons/password.svg" type="password" name="confirmPassword" placeholder="Confirm your password..."/>
                 <ButtonsContainer>
-                    <CustomShopButton type="submit">Register</CustomShopButton>
+                    <CustomShopButton type="submit">
+                        {
+                            isLoading ? <ButtonLoaderWhiteComponent/> : "Register"
+                        }
+                    </CustomShopButton>
                     <CustomShopButton type="button" onClick={haveAccountClickHandler}>Already have an account? Sign In</CustomShopButton>
                 </ButtonsContainer>
             </FormContainer>

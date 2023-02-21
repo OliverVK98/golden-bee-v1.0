@@ -206,7 +206,7 @@ const CartComponent = () => {
                         Your cart is empty 😭
                     </EmptyCartTextContainer>
                     <Image src="/images/emptycart.jpg" alt="empty-cart-logo" height={350} width={300}/>
-                    <Link href={pathName==="/checkout" ? "/" : pathName}>
+                    <Link href={pathName==="/checkout" || "user/order-successful" ? "/" : pathName}>
                         <CustomShopButton onClick={() => dispatch(setIsCartOpen(!isCartOpen))}>
                             Continue Shopping
                         </CustomShopButton>

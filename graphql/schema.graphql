@@ -18,6 +18,14 @@ type Mutation {
   CreateUser(email: String!, firstName: String!, lastName: String!, password: String!): User
 }
 
+type PastOrders {
+  createdAt: String
+  orderId: Int
+  productList: [Int]
+  quantity: [Int]
+  userId: Int
+}
+
 type Product {
   bannerImageUrls: [String]
   discountedPrice: Float
@@ -30,13 +38,23 @@ type Product {
   rating: Int
 }
 
+type ProviderPastOrders {
+  createdAt: String
+  orderId: Int
+  productList: [Int]
+  quantity: [Int]
+  userId: Int
+}
+
 type Query {
   CollectionsList(condition: Boolean!): [Collection!]
   GetUserInfoByEmail(email: String!): User!
+  PastOrdersQuery(userId: Int!): [PastOrders!]
   ProductById(id: Int!): Product
   ProductsByCollectionId(collectionId: Int!): [Product]
   ProductsByMultipleIds(id: [Int]!): [Product]
   ProductsList: [Product!]
+  ProviderPastOrdersQuery(providerId: Int!): [ProviderPastOrders!]
   SpecificCollectionQuery(collectionId: Int!): [CollectionOfProducts]!
 }
 

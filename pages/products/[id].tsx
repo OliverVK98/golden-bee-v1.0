@@ -3,13 +3,13 @@ import React, {useState} from "react";
 import Image from "next/image";
 import {IDataItem} from "../../data/data";
 import styles from "../../styles/FrontImage.module.css"
-import PreviewFourItemsComponent from "../../components/preview-four-items.component";
 import {gql, useQuery} from "@apollo/client";
 import apolloClient from "../../lib/apollo";
 import EmailInputComponent from "../../components/email-input.component";
 import FooterContainerComponent from "../../components/footer-container.component";
 import {useDispatch} from "react-redux";
 import {addCartItems} from "../../store/slices/cartSlice";
+import ItemsSuggestionComponent from "../../components/items-suggestion.component";
 
 const ProductPageContainer = styled.div`
   display: flex;
@@ -144,35 +144,6 @@ const TextContainer = styled.p`
   font-size: 22px;
 `
 
-const ProposedItemsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin-top: 30px;
-`
-
-const RelativeContainer = styled.div`
-  padding: 0;
-  margin: 0;
-  position: relative;
-  height: 390px;
-  width: 1060px;
-  display: block;
-  overflow: hidden;
-`
-
-const ProposedTextContainer = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255,222,89);
-  width: 300px;
-  height: 2rem;
-`
-
 export async function getStaticProps(staticProps: any) {
     const queryById = gql`
         query($id: Int!) {
@@ -254,24 +225,6 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
     }
     const dispatch = useDispatch();
 
-    const productsByIdsQuery = gql`
-        query ($id: [Int]!){
-            ProductsByMultipleIds(id: $id) {
-                productId
-                itemName
-                rating
-                price
-                discountedPrice
-                frontImageUrl
-                isAvailable
-            }
-        }
-    `;
-
-    const {loading, data, error} = useQuery(productsByIdsQuery, {
-        variables: {id: [1, 2, 3, 4]}
-    })
-
     const handleAddButtonClick = () => {
         setQuantity(prevState => prevState+1);
     }
@@ -348,14 +301,7 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
                                                                    width={280} height={280} className={styles.imageRound} priority={true}/>)
                 }
             </BottomSectionContainer>
-            <ProposedItemsContainer>
-                <ProposedTextContainer>
-                    You may also like
-                </ProposedTextContainer>
-                <RelativeContainer>
-                    <PreviewFourItemsComponent transitionActive={false} dataArr={data?.ProductsByMultipleIds}/>
-                </RelativeContainer>
-            </ProposedItemsContainer>
+            <ItemsSuggestionComponent/>
             <EmailInputComponent mainColor={"white"} title={"SUBSCRIBE FOR A CHANCE TO WIN A $100 GIFT CARD"}/>
             <FooterContainerComponent/>
         </ProductPageContainer>

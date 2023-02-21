@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import React, {SetStateAction} from "react";
 import AuthService from "../utils/auth-api-helpers/auth-service";
-import {IUserData, setIsUserAuthenticated, setUserData} from "../store/slices/userSlice";
-import {useDispatch} from "react-redux";
+import {IUserData, setIsUserAuthenticated, setProviderUserData, setUserData} from "../store/slices/userSlice";
+import {useDispatch, useSelector} from "react-redux";
 import Link from "next/link";
+import {RootState} from "../store/store";
+import {signOut} from "next-auth/react";
 
 const DropDownContainer = styled.div`
   position: absolute;
-  height: 250px;
   width: 250px;
   background-color: rgb(247,247,247);
   z-index: 3;
@@ -56,20 +57,26 @@ const SelectionContainer = styled.div`
 `
 
 interface IUserDropDownProps {
-    firstName: string,
-    lastName: string,
     setIsDropDownOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
-const UserDropdownComponent: React.FC<IUserDropDownProps> = ({firstName, lastName, setIsDropDownOpen}) => {
+const UserDropdownComponent: React.FC<IUserDropDownProps> = ({setIsDropDownOpen}) => {
     const dispatch = useDispatch();
+    const providerUserData = useSelector((state: RootState) => state.userState.providerUserData);
+    const userData = useSelector((state: RootState) => state.userState.userData);
 
     const handleUserSignOut = async () => {
         try {
-            const response = await AuthService.logout();
-            localStorage.removeItem("accessToken");
-            dispatch(setIsUserAuthenticated(false));
-            dispatch(setUserData({} as IUserData));
+            if (Object.keys(providerUserData).length > 0) {
+                await signOut({redirect: false});
+                dispatch(setIsUserAuthenticated(false));
+                dispatch(setProviderUserData({}));
+            } else {
+                const response = await AuthService.logout();
+                localStorage.removeItem("accessToken");
+                dispatch(setIsUserAuthenticated(false));
+                dispatch(setUserData({} as IUserData));
+            }
         } catch (e: any) {
             console.log(e.response?.data?.message)
         }
@@ -83,22 +90,26 @@ const UserDropdownComponent: React.FC<IUserDropDownProps> = ({firstName, lastNam
         <DropDownContainer>
             <UserInfoContainer>
                 <UserAccountNameContainer>
-                    {firstName[0]}{lastName[0]}
+                    {
+                        Object.keys(providerUserData).length > 0 ? providerUserData.name[0] : `${userData.firstName[0]}${userData.lastName[0]}`
+                    }
                 </UserAccountNameContainer>
                 <UserNameContainer>
-                    {firstName} {lastName}
+                    {
+                        Object.keys(providerUserData).length > 0 ? providerUserData.name : `${userData.firstName} ${userData.lastName}`
+                    }
                 </UserNameContainer>
             </UserInfoContainer>
-            <Link href="/user/user-information">
+            {userData.userId && <Link href="/user/user-information">
                 <SelectionContainer onClick={handleClick}>
                     Update Account Information
                 </SelectionContainer>
-            </Link>
-            <Link href="/user/change-password">
+            </Link>}
+            {userData.userId && <Link href="/user/change-password">
                 <SelectionContainer onClick={handleClick}>
                     Change Password
                 </SelectionContainer>
-            </Link>
+            </Link>}
             <Link href="/user/past-orders">
                 <SelectionContainer onClick={handleClick}>
                     Past Orders

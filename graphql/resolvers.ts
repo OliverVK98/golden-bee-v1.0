@@ -1,3 +1,5 @@
+import {PastOrdersQuery} from "./types";
+
 export const resolvers = {
     Query: {
         ProductById: async (root: any, args: any, ctx: any) => await ctx.prisma.product.findUnique({
@@ -44,7 +46,29 @@ export const resolvers = {
                     email: args.email
                 }
             }
-        )
+        ),
+        PastOrdersQuery: async (root: any, args: any, ctx: any) => {
+            const pastOrders = await ctx.prisma.pastOrders.findMany({
+                where: {
+                    userId: args.userId,
+                },
+            });
+            return pastOrders.map((order: any) => ({
+                ...order,
+                createdAt: order.createdAt.toISOString(),
+            }));
+        },
+        ProviderPastOrdersQuery: async (root: any, args: any, ctx: any) => {
+            const pastOrders = await ctx.prisma.providerPastOrders.findMany({
+                where: {
+                    providerId: args.providerId,
+                },
+            });
+            return pastOrders.map((order: any) => ({
+                ...order,
+                createdAt: order.createdAt.toISOString(),
+            }));
+        }
     },
 
     Mutation: {

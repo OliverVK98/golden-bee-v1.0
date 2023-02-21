@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import roundDecimals from "../utils/round-decimals";
 import GuestOrUserComponent from "../components/guest-or-user.component";
-import axios from "axios";
 
 const CheckoutContainer = styled.div`
   display: flex;

@@ -6,7 +6,7 @@ const SkeletonContainer = styled.div`
   gap: 20px;
 `
 
-const SkeletonComponent = () => {
+const SkeletonProductListComponent = () => {
     return (
         <SkeletonContainer>
             {
@@ -16,4 +16,4 @@ const SkeletonComponent = () => {
     )
 }
 
-export default SkeletonComponent
+export default SkeletonProductListComponent

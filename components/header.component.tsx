@@ -2,15 +2,15 @@ import { FunctionComponent, ReactElement, useEffect } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/legacy/image";
-import AuthService from "../utils/auth-api-helpers/auth-service";
 import { useSelector, useDispatch } from "react-redux"
-import { IUserData, setIsUserAuthenticated, setUserData } from "../store/slices/userSlice";
+import {IUserData, setIsUserAuthenticated, setProviderUserData, setUserData} from "../store/slices/userSlice";
 import { RootState } from "../store/store";
 import { setIsSignInModalOpen } from "../store/slices/modalSlice";
 import axios from "axios";
 import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
 import {setIsCartOpen} from "../store/slices/isCartOpenSlice";
 import UserAccountComponent from "./user-account.component";
+import {signOut} from "next-auth/react";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -58,7 +58,9 @@ const CursorPointerWrapper = styled.div`
   cursor: pointer;
 `
 
-const HeaderComponent: FunctionComponent = (): ReactElement => {
+//TODO: SIGNOUT BUG AFTER PRESSING ALL USER OPTIONS
+
+const HeaderComponent = () => {
   const isCartOpen = useSelector((state: RootState) => state.isCartOpenState.isCartOpen)
   const isUserAuthenticated = useSelector(
     (state: RootState) => state.userState.isUserAuthenticated
@@ -82,20 +84,22 @@ const HeaderComponent: FunctionComponent = (): ReactElement => {
       isLoggedIn();
   }, [])
 
+
+
   return (
     <HeaderContainer>
       <CustomHeaderRight>
         <Link href="/">
           <LogoContainer>
-            <LeftLogoText>Bee</LeftLogoText>
+            <LeftLogoText>Golden</LeftLogoText>
             <Image src="/icons/logo.jpg" height={50} width={50} alt="bee logo" />
-            <RightLogoText>Kind</RightLogoText>
+            <RightLogoText>Bee</RightLogoText>
           </LogoContainer>
         </Link>
 
         <Link href='/'>Home</Link>
         <Link href='/all'>All Products</Link>
-        <Link href='/' onClick={async () => console.log(await AuthService.getCart())}>Help</Link>
+        <Link href='/'>Help</Link>
       </CustomHeaderRight>
       <CustomHeaderLeft>
         <CursorPointerWrapper>

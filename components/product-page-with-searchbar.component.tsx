@@ -8,7 +8,7 @@ import {useQuery} from "@apollo/client";
 import {
     productsFromSpecificCollection,
 } from "../graphql/queries/queries";
-import SkeletonComponent from "./skeleton.component";
+import SkeletonProductListComponent from "./skeleton-product-list.component";
 
 const GridContainer = styled.div`
   display: grid;
@@ -69,7 +69,7 @@ const ProductPageWithSearchBarComponent: React.FC<IProductPageProps> = ({userInp
     if (displayDataIndex!=0&&loading) return (
         <>
             {
-                new Array(4).fill(0).map((_, index) => <SkeletonComponent key={index}/>)
+                new Array(4).fill(0).map((_, index) => <SkeletonProductListComponent key={index}/>)
             }
         </>
     )
