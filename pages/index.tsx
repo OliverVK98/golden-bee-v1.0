@@ -1,29 +1,64 @@
 import Head from 'next/head'
 import MainPageBannerComponent from "../components/main-page-banner.component";
-import ItemsCarouselComponent from "../components/items-carousel.component";
+import ItemsCarouselFourComponent from "../components/items-carousel-four.component";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import EmailInputComponent from "../components/email-input.component";
-import React from "react";
-import {gql} from "@apollo/client";
-import apolloClient from "../lib/apollo";
+import React, {useEffect, useState} from "react";
 import ItemsByCollectionOrStyleComponent from "../components/items-by-collection-or-style.component";
+import requestItemsServer from "../utils/request-items-server";
+import ItemsCarouselTwoComponent from "../components/items-carousel-two.component";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const MainPageContainer = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
+  
+  @media (max-width: 992px) {
+  
+  }
+
+  @media (max-width: 768px) {
+  
+  }
+
+  @media (max-width: 576px) {
+  
+  }
 `
 
 const BannerText = styled.div`
   width: 100vw;
   background-color: rgb(247,247,247);
-  height: 20vh;
+  height: 15vh;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  padding: 5%;
+  
+  h1 {
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+
+    @media (max-width: 576px) {
+      font-size: 20px;
+    }
+  }
+  
+  p {
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
+
+    @media (max-width: 576px) {
+      font-size: 14px;
+    }
+  }
 `
 
 const ImageContainer = styled.div`
@@ -35,61 +70,23 @@ const ImageContainer = styled.div`
   margin-top: 35px;
 `
 
-const SubscribeContainer = styled.div`
-  width: 100vw;
-  background-color: rgb(247,247,247);
-  height: fit-content;
-  padding: 20px;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-//TODO: Add randomness to displayed products on landing
-
 export async function getServerSideProps() {
-  const productsByIdsQuery = gql`
-    query ($id: [Int]!){
-      ProductsByMultipleIds(id: $id) {
-        productId
-        itemName
-        rating
-        price
-        discountedPrice
-        frontImageUrl
-        isAvailable
-      }
-    }
-  `;
+  const dataTrendingOne = await requestItemsServer([1, 2, 3, 4]);
+  const dataTrendingTwo = await requestItemsServer([5, 6, 7, 8]);
+  const dataTrendingThree = await requestItemsServer([9, 10, 11, 12]);
 
-  const dataOne = await apolloClient.query({
-    query: productsByIdsQuery,
-    variables: {
-      id: [1, 2, 3, 4]
-    }
-  }).then((data) => data.data.ProductsByMultipleIds);
-
-  const dataTwo = await apolloClient.query({
-    query: productsByIdsQuery,
-    variables: {
-      id: [5, 6, 7, 8]
-    }
-  }).then((data) => data.data.ProductsByMultipleIds);
-
-  const dataThree = await apolloClient.query({
-    query: productsByIdsQuery,
-    variables: {
-      id: [9, 10, 11, 12]
-    }
-  }).then((data) => data.data.ProductsByMultipleIds);
+  const dataNewOne = await requestItemsServer([13, 14, 15, 16]);
+  const dataNewTwo = await requestItemsServer([25, 18, 19, 20]);
+  const dataNewThree = await requestItemsServer([21, 22, 23, 24]);
 
   return {
     props: {
-      dataOne,
-      dataTwo,
-      dataThree,
+      dataNewOne,
+      dataNewTwo,
+      dataNewThree,
+      dataTrendingOne,
+      dataTrendingTwo,
+      dataTrendingThree
     }
   }
 }
@@ -105,12 +102,16 @@ interface IFrontPageItem{
 }
 
 interface IStartProps {
-  dataOne: IFrontPageItem[],
-  dataTwo: IFrontPageItem[],
-  dataThree: IFrontPageItem[]
+  dataTrendingOne: IFrontPageItem[],
+  dataTrendingTwo: IFrontPageItem[],
+  dataTrendingThree: IFrontPageItem[],
+  dataNewOne: IFrontPageItem[],
+  dataNewTwo: IFrontPageItem[],
+  dataNewThree: IFrontPageItem[],
 }
 
-const Home: React.FC<IStartProps> = ({dataOne, dataTwo, dataThree}) => {
+const Home: React.FC<IStartProps> = ({dataNewOne,dataNewTwo, dataNewThree, dataTrendingOne,dataTrendingTwo,dataTrendingThree}) => {
+  const isSmallScreen = useMediaQuery('(max-width: 1061px)');
 
   return (
       <div>
@@ -121,8 +122,13 @@ const Home: React.FC<IStartProps> = ({dataOne, dataTwo, dataThree}) => {
 
         <main>
           <MainPageContainer>
-            <MainPageBannerComponent></MainPageBannerComponent>
-            <ItemsCarouselComponent  dataOne={dataOne} dataTwo={dataTwo} dataThree={dataThree} title={"Trending now"} />
+            <MainPageBannerComponent/>
+            {
+              !isSmallScreen && <ItemsCarouselFourComponent dataOne={dataTrendingOne} dataTwo={dataTrendingTwo} dataThree={dataTrendingThree} title={"Trending now"} />
+            }
+            {
+                isSmallScreen && <ItemsCarouselTwoComponent dataOne={dataTrendingOne} dataTwo={dataTrendingTwo} dataThree={dataTrendingThree} title={"Trending now"} />
+            }
             <BannerText>
               <h1>
                 Join our mission to save and protect our buzzy pollinators around the globe❤️
@@ -131,7 +137,12 @@ const Home: React.FC<IStartProps> = ({dataOne, dataTwo, dataThree}) => {
                 Wear your lovely Golden Bee accessories as a reminder of being part of the community. Every purchase saves the bees.
               </p>
             </BannerText>
-            <ItemsCarouselComponent  dataOne={dataOne} dataTwo={dataTwo} dataThree={dataThree} title={"New Arrivals"} />
+            {
+              !isSmallScreen && <ItemsCarouselFourComponent dataOne={dataNewOne} dataTwo={dataNewTwo} dataThree={dataNewThree} title={"New Arrivals"} />
+            }
+            {
+              isSmallScreen && <ItemsCarouselTwoComponent dataOne={dataNewOne} dataTwo={dataNewTwo} dataThree={dataNewThree} title={"New Arrivals"} />
+            }
             <ImageContainer>
               <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758"
                      alt="banner-image" layout={"fill"} objectFit="cover" />
@@ -145,9 +156,7 @@ const Home: React.FC<IStartProps> = ({dataOne, dataTwo, dataThree}) => {
             </ImageContainer>
           </MainPageContainer>
         </main>
-
         <footer>
-
         </footer>
       </div>
   )

@@ -1,4 +1,4 @@
-import PreviewFourItemsComponent from "./preview-four-items.component";
+import PreviewItemsComponent from "./preview-items.component";
 import React from "react";
 import styled from "styled-components";
 import {useQuery} from "@apollo/client";
@@ -46,7 +46,7 @@ const ItemsSuggestionComponent = () => {
                 You may also like
             </ProposedTextContainer>
             <RelativeContainer>
-                <PreviewFourItemsComponent left={0} transitionActive={false} dataArr={data?.ProductsByMultipleIds}/>
+                <PreviewItemsComponent left={0} transitionActive={false} dataArr={data?.ProductsByMultipleIds}/>
             </RelativeContainer>
         </ProposedItemsContainer>
     )

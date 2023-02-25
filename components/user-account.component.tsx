@@ -27,7 +27,7 @@ const UserAccountComponent = () => {
         <>
             <UserAccountContainer onClick={()=>setIsDropDownOpen(!isDropDownOpen)}>
                 {
-                    Object.keys(providerUserData).length > 0 ? providerUserData.name[0] : `${userData.firstName[0]}${userData.lastName[0]}`
+                    Object.keys(providerUserData).length > 0 ? providerUserData.name[0] : `${userData?.firstName[0]}${userData?.lastName[0]}`
                 }
             </UserAccountContainer>
             {isDropDownOpen && <UserDropdownComponent setIsDropDownOpen={setIsDropDownOpen}/>}

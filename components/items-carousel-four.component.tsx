@@ -1,10 +1,10 @@
-import React, {useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import CustomRoundButton from "./round-button.component";
-import useCarousel from "../hooks/useCarousel";
+import useCarouselFour from "../hooks/useCarouselFour";
 import {IFrontPageItem} from "../pages/all";
-import PreviewFourItemsComponent from "./preview-four-items.component";
+import PreviewItemsComponent from "./preview-items.component";
 
 const Container = styled.div`
   display: flex;
@@ -17,7 +17,6 @@ const Container = styled.div`
 
 const TrendingItemsContainer = styled.div`
   display: block;
- 
 `
 
 const ButtonContainer = styled.div`
@@ -50,7 +49,7 @@ interface IItemsCarouselProps {
 }
 
 
-const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo, dataThree, title}) => {
+const ItemsCarouselFourComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo, dataThree, title}) => {
     const elementRefs = [
         useRef<HTMLDivElement>(null),
         useRef<HTMLDivElement>(null),
@@ -64,23 +63,23 @@ const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo
            moveToSlide,
            transitionActive,
            currentSlideIndex,
-           setCurrentSlideIndex} = useCarousel(elementRefs)
+           setCurrentSlideIndex} = useCarouselFour(elementRefs)
 
     return (
         <Container>
             <h1>{title}</h1>
             <TrendingItemsContainer>
                 <CarouselContainer >
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree}
-                                               ref={elementRefs[0]} left={-1060} />
-                    <PreviewFourItemsComponent isImageLoadPriority={true} transitionActive={transitionActive}
-                                               dataArr={dataOne} ref={elementRefs[1]} left={0} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive}
-                                               dataArr={dataTwo} ref={elementRefs[2]} left={1060} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataThree}
-                                               ref={elementRefs[3]} left={1060*2} />
-                    <PreviewFourItemsComponent transitionActive={transitionActive} dataArr={dataOne}
-                                               ref={elementRefs[4]} left={1060*3} />
+                    <PreviewItemsComponent transitionActive={transitionActive} dataArr={dataThree}
+                                           ref={elementRefs[0]} left={-1060} />
+                    <PreviewItemsComponent isImageLoadPriority={true} transitionActive={transitionActive}
+                                           dataArr={dataOne} ref={elementRefs[1]} left={0} />
+                    <PreviewItemsComponent transitionActive={transitionActive}
+                                           dataArr={dataTwo} ref={elementRefs[2]} left={1060} />
+                    <PreviewItemsComponent transitionActive={transitionActive} dataArr={dataThree}
+                                           ref={elementRefs[3]} left={1060*2} />
+                    <PreviewItemsComponent transitionActive={transitionActive} dataArr={dataOne}
+                                           ref={elementRefs[4]} left={1060*3} />
                 </CarouselContainer>
             </TrendingItemsContainer>
             <NavContainer>
@@ -113,4 +112,4 @@ const ItemsCarouselComponent: React.FC<IItemsCarouselProps> = ({dataOne, dataTwo
     )
 }
 
-export default ItemsCarouselComponent
+export default ItemsCarouselFourComponent

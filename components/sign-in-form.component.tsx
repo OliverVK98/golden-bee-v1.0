@@ -46,6 +46,12 @@ const OrContainer = styled.p`
   font-size: 18px;
 `
 
+const ErrorContainer = styled.p`
+  color: red;
+  margin-top: -5px;
+  margin-bottom: -5px;
+`
+
 interface IFormValues {
     email: string,
     password: string
@@ -59,18 +65,34 @@ const SignInFormComponent = () => {
         dispatch(setIsSignUpModalOpen(true));
     }
     const [isLoading, setIsLoading] = useState(false);
+    const [loginError, setLoginError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>("")
 
     const signInHandler = async ({email, password}: IFormValues) => {
         try {
             setIsLoading(true);
+            setLoginError(false);
+            setErrorMessage("");
             const response  = await AuthService.login(email, password);
-            localStorage.setItem("accessToken", response.data.accessToken);
-            dispatch(setIsUserAuthenticated(true));
-            dispatch(setUserData(response.data.user));
+            if (response.status===200) {
+                localStorage.setItem("accessToken", response.data.accessToken);
+                dispatch(setIsUserAuthenticated(true));
+                dispatch(setUserData(response.data.user));
+                dispatch(setIsSignInModalOpen(false));
+            }
+            if (response.status===400) {
+                if (response.data.error === "No user with that email exist") {
+                    setLoginError(true);
+                    setErrorMessage("No user with that email exist");
+                }
+                if (response.data.error === "Password is incorrect") {
+                    setLoginError(true);
+                    setErrorMessage("Password is incorrect");
+                }
+            }
             setIsLoading(false);
-            dispatch(setIsSignInModalOpen(false));
         } catch (e: any) {
-            console.log(e.response?.data?.message)
+            //console.log(e.response?.data?.message)
         }
     }
 
@@ -79,6 +101,9 @@ const SignInFormComponent = () => {
             <FormContainer onSubmit={methods.handleSubmit((data)=>signInHandler(data))}>
                 <InputComponent imageUrl="/icons/person.svg" type="text" name="email" placeholder="Your email..."/>
                 <InputComponent imageUrl="/icons/password.svg" type="password" name="password" placeholder="Your password..."/>
+                {loginError && <ErrorContainer>
+                    {errorMessage}
+                </ErrorContainer>}
                 <ButtonsContainer>
                     <CustomShopButton type="submit">
                         {

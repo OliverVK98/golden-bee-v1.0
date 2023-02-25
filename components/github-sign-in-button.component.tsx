@@ -42,8 +42,6 @@ const ErrorContainer = styled.p`
   margin-bottom: -5px;
 `
 
-//TODO: User with that email already exists is repeated twice and loader as well - state is shared?
-
 const GithubSignInButtonComponent = () => {
     const {data, status} = useSession();
     const dispatch = useDispatch();

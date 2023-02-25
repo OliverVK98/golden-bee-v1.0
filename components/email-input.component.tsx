@@ -10,7 +10,15 @@ const EmailInput = styled.input`
   border-radius: 10px;
   border: none;
   padding-left: 5px;
-  background-color: ${(props: IInputProps) => props.mainColor==="white" ? "rgb(247,247,247)" : "white"};;
+  background-color: ${(props: IInputProps) => props.mainColor==="white" ? "rgb(247,247,247)" : "white"};
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+
+  @media (max-width: 576px) {
+    width: 220px;
+  }
 `
 
 const SubmitButton = styled.button`
@@ -20,10 +28,19 @@ const SubmitButton = styled.button`
   color: white;
   font-weight: bold;
   cursor: pointer;
+
+  @media (max-width: 576px) {
+    width: 70px;
+    font-size: 12px;
+  }
 `
 
 const TextContainer = styled.h1`
   font-size: 22px;
+
+  @media (max-width: 576px) {
+    font-size: 18px;
+  }
 `
 
 interface IInputProps {

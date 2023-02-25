@@ -9,6 +9,7 @@ import CartItemComponent from "./cart-item.component";
 import roundDecimals from "../utils/round-decimals";
 import {useRouter} from "next/router";
 import {setIsCartOpen} from "../store/slices/isCartOpenSlice";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface ICartProps {
     isCartOpen: boolean | null
@@ -24,6 +25,15 @@ const CartContainer = styled.div`
   width: 400px;
   ${(props: ICartProps) => props.isCartOpen!=null ? !props.isCartOpen ? "animation: fadeOut 0.5s ease-out;" : "animation: fadeIn 0.5s ease-out;" : ""}
   animation-fill-mode: forwards;
+  
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+
+  @media (max-width: 576px) {
+    width: 270px;
+  }
+  
 
   @keyframes fadeIn {
     from {
@@ -67,11 +77,24 @@ const HeaderCartContainer = styled.div`
   padding-right: 10px;
   padding-left: 10px;
   box-shadow: 0px 5px 10px -3px rgb(222,226,230);
+
+  @media (max-width: 576px) {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
 `
 
 const HeaderTextContainer = styled.div`
   font-weight: bold;
   font-size: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 16px;
+  }
 `
 
 const HeaderRightSide = styled.div`
@@ -103,6 +126,14 @@ const EmptyCartTextContainer = styled.div`
   height: 100px;
   font-size: 30px;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 20px;
+  }
 `
 
 const CustomShopButton = styled.button`
@@ -113,15 +144,29 @@ const CustomShopButton = styled.button`
   height: 55px;
   border-radius: 10px;
   padding: 16px 24px;
-  line-height: 1.5;
-  display: inline-block;
+  display: flex;
   text-align: center;
+  justify-content: center;
   font-size: 17px;
   font-weight: 800;
   font-style: normal;
   text-transform: initial;
   letter-spacing: .5px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 250px;
+    font-size: 15px;
+    height: 40px;
+    padding: 12px 24px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 14px;
+    width: 230px;
+    height: 35px;
+    padding: 8px 24px;
+  }
 `
 
 const CheckoutButton = styled.button`
@@ -132,16 +177,28 @@ const CheckoutButton = styled.button`
   margin-left: 20px;
   height: 55px;
   border-radius: 10px;
-  padding: 16px 24px;
   line-height: 1.5;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 17px;
   font-weight: 800;
   font-style: normal;
   text-transform: initial;
   letter-spacing: .5px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 250px;
+    font-size: 15px;
+    height: 40px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 14px;
+    width: 230px;
+    height: 35px;
+  }
 `
 
 const CartBodyContainer = styled.div`
@@ -152,6 +209,10 @@ const CartBodyContainer = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgb(241,241,241);
+  
+  @media (max-width: 576px) {
+    padding-left: px;
+  }
 `
 
 const TotalPriceContainer = styled.div`
@@ -159,6 +220,15 @@ const TotalPriceContainer = styled.div`
   justify-content: space-between;
   padding: 30px;
   font-size: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    width: 250px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 16px;
+  }
 `
 
 const TotalPriceAmountContainer = styled.div`
@@ -170,10 +240,10 @@ const CartComponent = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cartState.cartItems);
     const pathName = useRouter().pathname;
+    const isSmallScreen = useMediaQuery('(max-width: 768px)');
 
-    //TODO: fix cart closing animation on first escape
     const handleEscapeKeyPress = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
+        if (event.key === "Escape" && isCartOpen!=null) {
              dispatch(setIsCartOpen(false));
         }
     };
@@ -183,7 +253,7 @@ const CartComponent = () => {
         return () => {
             document.removeEventListener("keydown", handleEscapeKeyPress);
         };
-    }, []);
+    }, [isCartOpen]);
 
     return createPortal(
         <>
@@ -191,7 +261,7 @@ const CartComponent = () => {
             <CartContainer isCartOpen={isCartOpen}>
                 <HeaderCartContainer>
                     <HeaderLeftSide>
-                        <Image src="/icons/cart.svg" alt="cart-logo" height={30} width={30}/>
+                        <Image src="/icons/cart.svg" alt="cart-logo" height={isSmallScreen ? 20 : 30} width={isSmallScreen ? 20 : 30}/>
                         <HeaderTextContainer>
                             My Shopping Cart
                         </HeaderTextContainer>
@@ -205,7 +275,7 @@ const CartComponent = () => {
                     <EmptyCartTextContainer>
                         Your cart is empty 😭
                     </EmptyCartTextContainer>
-                    <Image src="/images/emptycart.jpg" alt="empty-cart-logo" height={350} width={300}/>
+                    <Image src="/images/emptycart.jpg" alt="empty-cart-logo" height={isSmallScreen ? 200 : 350} width={isSmallScreen ? 150 : 300}/>
                     <Link href={pathName==="/checkout" || "user/order-successful" ? "/" : pathName}>
                         <CustomShopButton onClick={() => dispatch(setIsCartOpen(!isCartOpen))}>
                             Continue Shopping

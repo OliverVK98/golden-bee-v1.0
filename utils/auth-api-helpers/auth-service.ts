@@ -38,7 +38,8 @@ export default class AuthService {
 export interface IAuthResponse {
     accessToken: string;
     refreshToken: string;
-    user: IDtoUser
+    user: IDtoUser;
+    error?: string
 }
 
 

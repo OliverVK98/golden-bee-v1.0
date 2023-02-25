@@ -21,6 +21,11 @@ const GridContainer = styled.div`
   grid-template-columns: ${(props: IGridProps) => props.isStyle ? "repeat(3, 1fr)" : "repeat(2, 1fr)"};
   grid-template-rows: ${(props: IGridProps) => props.isStyle ? "" : "repeat(2, 1fr)"};
   gap: 20px;
+
+  @media (max-width: 1040px) {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: none;
+  }
 `
 
 interface IItemsProps {
@@ -58,7 +63,7 @@ const ItemsByCollectionOrStyleComponent: React.FC<IItemsProps> = ({isStyle}) => 
                        data?.CollectionsList.map((element: ICollectionItem) => {
                            return (
                                <Link key={element.collectionId} href={`${isStyle ? "styles" : "collections"}/${element.name.toLowerCase().replace(/ /g, "-")}`}>
-                                   <SectionPreviewComponent title={element.name} height={300} width={isStyle ? 330 : 450}
+                                   <SectionPreviewComponent title={element.name} height={300} isStyle={isStyle}
                                                          imageUrl={element.imageUrl}/>
                                </Link>
                            )

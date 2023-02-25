@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import Image from "next/legacy/image";
 import styles from "../styles/FrontImage.module.css"
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ImageWrapper = styled.div`
   overflow: hidden;
@@ -25,7 +26,7 @@ const TextContainer= styled.p`
 interface ISectionProps {
     title: string,
     height: number,
-    width: number,
+    isStyle: boolean,
     imageUrl: string
 }
 
@@ -34,11 +35,16 @@ interface IWrapperProps {
     width: number
 }
 
-const SectionPreviewComponent: React.FC<ISectionProps> = ({title, width, height, imageUrl}) => {
+const SectionPreviewComponent: React.FC<ISectionProps> = ({title, isStyle, height, imageUrl}) => {
+    const isSmallScreen = useMediaQuery('(max-width: 1040px)');
+    const isMobileScreen = useMediaQuery('(max-width: 650px)');
+    const width = isMobileScreen ? 300 : (isSmallScreen ? (600) : (isStyle ? 330 : 450));
+    const finalHeight = isMobileScreen ? 250 : (isSmallScreen ? (350) : height);
+
     return (
-        <ImageWrapper height={height} width={width}>
+        <ImageWrapper height={finalHeight} width={width}>
             <TextContainer>{title}</TextContainer>
-            <Image src={imageUrl} alt="section-preview" height={height} width={width} className={styles.imageDark}/>
+            <Image src={imageUrl} alt="section-preview" height={finalHeight} width={width} className={styles.imageDark}/>
         </ImageWrapper>
     )
 }

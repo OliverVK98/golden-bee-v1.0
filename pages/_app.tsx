@@ -14,6 +14,7 @@ import {useRouter} from "next/router";
 import {ReactElement, ReactNode, useEffect} from "react";
 import {SessionProvider} from "next-auth/react";
 import {NextPage} from "next";
+import BurgerMenuComponent from "../components/burger-menu.component";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode
@@ -38,6 +39,7 @@ export default function App({ Component, pageProps}: AppPropsWithLayout) {
                                 <SignInModalComponent/>
                                 <SignUpModalComponent/>
                                 <CartComponent/>
+                                <BurgerMenuComponent/>
                             </ApolloProvider>
                         </SessionProvider>
                     </PersistGate>
@@ -55,6 +57,7 @@ export default function App({ Component, pageProps}: AppPropsWithLayout) {
                                 <SignInModalComponent/>
                                 <SignUpModalComponent/>
                                 <CartComponent/>
+                                <BurgerMenuComponent/>
                               </ApolloProvider>
                             </SessionProvider>
                         </PersistGate>

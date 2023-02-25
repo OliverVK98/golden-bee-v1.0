@@ -27,11 +27,17 @@ const OrdersContainer = styled.div`
   gap: 50px;
 `
 
-//TODO: PAGINATION FOR PAST ORDERS
-
 const PastOrders = () => {
     const router = useRouter()
     const isAuth = useSelector((state: RootState) => state.userState.isUserAuthenticated);
+    const userId = useSelector((state: RootState) => state.userState.userData.userId);
+    const providerId = useSelector((state: RootState) => state.userState.providerUserData.providerId);
+    const {data, loading} = useQuery(userId ? pastOrdersByUserId : providerPastOrdersByUserId, {
+        variables: {
+            [userId ? "userId" : "providerId"] : userId ? userId : providerId,
+        }
+    })
+    const userOrders = data && data[userId ? "PastOrdersQuery" : "ProviderPastOrdersQuery"];
 
     useEffect(() => {
         if (!isAuth) {
@@ -42,15 +48,6 @@ const PastOrders = () => {
     if (!isAuth) {
         return null;
     }
-
-    const userId = useSelector((state: RootState) => state.userState.userData.userId);
-    const providerId = useSelector((state: RootState) => state.userState.providerUserData.providerId);
-    const {data, loading} = useQuery(userId ? pastOrdersByUserId : providerPastOrdersByUserId, {
-        variables: {
-            [userId ? "userId" : "providerId"] : userId ? userId : providerId,
-        }
-    })
-    const userOrders = data && data[userId ? "PastOrdersQuery" : "ProviderPastOrdersQuery"];
 
     return(
         <Container>

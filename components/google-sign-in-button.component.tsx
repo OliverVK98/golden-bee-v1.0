@@ -48,7 +48,6 @@ const GoogleSignInButtonComponent = () => {
     const dispatch = useDispatch();
     const isUserAuthenticated = useSelector((state: RootState) => state.userState.isUserAuthenticated);
     const [isLoading, setIsLoading] = useState(false);
-    const [userExists, setUserExists] = useState(false);
 
     const signInProvider = async () => {
         try {
@@ -66,7 +65,6 @@ const GoogleSignInButtonComponent = () => {
             } else {
                 await signOut({ redirect: false });
                 setIsLoading(false);
-                setUserExists(true);
             }
         } catch (e) {
             console.log (e);
@@ -92,9 +90,6 @@ const GoogleSignInButtonComponent = () => {
                     isLoading ? <ButtonLoaderBlackComponent/> : "Connect with Google"
                 }</GoogleSpan>
             </GoogleButton>
-            {userExists && <ErrorContainer>
-                User with that email already exists.
-            </ErrorContainer>}
         </>
     )
 }

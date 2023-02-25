@@ -6,6 +6,7 @@ import Link from "next/link";
 import {IFrontPageItem} from "../pages/all";
 import {useDispatch} from "react-redux";
 import {addCartItems} from "../store/slices/cartSlice";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AddToCartButton = styled.button`
   color: rgb(58,170,53);
@@ -22,6 +23,12 @@ const AddToCartButton = styled.button`
     color: white;
     background-color: rgb(58,170,53);
   }
+  
+  @media (max-width: 600px) {
+    font-size: 12px;
+    width: 150px;
+  }
+  
 `
 
 const ItemContainer = styled.div`
@@ -29,6 +36,9 @@ const ItemContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   width: 250px;
+  @media (max-width: 600px) {
+    width: 150px;
+  }
 `
 
 const BottomItemContainer = styled.div`
@@ -40,32 +50,49 @@ const BottomItemContainer = styled.div`
   :hover {
     opacity: 0.6;
   }
+  @media (max-width: 600px) {
+    width: 150px;
+  }
 `
 
 const ImageWrapper = styled.div`
   overflow: hidden;
   border-radius: 10px;
-  height: 250px;
   width: 250px;
+
+  @media (max-width: 600px) {
+    width: 150px;
+  }
 `
 
 const ItemText = styled.p`
   font-size: 16px;
   font-weight: bold;
   align-self: center;
+  
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
 `
 
 const StarContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
 `
 
 const PriceContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px
+  gap: 5px;
+
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
 `
 
 const OriginalPriceContainer = styled.span`
@@ -80,6 +107,10 @@ const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
     const {itemName, frontImageUrl, price, discountedPrice, rating, productId, isImageLoadPriority=false} = props;
     const url = `/products/${productId}`;
     const dispatch = useDispatch();
+    const isSmallScreen = useMediaQuery('(max-width: 600px)');
+    const height = isSmallScreen ? 150 : 250;
+    const width = isSmallScreen ? 150 : 250;
+    const starDimensions = isSmallScreen ? 12 : 24;
 
     const addToCartHandler = () => {
         dispatch(addCartItems({
@@ -98,7 +129,7 @@ const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
                     <Image className={styles.image}
                            src={frontImageUrl}
                            alt={"trending-image"}
-                           width={250} height={250}
+                           width={width} height={height}
                            priority={isImageLoadPriority}/>
                 </Link>
             </ImageWrapper>
@@ -107,8 +138,8 @@ const FrontPageItemComponent: React.FC<IFrontPageItem> = (props) => {
                 <BottomItemContainer>
                     <ItemText>{itemName}</ItemText>
                     {rating!=0 && <StarContainer>
-                        {[0, 1, 2, 3, 4].map(el => <Image src="/icons/star.png" alt="star icon" width={24}
-                                                          height={24} key={el}/>)}
+                        {[0, 1, 2, 3, 4].map(el => <Image src="/icons/star.png" alt="star icon" width={starDimensions}
+                                                          height={starDimensions} key={el}/>)}
                         <p>
                             ({rating})
                         </p>

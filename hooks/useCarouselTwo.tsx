@@ -1,6 +1,6 @@
 import {RefObject, useEffect, useState} from "react";
 
-const useCarousel = ([containerZero, containerOne, containerTwo, containerThree, containerFour]: RefObject<HTMLDivElement>[]) => {
+const useCarouselTwo = ([containerZero, containerOne, containerTwo, containerThree, containerFour, containerFive, containerSix, containerSeven]: RefObject<HTMLDivElement>[]) => {
     const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(1);
     const [slides, setSlides] = useState<HTMLDivElement[]>([]);
     const [transitionActive, setTransitionActive] = useState<boolean>(true);
@@ -22,13 +22,15 @@ const useCarousel = ([containerZero, containerOne, containerTwo, containerThree,
     useEffect(()=> {
         if (containerZero.current && containerOne.current
             && containerTwo.current && containerThree.current
-            && containerFour.current)
+            && containerFour.current && containerFive.current
+            && containerSix.current && containerSeven.current)
         {
             setSlides([containerZero.current, containerOne.current,
                 containerTwo.current, containerThree.current,
-                containerFour.current]);
+                containerFour.current, containerFive.current,
+                containerSix.current, containerSeven.current]);
         }
-    }, [containerZero, containerOne, containerTwo, containerThree, containerFour]);
+    }, [containerZero, containerOne, containerTwo, containerThree, containerFour, containerFive, containerSix, containerSeven]);
 
     useEffect(()=>{
         if (slides.length) {
@@ -41,8 +43,8 @@ const useCarousel = ([containerZero, containerOne, containerTwo, containerThree,
     }, [transitionActive]);
 
     const handleForwardButtonClick = () => {
-        if (currentSlideIndex==3) {
-            moveToSlide(4);
+        if (currentSlideIndex==6) {
+            moveToSlide(7);
             setCurrentSlideIndex(1);
             setTimeout(()=>{
                 setTransitionActive(false);
@@ -58,10 +60,10 @@ const useCarousel = ([containerZero, containerOne, containerTwo, containerThree,
     const handleBackwardButtonClick = () => {
         if (currentSlideIndex===1) {
             moveToSlide(0);
-            setCurrentSlideIndex(3);
+            setCurrentSlideIndex(6);
             setTimeout(()=>{
                 setTransitionActive(false);
-                moveToSlide(3);
+                moveToSlide(6);
             }, 450)
 
         } else {
@@ -80,4 +82,4 @@ const useCarousel = ([containerZero, containerOne, containerTwo, containerThree,
     }
 }
 
-export default useCarousel;
+export default useCarouselTwo;

@@ -17,7 +17,7 @@ const SlidesContainer = styled.div`
 `
 
 interface ITransition {
-    transitionActive: boolean;
+    transitionActive: boolean,
     left: number
 }
 
@@ -29,7 +29,7 @@ interface IPreviewComponentProps {
     left: number
 }
 
-const PreviewFourItemsComponent: React.FC<IPreviewComponentProps> = forwardRef(({left, transitionActive, dataArr, isImageLoadPriority=false}, ref, ) => {
+const PreviewItemsComponent: React.FC<IPreviewComponentProps> = forwardRef(({left, transitionActive, dataArr, isImageLoadPriority=false}, ref, ) => {
     return (
         <SlidesContainer left={left} transitionActive={transitionActive} ref={ref}>
             {
@@ -39,4 +39,4 @@ const PreviewFourItemsComponent: React.FC<IPreviewComponentProps> = forwardRef((
     )
 })
 
-export default PreviewFourItemsComponent
+export default PreviewItemsComponent

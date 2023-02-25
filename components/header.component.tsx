@@ -10,7 +10,8 @@ import axios from "axios";
 import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
 import {setIsCartOpen} from "../store/slices/isCartOpenSlice";
 import UserAccountComponent from "./user-account.component";
-import {signOut} from "next-auth/react";
+import BurgerButtonComponent from "./burger-button.component";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -20,6 +21,14 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   padding: 3%;
   box-shadow: 0px 0px 10px 1px gray;
+  
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 10px;
+  }
 `
 
 const CustomHeaderRight = styled.header`
@@ -58,7 +67,15 @@ const CursorPointerWrapper = styled.div`
   cursor: pointer;
 `
 
-//TODO: SIGNOUT BUG AFTER PRESSING ALL USER OPTIONS
+const NavMenuContainer = styled.div`
+  background-color: deepskyblue;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 700;
+  width: 400px;
+`
 
 const HeaderComponent = () => {
   const isCartOpen = useSelector((state: RootState) => state.isCartOpenState.isCartOpen)
@@ -67,6 +84,7 @@ const HeaderComponent = () => {
   )
   const isSignInModalOpen = useSelector((state: RootState) => state.modalState.isSignInModalOpen);
   const dispatch = useDispatch();
+  const isSmallScreen = useMediaQuery('(max-width: 768px)');
 
   useEffect( ()=> {
       const isLoggedIn = async () => {
@@ -82,13 +100,17 @@ const HeaderComponent = () => {
           }
       }
       isLoggedIn();
-  }, [])
+  }, []);
 
 
+    //TODO: Update black loader on Github/Google Sign in options
+    //TODO: Track if user deleted cookies and is still authed.
 
   return (
     <HeaderContainer>
       <CustomHeaderRight>
+      {isSmallScreen && <BurgerButtonComponent/>}
+      {/*<NavMenuContainer/>*/}
         <Link href="/">
           <LogoContainer>
             <LeftLogoText>Golden</LeftLogoText>
@@ -97,16 +119,16 @@ const HeaderComponent = () => {
           </LogoContainer>
         </Link>
 
-        <Link href='/'>Home</Link>
-        <Link href='/all'>All Products</Link>
-        <Link href='/'>Help</Link>
+        {!isSmallScreen && <Link href='/'>Home</Link>}
+        {!isSmallScreen && <Link href='/all'>All Products</Link>}
+        {/*<Link href='/'>Help</Link>*/}
       </CustomHeaderRight>
       <CustomHeaderLeft>
         <CursorPointerWrapper>
           <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon" onClick={() => dispatch(setIsCartOpen(!isCartOpen))} />
         </CursorPointerWrapper>
-        {!isUserAuthenticated && <AuthContainer onClick={() => dispatch(setIsSignInModalOpen(!isSignInModalOpen))}>Sign In</AuthContainer>}
-        {isUserAuthenticated && <UserAccountComponent/>}
+        {!isUserAuthenticated && !isSmallScreen && <AuthContainer onClick={() => dispatch(setIsSignInModalOpen(!isSignInModalOpen))}>Sign In</AuthContainer>}
+        {isUserAuthenticated && !isSmallScreen && <UserAccountComponent/>}
       </CustomHeaderLeft>
     </HeaderContainer>
   )

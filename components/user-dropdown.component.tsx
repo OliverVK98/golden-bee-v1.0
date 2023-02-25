@@ -6,13 +6,18 @@ import {useDispatch, useSelector} from "react-redux";
 import Link from "next/link";
 import {RootState} from "../store/store";
 import {signOut} from "next-auth/react";
+import {useRouter} from "next/router";
+
+interface IDropDownProps {
+    providerUserData: any
+}
 
 const DropDownContainer = styled.div`
   position: absolute;
   width: 250px;
   background-color: rgb(247,247,247);
   z-index: 3;
-  bottom: -260px;
+  bottom: ${(props:IDropDownProps) => Object.keys(props.providerUserData).length > 0 ? "-160px" : "-260px"};
   right: -15px;
   border-radius: 10px;
   overflow: hidden;
@@ -64,6 +69,7 @@ const UserDropdownComponent: React.FC<IUserDropDownProps> = ({setIsDropDownOpen}
     const dispatch = useDispatch();
     const providerUserData = useSelector((state: RootState) => state.userState.providerUserData);
     const userData = useSelector((state: RootState) => state.userState.userData);
+    const router = useRouter();
 
     const handleUserSignOut = async () => {
         try {
@@ -71,11 +77,13 @@ const UserDropdownComponent: React.FC<IUserDropDownProps> = ({setIsDropDownOpen}
                 await signOut({redirect: false});
                 dispatch(setIsUserAuthenticated(false));
                 dispatch(setProviderUserData({}));
+                router.push("/")
             } else {
                 const response = await AuthService.logout();
                 localStorage.removeItem("accessToken");
                 dispatch(setIsUserAuthenticated(false));
                 dispatch(setUserData({} as IUserData));
+                router.push("/")
             }
         } catch (e: any) {
             console.log(e.response?.data?.message)
@@ -87,7 +95,7 @@ const UserDropdownComponent: React.FC<IUserDropDownProps> = ({setIsDropDownOpen}
     }
 
     return (
-        <DropDownContainer>
+        <DropDownContainer providerUserData={providerUserData}>
             <UserInfoContainer>
                 <UserAccountNameContainer>
                     {

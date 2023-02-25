@@ -62,7 +62,7 @@ const AnimationContainer = styled.div`
   margin: 0 0.5rem;
   animation: fadeInUp 1100ms ease forwards;
   font-size: 52px;
-  z-index: 5;
+  z-index: 2;
   
   @keyframes fadeInUp {
     from {
