@@ -17,6 +17,16 @@ const DropDownContainer = styled.div`
   display: flex;
   flex-direction: column;
   transition: height 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    width: 120px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 576px) {
+    width: 120px;
+    font-size: 12px;
+  }
 `
 
 const SelectButton = styled.button`

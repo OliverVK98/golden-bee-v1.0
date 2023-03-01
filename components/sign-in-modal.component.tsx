@@ -18,6 +18,10 @@ const ModalContainer = styled.div`
   height: fit-content;
   width: 450px;
   box-shadow: 0px 0px 10px 1px rgb(222,226,230);
+
+  @media (max-width: 576px) {
+    width: 300px;
+  }
 `
 
 const TopPartContainer = styled.div`
@@ -34,6 +38,10 @@ const TextContainer = styled.div`
   align-items: center;
   font-size: 30px;
   font-weight: bold;
+
+  @media (max-width: 576px) {
+    font-size: 25px;
+  }
 `
 
 const ImageContainer = styled.div`

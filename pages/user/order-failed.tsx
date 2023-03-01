@@ -9,6 +9,10 @@ const Container = styled.div`
   align-items: center;
   font-size: 30px;
   gap: 30px;
+
+  @media (max-width: 576px) {
+    font-size: 22px;
+  }
 `
 
 const CheckoutButton = styled.button`
@@ -19,16 +23,21 @@ const CheckoutButton = styled.button`
   margin-left: 20px;
   height: 55px;
   border-radius: 10px;
-  padding: 16px 24px;
-  line-height: 1.5;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 17px;
   font-weight: 800;
   font-style: normal;
   text-transform: initial;
   letter-spacing: .5px;
   cursor: pointer;
+
+  @media (max-width: 576px) {
+    font-size: 14px;
+    width: 280px;
+    height: 40px;
+  }
 `
 
 const OrderFailed = () => {

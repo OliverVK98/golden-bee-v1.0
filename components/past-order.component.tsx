@@ -7,6 +7,7 @@ import CheckoutItemComponent from "./checkout-item.component";
 import roundDecimals from "../utils/round-decimals";
 import SkeletonOrderListComponent from "./skeleton-order-list.component";
 import ContentLoader from "react-content-loader";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Container = styled.div`
   display: flex;
@@ -21,6 +22,12 @@ const TopTextContainer = styled.div`
   padding-top: 5px;
   margin-bottom: 10px;
   margin-top: 10px;
+  @media (max-width: 800px) {
+    width: 600px;
+  }
+  @media (max-width: 600px) {
+    width: 320px;
+  }
 `
 
 const DateContainer = styled.div`
@@ -32,6 +39,14 @@ const DateContainer = styled.div`
   margin-bottom: -10px;
   margin-top: 10px;
   border-top: 1px solid black;
+
+  @media (max-width: 800px) {
+    width: 600px;
+  }
+
+  @media (max-width: 600px) {
+    width: 320px;
+  }
 `
 
 const CustomTextContainer = styled.div`
@@ -40,6 +55,10 @@ const CustomTextContainer = styled.div`
   justify-content: ${(props: ITextProps) => props.isCenter ? "center" : "flex-start" };
   width: ${(props: ITextProps) => props.width}px;
   font-size: 20px;
+
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
 `
 
 interface ITextProps {
@@ -61,6 +80,15 @@ const TotalContainer = styled.div`
   height: 80px;
   font-size: 30px;
   justify-content: flex-end;
+
+  @media (max-width: 800px) {
+    width: 600px;
+  }
+
+  @media (max-width: 600px) {
+    width: 320px;
+    font-size: 20px;
+  }
 `
 
 const CartItemsContainer = styled.div`
@@ -78,11 +106,13 @@ const PastOrderComponent: React.FC<IPastOrder> = ({isSkeleton = false, productLi
 
     const orderItems: IOrderData[] = data?.ProductsByMultipleIds.map((item: any, index: number) => ({...item, quantity: quantity[index]}));
     const orderDate = (new Date(createdAt)).toLocaleString();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+    const isMobileScreen = useMediaQuery('(max-width: 600px)');
 
     return (
         <Container>
             <DateContainer>
-                <CustomTextContainer isCenter={false} width={750}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 320 : isSmallScreen ? 600: 750}>
                     Order Date:
                     {
                         !loading&&!isSkeleton ? orderDate : (
@@ -101,16 +131,16 @@ const PastOrderComponent: React.FC<IPastOrder> = ({isSkeleton = false, productLi
                 </CustomTextContainer>
             </DateContainer>
             <TopTextContainer>
-                <CustomTextContainer isCenter={false} width={200}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 80 : isSmallScreen ? 150: 200}>
                     Product
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={false} width={250}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 80 : isSmallScreen ? 150: 200}>
                     Description
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 80 : isSmallScreen ? 150: 200}>
                     Quantity
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 80 : isSmallScreen ? 150: 200}>
                     Price
                 </CustomTextContainer>
             </TopTextContainer>

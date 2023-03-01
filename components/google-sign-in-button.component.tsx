@@ -14,7 +14,8 @@ const GoogleButton = styled.button`
   color: rgb(255, 255, 255);
   font-weight: bold;
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  align-items: center;
   height: 50px;
   line-height: 50px;
   text-align: left;
@@ -26,6 +27,12 @@ const GoogleButton = styled.button`
   padding-left: 20%;
   background: rgb(255, 255, 255) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
   border: 1px solid rgb(220, 74, 61);
+
+  @media (max-width: 576px) {
+    font-size: 12px;
+    height: 40px;
+    background: rgb(255, 255, 255) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus.png') no-repeat scroll 4px 0px / 40px 40px padding-box border-box;
+  }
 `
 
 const GoogleSpan = styled.span`
@@ -35,12 +42,6 @@ const GoogleSpan = styled.span`
   text-align: center;
   text-transform: uppercase;
   border: 0px none rgb(220, 74, 61);
-`
-
-const ErrorContainer = styled.p`
-  color: red;
-  margin-top: -5px;
-  margin-bottom: -5px;
 `
 
 const GoogleSignInButtonComponent = () => {

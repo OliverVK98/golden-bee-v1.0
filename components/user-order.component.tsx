@@ -3,6 +3,7 @@ import roundDecimals from "../utils/round-decimals";
 import styled from "styled-components";
 import React from "react";
 import {IOrderData} from "../store/slices/orderSlice";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const UserOrderContainer = styled.div`
   display: flex;
@@ -23,7 +24,11 @@ const CustomTextContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: ${(props: ITextProps) => props.isCenter ? "center" : "flex-start" };
-  width: ${(props: ITextProps) => props.width}px
+  width: ${(props: ITextProps) => props.width}px;
+
+  @media (max-width: 600px) {
+  font-size: 13px;
+}
 `
 
 interface ITextProps {
@@ -38,6 +43,16 @@ const TotalContainer = styled.div`
   height: 80px;
   font-size: 30px;
   justify-content: flex-end;
+  
+  @media (max-width: 800px) {
+    width: 600px;
+    font-size: 26px;
+  }
+
+  @media (max-width: 600px) {
+    width: 320px;
+    font-size: 18px;
+  }
 `
 
 const CartItemsContainer = styled.div`
@@ -51,19 +66,22 @@ interface IUserOrderProps {
 }
 
 const UserOrderComponent:React.FC<IUserOrderProps> = ({cartItems}) => {
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+    const isMobileScreen = useMediaQuery('(max-width: 600px)');
+
     return (
         <UserOrderContainer>
             <TopTextContainer>
-                <CustomTextContainer isCenter={false} width={200}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 80 : isSmallScreen ? 150 : 200}>
                     Product
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={false} width={250}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 80 : isSmallScreen ? 150 : 200}>
                     Description
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 80 : 150}>
                     Quantity
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 80 : 150}>
                     Price
                 </CustomTextContainer>
             </TopTextContainer>

@@ -18,6 +18,20 @@ const GridContainer = styled.div`
   min-width: 1200px;
   margin-top: 20px;
   margin-bottom: 120px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+    min-width: 800px;
+  }
+  
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+    min-width: 576px;
+  }
+
+  @media (max-width: 576px) {
+    min-width: 320px;
+  }
 `
 
 const Container = styled.div`

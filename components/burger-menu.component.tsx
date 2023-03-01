@@ -35,6 +35,7 @@ const BurgerMenuContainer = styled.div`
   @media (max-width: 576px) {
     width: 150px;
     font-size: 18px;
+    gap: 50px;
   }
   
   @keyframes fadeInMenu {

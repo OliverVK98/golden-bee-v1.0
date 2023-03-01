@@ -46,7 +46,7 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
     const handleCheckout = async () => {
         try {
             setCheckoutLoading(true);
-            const response = await axios.post("http://localhost:3000/api/stripe/checkout_session", {
+            const response = await axios.post(`${process.env.VERCEL_URL}/api/stripe/checkout_session`, {
                 cartItems
             });
             setCheckoutLoading(false);
@@ -62,7 +62,7 @@ const GuestOrUserComponent: React.FC<IProps> = ({cartItems}) => {
     const handleAuthCheckout = async () => {
         try {
             setCheckoutLoading(true);
-            const response = await axios.post("http://localhost:3000/api/stripe/checkout_session", {
+            const response = await axios.post(`${process.env.VERCEL_URL}/api/stripe/checkout_session`, {
                 cartItems,
                 [Object.keys(userData).length > 0 ? "userId" : "providerId"]: Object.keys(userData).length > 0 ? userData.userId : providerUserData.providerId
             })

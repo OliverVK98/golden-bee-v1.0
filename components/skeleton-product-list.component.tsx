@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SkeletonCardComponent from "./skeleton-card.component";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SkeletonContainer = styled.div`
   display: flex;
@@ -7,10 +8,14 @@ const SkeletonContainer = styled.div`
 `
 
 const SkeletonProductListComponent = () => {
+    const isLaptopScreen = useMediaQuery('(max-width: 1200px)');
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+    const numberToRender = isLaptopScreen ? (isSmallScreen ? 2 : 3) : 4;
+
     return (
         <SkeletonContainer>
             {
-                new Array(4).fill(0).map((_, index) => <SkeletonCardComponent key={index}/>)
+                new Array(numberToRender).fill(0).map((_, index) => <SkeletonCardComponent key={index}/>)
             }
         </SkeletonContainer>
     )

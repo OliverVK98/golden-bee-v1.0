@@ -1,10 +1,13 @@
 import Image from "next/image";
 import styles from "../styles/Loader.module.css"
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ButtonLoaderWhiteComponent = () => {
+    const isSmallScreen = useMediaQuery('(max-width: 576px)');
+
     return (
         <Image src="/icons/loader-white.svg" alt="loader-icon"
-               height={24} width={24} className={styles.spin}/>
+               height={isSmallScreen ? 16 : 24} width={isSmallScreen ? 16 : 24} className={styles.spin}/>
     )
 }
 

@@ -13,25 +13,31 @@ const GithubButton = styled.button`
   color: black;
   font-weight: bold;
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  align-items: center;
   height: 50px;
-  line-height: 50px;
   text-align: left;
   text-decoration: none;
   text-transform: uppercase;
-  vertical-align: middle;
   width: 100%;
   border-radius: 3px;
   outline: none;
   padding-left: 20%;
   background: rgb(255, 255, 255) url('https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg') no-repeat scroll 10px 10px / 30px 30px padding-box border-box;
   border: 1px solid rgb(36, 41, 46);
+  
+  @media (max-width: 576px) {
+    font-size: 12px;
+    height: 40px;
+    background: rgb(255, 255, 255) url('https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg') no-repeat scroll 10px 10px / 20px 20px padding-box border-box;
+  }
 `;
 
 const GithubSpan = styled.span`
   box-sizing: border-box;
   cursor: pointer;
-  text-align: center;
+  display: flex;
+  justify-self: flex-start;
   text-transform: uppercase;
   border: 0px none rgb(220, 74, 61);
 `;
@@ -40,6 +46,10 @@ const ErrorContainer = styled.p`
   color: red;
   margin-top: -5px;
   margin-bottom: -5px;
+
+  @media (max-width: 576px) {
+    font-size: 15px;
+  }
 `
 
 const GithubSignInButtonComponent = () => {

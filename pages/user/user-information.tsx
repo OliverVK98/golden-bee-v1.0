@@ -43,6 +43,11 @@ const CustomButton = styled.button`
   letter-spacing: .5px;
   cursor: pointer;
   align-self: center;
+
+  @media (max-width: 576px) {
+    width: 200px;
+    font-size: 15px;
+  }
   
   :disabled {
     cursor: not-allowed;
@@ -99,7 +104,7 @@ const UserInformation = () => {
             setIsEmailEditable(false);
         }
 
-        if (!isEmail(emailRef.current?.value)) {
+        if (emailRef.current?.value!=undefined && !isEmail(emailRef.current?.value)) {
             setValidEmailError(true);
             return;
         }

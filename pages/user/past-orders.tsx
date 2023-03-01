@@ -19,6 +19,10 @@ const Container = styled.div`
 const TextContainer = styled.h1`
   margin-top: 30px;
   font-size: 40px;
+
+  @media (max-width: 600px) {
+    font-size: 28px;
+  }
 `
 
 const OrdersContainer = styled.div`

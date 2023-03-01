@@ -27,12 +27,31 @@ const FormContainer = styled.form`
 const LabelAndInputContainer = styled.div`
   display: flex;
   gap: 20px;
+
+  @media (max-width: 700px) {
+    gap: 10px;
+    font-size: 18px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 15px;
+    gap: 5px;
+  }
+  
 `
 
 const CustomInput = styled.input`
   width: 300px;
   border-radius: 10px;
   padding-left: 5px;
+
+  @media (max-width: 576px) {
+    width: 190px;
+  }
+
+  @media (max-width: 400px) {
+    width: 150px;
+  }
 `
 
 const CustomButton = styled.button`
@@ -42,9 +61,9 @@ const CustomButton = styled.button`
   width: 300px;
   height: 55px;
   border-radius: 10px;
-  padding: 16px 24px;
-  line-height: 1.5;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   font-size: 17px;
   font-weight: 800;
@@ -53,6 +72,12 @@ const CustomButton = styled.button`
   letter-spacing: .5px;
   cursor: pointer;
   align-self: center;
+
+  @media (max-width: 576px) {
+    width: 200px;
+    font-size: 15px;
+    height: 40px;
+  }
   
   :disabled {
     cursor: not-allowed;

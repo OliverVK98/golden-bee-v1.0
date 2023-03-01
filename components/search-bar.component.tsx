@@ -15,6 +15,18 @@ const SearchBarContainer = styled.div`
   width: 1170px;
   display: flex;
   position: relative;
+
+  @media (max-width: 1200px) {
+    width: 800px;
+  }
+
+  @media (max-width: 800px) {
+    width: 576px;
+  }
+
+  @media (max-width: 576px) {
+    width: 320px;
+  }
 `
 
 const SearchInput = styled.input`
@@ -27,6 +39,12 @@ const SearchInput = styled.input`
   outline: none;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  @media (max-width: 768px) {
+  }
+
+  @media (max-width: 576px) {
+  }
 `
 
 const SelectInput = styled.input`
@@ -42,6 +60,15 @@ const SelectInput = styled.input`
   font-weight: bold;
   color: white;
   z-index: 5;
+
+  @media (max-width: 768px) {
+    width: 100px;
+  }
+
+  @media (max-width: 576px) {
+    width: 100px;
+    font-size: 12px;
+  }
 `
 
 const ExpandButtonContainer = styled.div`

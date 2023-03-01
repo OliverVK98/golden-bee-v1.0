@@ -16,6 +16,10 @@ const FormContainer = styled.form`
   flex-direction: column;
   padding: 15px;
   gap: 20px;
+
+  @media (max-width: 576px) {
+    gap: 10px;
+  }
 `
 
 const CustomShopButton = styled.button`
@@ -31,6 +35,11 @@ const CustomShopButton = styled.button`
   font-weight: bold;
   width: 100%;
   cursor: pointer;
+
+  @media (max-width: 576px) {
+    font-size: 16px;
+    height: 40px;
+  }
 `
 
 const ButtonsContainer = styled.div`
@@ -44,6 +53,10 @@ const OrContainer = styled.p`
   text-align: center;
   margin-top: 50px;
   font-size: 18px;
+
+  @media (max-width: 576px) {
+    margin-top: 20px;
+  }
 `
 
 const ErrorContainer = styled.p`

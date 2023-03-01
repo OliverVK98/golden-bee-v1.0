@@ -1,11 +1,9 @@
 import axios from "axios";
 import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
 
-export const API_URL="http://localhost:3000"
-
 const $api = axios.create({
     withCredentials: true,
-    baseURL: API_URL,
+    baseURL: process.env.VERCEL_URL,
     validateStatus: (status) => status === 400 || status === 200
 })
 
@@ -16,7 +14,7 @@ $api.interceptors.request.use((config: any) => {
 
 $api.interceptors.response.use((config) => config, async (error): Promise<any> => {
     if (error.response.status === 401) {
-        const response =  await axios.get<IAuthResponse>("http://localhost:3000/api/auth/refresh", {withCredentials: true});
+        const response =  await axios.get<IAuthResponse>(`${process.env.VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
         localStorage.setItem("accessToken", response.data.accessToken);
         return $api.request(error.config);
     }

@@ -67,16 +67,6 @@ const CursorPointerWrapper = styled.div`
   cursor: pointer;
 `
 
-const NavMenuContainer = styled.div`
-  background-color: deepskyblue;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 700;
-  width: 400px;
-`
-
 const HeaderComponent = () => {
   const isCartOpen = useSelector((state: RootState) => state.isCartOpenState.isCartOpen)
   const isUserAuthenticated = useSelector(
@@ -90,7 +80,7 @@ const HeaderComponent = () => {
       const isLoggedIn = async () => {
           if (localStorage.getItem("accessToken")) {
               try {
-                  const response =  await axios.get<IAuthResponse>("http://localhost:3000/api/auth/refresh", {withCredentials: true});
+                  const response =  await axios.get<IAuthResponse>(`${process.env.VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
                   localStorage.setItem("accessToken", response.data.accessToken);
                   setUserData(response.data.user);
               } catch (e: any) {
@@ -105,12 +95,12 @@ const HeaderComponent = () => {
 
     //TODO: Update black loader on Github/Google Sign in options
     //TODO: Track if user deleted cookies and is still authed.
+    //TODO: Black Shadow in cart, fix ui
 
   return (
     <HeaderContainer>
       <CustomHeaderRight>
       {isSmallScreen && <BurgerButtonComponent/>}
-      {/*<NavMenuContainer/>*/}
         <Link href="/">
           <LogoContainer>
             <LeftLogoText>Golden</LeftLogoText>
@@ -121,7 +111,7 @@ const HeaderComponent = () => {
 
         {!isSmallScreen && <Link href='/'>Home</Link>}
         {!isSmallScreen && <Link href='/all'>All Products</Link>}
-        {/*<Link href='/'>Help</Link>*/}
+        <Link href='/'>Help</Link>
       </CustomHeaderRight>
       <CustomHeaderLeft>
         <CursorPointerWrapper>

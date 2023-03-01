@@ -30,6 +30,11 @@ const CustomShopButton = styled.button`
   font-weight: bold;
   width: 100%;
   cursor: pointer;
+
+  @media (max-width: 576px) {
+    font-size: 15px;
+    height: 40px;
+  }
 `
 
 const ButtonsContainer = styled.div`

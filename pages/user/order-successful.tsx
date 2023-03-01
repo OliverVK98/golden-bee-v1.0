@@ -29,7 +29,7 @@ const OrderSuccessful = () => {
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(resetCart());
-    })
+    });
 
     return (
         <Container>
