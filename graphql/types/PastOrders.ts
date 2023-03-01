@@ -20,7 +20,7 @@ export const PastOrdersQuery = queryField("PastOrdersQuery", {
                 userId: args.userId,
             },
         });
-        return pastOrders.map((order) => ({
+        return pastOrders.map((order: any) => ({
             ...order,
             createdAt: order.createdAt.toISOString(),
         }));
