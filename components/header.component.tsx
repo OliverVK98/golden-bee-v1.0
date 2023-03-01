@@ -96,6 +96,7 @@ const HeaderComponent = () => {
     //TODO: Update black loader on Github/Google Sign in options
     //TODO: Track if user deleted cookies and is still authed.
     //TODO: Black Shadow in cart, fix ui
+    //TODO: add tabs names in the browser
 
   return (
     <HeaderContainer>
