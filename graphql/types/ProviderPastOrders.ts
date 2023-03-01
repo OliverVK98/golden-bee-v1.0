@@ -20,7 +20,7 @@ export const ProviderPastOrdersQuery = queryField("ProviderPastOrdersQuery", {
                 providerId: args.providerId,
             },
         });
-        return pastOrders.map((order) => ({
+        return pastOrders.map((order: any) => ({
             ...order,
             createdAt: order.createdAt.toISOString(),
         }));
