@@ -3,6 +3,8 @@ import Cors from "cors";
 
 const cors = Cors({
     methods: ['POST', 'GET', 'HEAD'],
+    origin: '*',
+    allowedHeaders: ['Content-Type', 'Authorization'],
 })
 
 export function runMiddlewareCors(
