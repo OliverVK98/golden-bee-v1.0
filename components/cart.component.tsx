@@ -246,7 +246,6 @@ const CartComponent = () => {
         if (event.key === "Escape" && isCartOpen!=null) {
              dispatch(setIsCartOpen(false));
         }
-        console.log(cartItems);
     };
 
     useEffect(() => {

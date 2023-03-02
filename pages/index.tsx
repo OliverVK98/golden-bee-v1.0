@@ -112,7 +112,6 @@ interface IStartProps {
 
 const Home: React.FC<IStartProps> = ({dataNewOne,dataNewTwo, dataNewThree, dataTrendingOne,dataTrendingTwo,dataTrendingThree}) => {
   const isSmallScreen = useMediaQuery('(max-width: 1061px)');
-  console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
 
   return (
       <div>
