@@ -3,7 +3,7 @@ import Cors from "cors";
 
 const cors = Cors({
     methods: ['POST', 'GET', 'HEAD'],
-    origin: '*',
+    origin: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`,
     allowedHeaders: ['Content-Type', 'Authorization'],
 })
 
