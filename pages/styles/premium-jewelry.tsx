@@ -6,7 +6,7 @@ import {
 } from "../../graphql/queries/queries";
 import {ContentContainer, CustomTitle, IFrontPageItem} from "../all";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const {data} = await apolloClient.query({
         query: productsFromSpecificCollection,
         variables: {

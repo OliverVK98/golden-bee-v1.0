@@ -36,7 +36,7 @@ export const ContentContainer = styled.div`
   gap: 5px;
 `
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const {data} = await apolloClient.query({
         query: frontPageProductDataQuery
     })

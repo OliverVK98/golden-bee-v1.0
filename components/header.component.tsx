@@ -97,6 +97,7 @@ const HeaderComponent = () => {
     //TODO: Track if user deleted cookies and is still authed.
     //TODO: Black Shadow in cart, fix ui
     //TODO: add tabs names in the browser
+    //TODO: you may also like not showing up
 
   return (
     <HeaderContainer>

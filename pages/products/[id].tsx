@@ -193,7 +193,7 @@ const TextContainer = styled.p`
   }
 `
 
-export async function getStaticProps(staticProps: any) {
+export async function getServerSideProps(staticProps: any) {
     const queryById = gql`
         query($id: Int!) {
             ProductById(id: $id) {
@@ -227,34 +227,34 @@ interface IOnlyIdProduct {
     productId: String
 }
 
-export async function getStaticPaths() {
-    const allIdsDataQuery = gql`
-        query {
-            ProductsList {
-                productId
-            }
-        }
-    `;
-
-    const {data: {ProductsList}} = await apolloClient.query({
-        query: allIdsDataQuery
-    })
-
-    const paths = ProductsList.map((product: IOnlyIdProduct) => {
-        return {
-            params: {
-                id: product.productId.toString(),
-            },
-        };
-    });
-
-
-    return {
-        paths,
-        fallback: false,
-    };
-
-}
+// export async function getStaticPaths() {
+//     const allIdsDataQuery = gql`
+//         query {
+//             ProductsList {
+//                 productId
+//             }
+//         }
+//     `;
+//
+//     const {data: {ProductsList}} = await apolloClient.query({
+//         query: allIdsDataQuery
+//     })
+//
+//     const paths = ProductsList.map((product: IOnlyIdProduct) => {
+//         return {
+//             params: {
+//                 id: product.productId.toString(),
+//             },
+//         };
+//     });
+//
+//
+//     return {
+//         paths,
+//         fallback: false,
+//     };
+//
+// }
 
 interface IProductPageProps {
     ProductById: IDataItem
