@@ -80,7 +80,7 @@ const HeaderComponent = () => {
       const isLoggedIn = async () => {
           if (localStorage.getItem("accessToken")) {
               try {
-                  const response =  await axios.get<IAuthResponse>(`${process.env.VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
+                  const response =  await axios.get<IAuthResponse>(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
                   localStorage.setItem("accessToken", response.data.accessToken);
                   setUserData(response.data.user);
               } catch (e: any) {
