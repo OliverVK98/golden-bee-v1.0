@@ -15,7 +15,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: 5vh;
+  height: max(5vh, 55px);
   display: flex;
   align-items: center;
   justify-content: space-between;

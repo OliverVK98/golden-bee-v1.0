@@ -11,7 +11,7 @@ interface IButtonProps {
 const Banner = styled.div`
   transition: all .3s ease;
   background-size: 100vw 30vh;
-  height: 30vh;
+  height: max(30vh, 230px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,16 +29,19 @@ const CustomShopButton = styled.button`
   width: 200px;
   height: 55px;
   border-radius: 5px;
-  padding: 16px 24px;
-  line-height: 1.5;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 17px;
   font-weight: 800;
   font-style: normal;
   text-transform: initial;
   letter-spacing: .5px;
   cursor: pointer;
+
+  @media (max-width: 576px) {
+    height: 45px;
+  }
 `
 
 const ButtonContainer = styled.div`
@@ -63,6 +66,10 @@ const AnimationContainer = styled.div`
   animation: fadeInUp 1100ms ease forwards;
   font-size: 52px;
   z-index: 2;
+
+  @media (max-width: 576px) {
+    font-size: 36px;
+  }
   
   @keyframes fadeInUp {
     from {
@@ -75,7 +82,6 @@ const AnimationContainer = styled.div`
       transform: translate3d(0, 0, 0);
     }
   }
-  
 `
 
 const MainPageBannerComponent: FunctionComponent = (): ReactElement => {

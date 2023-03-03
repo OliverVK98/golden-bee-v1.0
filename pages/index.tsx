@@ -14,24 +14,11 @@ const MainPageContainer = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  
-  @media (max-width: 992px) {
-  
-  }
-
-  @media (max-width: 768px) {
-  
-  }
-
-  @media (max-width: 576px) {
-  
-  }
 `
 
 const BannerText = styled.div`
   width: 100vw;
   background-color: rgb(247,247,247);
-  height: 15vh;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
