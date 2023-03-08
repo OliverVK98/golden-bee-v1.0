@@ -16,6 +16,7 @@ import Cookies from 'js-cookie';
 const HeaderContainer = styled.header`
   width: 100vw;
   height: max(3vh, 55px);
+  max-height: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
