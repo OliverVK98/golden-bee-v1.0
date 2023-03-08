@@ -11,7 +11,7 @@ const ComponentContainer = styled.div`
   padding-top: -10px;
   border-bottom: 1px solid gray;
   padding-bottom: 10px;
-
+  
   @media (max-width: 800px) {
     width: 600px;
   }
@@ -34,7 +34,7 @@ const ImageContainer = styled.div`
   }
   
   @media (max-width: 600px) {
-    width: 80px;
+    width: 70px;
     font-size: 12px;
   }
 `
@@ -50,16 +50,6 @@ const ContentContainer = styled.div`
   height: 150px;
   align-items: center;
   justify-content: ${(props: IJustifyCenter) => props.isCenter ? "center" : "flex-start" };
-
-  @media (max-width: 800px) {
-    width: 150px;
-    font-size: 15px;
-  }
-
-  @media (max-width: 600px) {
-    width: 80px;
-    font-size: 12px;
-  }
 `
 
 interface ICheckoutComponentProps {
@@ -74,28 +64,29 @@ interface ICheckoutComponentProps {
 
 const CheckoutItemComponent: React.FC<ICheckoutComponentProps> = ({isOrder,itemName, frontImageUrl, quantity, productId, price, discountedPrice}) => {
     const dispatch = useDispatch();
+    const isLaptopScreen = useMediaQuery('(max-width: 1000px)');
     const isSmallScreen = useMediaQuery('(max-width: 800px)');
     const isMobileScreen = useMediaQuery('(max-width: 600px)');
 
     return (
         <ComponentContainer>
             <ImageContainer>
-                <Image src={frontImageUrl} alt="item-image" width={isMobileScreen ? (70) : (isSmallScreen ? 100 : 150)} height={isMobileScreen ? (70) : (isSmallScreen ? 100 : 150)}/>
+                <Image src={frontImageUrl} alt="item-image" width={!isOrder ? (isMobileScreen ? 65 : isLaptopScreen ? 100 : 150) : (isMobileScreen ? (70) : (isSmallScreen ? 100 : 150))} height={!isOrder ? (isMobileScreen ? 65 : isLaptopScreen ? 100 : 150) : (isMobileScreen ? (70) : (isSmallScreen ? 100 : 150))}/>
             </ImageContainer>
-            <ContentContainer isCenter={false} width={isMobileScreen ? 80 : isSmallScreen ? 150 : 250}>
+            <ContentContainer isCenter={false} width={!isOrder ? (isMobileScreen ? 70 : isLaptopScreen ? 120 : 150) : (isMobileScreen ? 80 : (isSmallScreen ? 150 : 250))}>
                 {itemName}
             </ContentContainer>
-            <ContentContainer isCenter={true} width={150}>
+            <ContentContainer isCenter={true} width={!isOrder ? isMobileScreen ? 70 : (isLaptopScreen ? 120 : 150) : 150}>
                 {!isOrder&&<Image src="/icons/cart-arrow-left.png" alt="arrow-left" width={24} height={24}
                         style={{cursor: "pointer"}} onClick={() => dispatch(deleteOneCartItemById(productId))}/>}
                 {quantity}
                 {!isOrder&&<Image src="/icons/cart-arrow-right.png" alt="arrow-left" width={24} height={24}
                         style={{cursor: "pointer"}} onClick={() => dispatch(addOneCartItemById(productId))}/>}
             </ContentContainer>
-            <ContentContainer isCenter={true} width={150}>
+            <ContentContainer isCenter={true} width={!isOrder ? (isMobileScreen ? 70 : isLaptopScreen ? 120 : 150) : 150}>
                 ${discountedPrice ? roundDecimals(discountedPrice*(quantity as number)) : roundDecimals(price*(quantity as number))}
             </ContentContainer>
-            {!isOrder&&<ContentContainer isCenter={true} width={150}>
+            {!isOrder&&<ContentContainer isCenter={true} width={isMobileScreen ? 30 : isLaptopScreen ? 120 : 150}>
                 <Image src="/icons/red-cross.png" alt="red-cross" width={24} height={24}
                        style={{cursor: "pointer"}} onClick={() => dispatch(deleteCartItemById(productId))}/>
             </ContentContainer>}

@@ -42,6 +42,8 @@ export default async function handler(
             ...(email && {email}),
         }
 
+        if (!userData) return;
+
         const response = await prisma.user.update({
             where: {
                 userId: +userData.userId

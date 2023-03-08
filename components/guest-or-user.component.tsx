@@ -16,19 +16,37 @@ const CustomShopButton = styled.button`
   width: 400px;
   height: 55px;
   border-radius: 10px;
-  padding: 16px 24px;
-  line-height: 1.5;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 17px;
   font-weight: 800;
   font-style: normal;
   letter-spacing: .5px;
   cursor: pointer;
+
+  @media (max-width: 1000px) {
+    width: 300px;
+  }
+
+  @media (max-width: 800px) {
+    width: 250px;
+  }
+  
+  @media (max-width: 600px) {
+    width: 150px;
+    font-size: 12px;
+    height: 30px;
+  }
 `
 
 const ButtonsContainer = styled.div`
   display: flex;
-  gap: 20px
+  gap: 20px;
+  
+  @media (max-width: 600px) {
+  gap: 10px
+  }
 `
 
 interface IProps {

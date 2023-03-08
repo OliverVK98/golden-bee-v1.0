@@ -9,10 +9,10 @@ const generateTokensCookiesAndRespond = async (userDtoInfo: IDtoUser, req: NextA
 
     const cookies = new Cookie(req, res);
     cookies.set("refreshToken", tokens.refreshToken, {
-        maxAge: 24 * 60* 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true
-    })
-
+    });
+    
     res.status(200).json({
         user: {...userDtoInfo},
         ...tokens

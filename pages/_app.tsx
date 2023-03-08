@@ -15,6 +15,7 @@ import {ReactElement, ReactNode, useEffect} from "react";
 import {SessionProvider} from "next-auth/react";
 import {NextPage} from "next";
 import BurgerMenuComponent from "../components/burger-menu.component";
+import Head from "next/head";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode
@@ -29,40 +30,47 @@ export default function App({ Component, pageProps}: AppPropsWithLayout) {
     const router = useRouter();
     useEffect(() => storePathValues, [router.asPath]);
 
+
     if (Component.getLayout) {
         return Component.getLayout(
-                <Provider store={store}>
-                    <PersistGate persistor={persistor}>
-                        <SessionProvider session={pageProps.session}>
-                            <ApolloProvider client={apolloClient}>
-                                <Component {...pageProps} />
-                                <SignInModalComponent/>
-                                <SignUpModalComponent/>
-                                <CartComponent/>
-                                <BurgerMenuComponent/>
-                            </ApolloProvider>
-                        </SessionProvider>
-                    </PersistGate>
-                </Provider>
+            <Provider store={store}>
+                <PersistGate persistor={persistor}>
+                    <SessionProvider session={pageProps.session}>
+                        <ApolloProvider client={apolloClient}>
+                            <Head>
+                                <title>Golden Bee</title>
+                            </Head>
+                            <Component {...pageProps} />
+                            <SignInModalComponent/>
+                            <SignUpModalComponent/>
+                            <CartComponent/>
+                            <BurgerMenuComponent/>
+                        </ApolloProvider>
+                    </SessionProvider>
+                </PersistGate>
+            </Provider>
         )
     }
 
     return (
-                    <Provider store={store}>
-                        <PersistGate persistor={persistor}>
-                            <SessionProvider session={pageProps.session}>
-                              <ApolloProvider client={apolloClient}>
-                                <HeaderComponent/>
-                                <Component {...pageProps} />
-                                <SignInModalComponent/>
-                                <SignUpModalComponent/>
-                                <CartComponent/>
-                                <BurgerMenuComponent/>
-                              </ApolloProvider>
-                            </SessionProvider>
-                        </PersistGate>
-                    </Provider>
-      )
+        <Provider store={store}>
+            <PersistGate persistor={persistor}>
+                <SessionProvider session={pageProps.session}>
+                    <ApolloProvider client={apolloClient}>
+                        <Head>
+                            <title>Golden Bee</title>
+                        </Head>
+                        <HeaderComponent key={Math.random()}/>
+                        <Component {...pageProps} />
+                        <SignInModalComponent />
+                        <SignUpModalComponent />
+                        <CartComponent />
+                        <BurgerMenuComponent />
+                    </ApolloProvider>
+                </SessionProvider>
+            </PersistGate>
+        </Provider>
+    );
 }
 
 function storePathValues() {

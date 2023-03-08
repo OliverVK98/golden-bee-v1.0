@@ -79,11 +79,11 @@ const UserDropdownComponent: React.FC<IUserDropDownProps> = ({setIsDropDownOpen}
                 dispatch(setProviderUserData({}));
                 router.push("/")
             } else {
-                const response = await AuthService.logout();
+                await AuthService.logout();
                 localStorage.removeItem("accessToken");
                 dispatch(setIsUserAuthenticated(false));
                 dispatch(setUserData({} as IUserData));
-                router.push("/")
+                router.push("/");
             }
         } catch (e: any) {
             console.log(e.response?.data?.message)

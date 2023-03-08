@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import roundDecimals from "../utils/round-decimals";
 import GuestOrUserComponent from "../components/guest-or-user.component";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CheckoutContainer = styled.div`
   display: flex;
@@ -55,14 +56,18 @@ const CustomTextContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: ${(props: ITextProps) => props.isCenter ? "center" : "flex-start" };
-  width: ${(props: ITextProps) => props.width}px
+  width: ${(props: ITextProps) => props.width}px;
+  
+  @media (max-width: 600px) {
+  font-size: 11px;
+  }
 `
 
 const CustomShopButton = styled.button`
   border: 1px solid rgb(58,167,51);
   background-color: rgb(58,167,51);
   color: white;
-  width: 250px;
+  width: 200px;
   height: 55px;
   border-radius: 10px;
   padding: 16px 24px;
@@ -84,10 +89,27 @@ const TotalContainer = styled.div`
   height: 80px;
   font-size: 30px;
   justify-content: flex-end;
+
+  @media (max-width: 1000px) {
+    width: 680px;
+  }
+
+  @media (max-width: 800px) {
+    width: 600px;
+    font-size: 24px;
+  }
+
+  @media (max-width: 600px) {
+    width: 320px;
+    font-size: 18px;
+  }
 `
 
 const Checkout = () => {
     const cartItems = useSelector((state: RootState) => state.cartState.cartItems);
+    const isLaptopScreen = useMediaQuery('(max-width: 1000px)');
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+    const isMobileScreen = useMediaQuery('(max-width: 600px)');
 
     if (cartItems.length===0) return (
         <EmptyCartContainer>
@@ -106,19 +128,19 @@ const Checkout = () => {
     return (
         <CheckoutContainer>
             <TopTextContainer>
-                <CustomTextContainer isCenter={false} width={200}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 70 : isSmallScreen ? 120 : 200}>
                     Product
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={false} width={250}>
+                <CustomTextContainer isCenter={false} width={isMobileScreen ? 70 : isLaptopScreen ? 120 : 150}>
                     Description
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 70 : isLaptopScreen ? 120: 150}>
                     Quantity
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 70 : isLaptopScreen ? 120: 150}>
                     Price
                 </CustomTextContainer>
-                <CustomTextContainer isCenter={true}  width={150}>
+                <CustomTextContainer isCenter={true}  width={isMobileScreen ? 40 : isLaptopScreen ? 120: 150}>
                     Remove
                 </CustomTextContainer>
             </TopTextContainer>

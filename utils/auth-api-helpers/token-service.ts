@@ -4,7 +4,7 @@ import prisma from "../../lib/prisma";
 class TokenService {
     generateTokens = (payload: JwtPayload) => {
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET as Secret, {
-            expiresIn: '1h'
+            expiresIn: '30m'
         })
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as Secret, {
             expiresIn: '24h'
@@ -43,7 +43,7 @@ class TokenService {
 
     validateAccessToken = async (accessToken: string) => {
         try {
-             return jwt.verify(accessToken, process.env.JWT_SECRET as Secret);
+             return await jwt.verify(accessToken, process.env.JWT_SECRET as Secret);
         } catch (e) {
             return null
         }
@@ -51,7 +51,7 @@ class TokenService {
 
     validateRefreshToken = async (refreshToken: string) => {
         try {
-             return jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as Secret);
+             return await jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as Secret);
         } catch (e) {
             return null
         }

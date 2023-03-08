@@ -3,6 +3,7 @@ import {NextApiRequest, NextApiResponse} from "next";
 
 const checkIsUserAuth = async (req: NextApiRequest, res: NextApiResponse) => {
     const authHeader = req.headers.authorization;
+
     if (!authHeader) {
         res.status(401).json({
             error: "User is not authorized"

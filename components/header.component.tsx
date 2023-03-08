@@ -1,21 +1,21 @@
-import { FunctionComponent, ReactElement, useEffect } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import { useSelector, useDispatch } from "react-redux"
-import {IUserData, setIsUserAuthenticated, setProviderUserData, setUserData} from "../store/slices/userSlice";
 import { RootState } from "../store/store";
 import { setIsSignInModalOpen } from "../store/slices/modalSlice";
-import axios from "axios";
-import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
 import {setIsCartOpen} from "../store/slices/isCartOpenSlice";
 import UserAccountComponent from "./user-account.component";
 import BurgerButtonComponent from "./burger-button.component";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import getTotalCartItemsCount from "../utils/get-total-cart-items-count";
+import useSocialAuthCheck from "../hooks/useSocialAuthCheck";
+import useAuthCheck from "../hooks/useAuthCheck";
+import Cookies from 'js-cookie';
 
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: max(5vh, 55px);
+  height: max(3vh, 55px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,6 +65,18 @@ const AuthContainer = styled.div`
 
 const CursorPointerWrapper = styled.div`
   cursor: pointer;
+  position: relative;
+`
+
+const TotalItemsContainer = styled.div`
+  position: absolute;
+  z-index: 3;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: rgb(58,167,50);
+  font-size: 19px;
 `
 
 const HeaderComponent = () => {
@@ -75,29 +87,12 @@ const HeaderComponent = () => {
   const isSignInModalOpen = useSelector((state: RootState) => state.modalState.isSignInModalOpen);
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery('(max-width: 768px)');
+  const totalCartItems = getTotalCartItemsCount(useSelector((state: RootState)=>state.cartState.cartItems));
 
-  useEffect( ()=> {
-      const isLoggedIn = async () => {
-          if (localStorage.getItem("accessToken")) {
-              try {
-                  const response =  await axios.get<IAuthResponse>(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
-                  localStorage.setItem("accessToken", response.data.accessToken);
-                  setUserData(response.data.user);
-              } catch (e: any) {
-                  setIsUserAuthenticated(false);
-                setUserData({});
-              }
-          }
-      }
-      isLoggedIn();
-  }, []);
+  useAuthCheck();
+  useSocialAuthCheck();
 
-
-    //TODO: Update black loader on Github/Google Sign in options
-    //TODO: Track if user deleted cookies and is still authed.
-    //TODO: Black Shadow in cart, fix ui
-    //TODO: add tabs names in the browser
-    //TODO: you may also like not showing up
+  //TODO: SSG vs SSR for pages
 
   return (
     <HeaderContainer>
@@ -116,8 +111,13 @@ const HeaderComponent = () => {
         <Link href='/'>Help</Link>
       </CustomHeaderRight>
       <CustomHeaderLeft>
-        <CursorPointerWrapper>
-          <Image src="/icons/cart.svg" height={20} width={20} alt="cart icon" onClick={() => dispatch(setIsCartOpen(!isCartOpen))} />
+        <CursorPointerWrapper onClick={() => dispatch(setIsCartOpen(!isCartOpen))}>
+            <TotalItemsContainer>
+                {
+                    totalCartItems===0 ? "" : totalCartItems
+                }
+            </TotalItemsContainer>
+          <Image src="/icons/cart.svg" height={40} width={40} alt="cart icon"/>
         </CursorPointerWrapper>
         {!isUserAuthenticated && !isSmallScreen && <AuthContainer onClick={() => dispatch(setIsSignInModalOpen(!isSignInModalOpen))}>Sign In</AuthContainer>}
         {isUserAuthenticated && !isSmallScreen && <UserAccountComponent/>}
