@@ -8,8 +8,10 @@ import {RootState} from "../store/store";
 const useAuthCheck = () => {
     const dispatch = useDispatch();
     const isUserAuthenticated = useSelector((state: RootState) => state.userState.isUserAuthenticated);
+    const providerUserData = useSelector((state: RootState) => state.userState.providerUserData);
 
     useEffect( ()=> {
+        if (Object.keys(providerUserData).length > 0) return;
         const isLoggedIn = async () => {
             if (isUserAuthenticated) {
                 try {
@@ -47,7 +49,7 @@ const useAuthCheck = () => {
             }
 
         }
-        isLoggedIn();
+        if (isUserAuthenticated) isLoggedIn();
     }, []);
 }
 
