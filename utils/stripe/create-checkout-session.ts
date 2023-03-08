@@ -41,8 +41,8 @@ const createCheckoutSession = async (cartItems: ICartItem[], res: NextApiRespons
                 }
             }),
             mode: 'payment',
-            success_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/user/order-successful`,
-            cancel_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/user/order-failed`,
+            success_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/user/order-successful`,
+            cancel_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/user/order-failed`,
             metadata,
         });
         res.status(200).json({url: session.url, cartItems});
