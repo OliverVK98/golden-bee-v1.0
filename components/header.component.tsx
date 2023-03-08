@@ -11,12 +11,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import getTotalCartItemsCount from "../utils/get-total-cart-items-count";
 import useSocialAuthCheck from "../hooks/useSocialAuthCheck";
 import useAuthCheck from "../hooks/useAuthCheck";
-import Cookies from 'js-cookie';
 
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: max(3vh, 55px);
-  max-height: 100px;
+  height: clamp(3vh, 55px, 100px);
   display: flex;
   align-items: center;
   justify-content: space-between;
