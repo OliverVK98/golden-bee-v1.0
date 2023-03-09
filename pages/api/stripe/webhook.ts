@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { buffer } from "micro";
 import prisma from "../../../lib/prisma";
 import Cors from "micro-cors";
-import getRawBody from "raw-body";
 
 export const config = {
     api: {
@@ -22,7 +21,7 @@ const stripe = require('stripe')(process.env.STRIPE_KEY_SECRET);
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
-        const buf = await getRawBody(req);
+        const buf = await buffer(req);
         const sig = req.headers['stripe-signature']!;
         const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
         let event;
@@ -30,7 +29,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         try {
             if (!sig || !webhookSecret) return;
 
-            event  = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
+            event  = stripe.webhooks.constructEvent(buf.toString(), sig, webhookSecret);
         } catch (e: any) {
             return res.status(400).send(`Webhook error: ${e.message}`);
         }
