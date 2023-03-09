@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-cors";
 import { buffer } from "micro";
 import prisma from "../../../lib/prisma";
 import Cors from "micro-cors";
@@ -23,14 +22,14 @@ const stripe = require('stripe')(process.env.STRIPE_KEY_SECRET);
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         const buf = await buffer(req);
-        const sig = req.headers['stripe-signature'];
+        const sig = req.headers['stripe-signature']!;
         const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
         let event;
         
         try {
             if (!sig || !webhookSecret) return;
 
-            event  = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
+            event  = stripe.webhooks.constructEvent(buf.toString(), sig, webhookSecret);
         } catch (e: any) {
             return res.status(400).send(`Webhook error: ${e.message}`);
         }
