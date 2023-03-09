@@ -63,7 +63,7 @@ const ProductPageComponent: React.FC<IProductPageProps> = ({initialData}) => {
             <GridContainer>
                 {chunkedArr[currentPage-1].map((itemInfo) => <FrontPageItemComponent key={itemInfo.productId} {...itemInfo}/>)}
             </GridContainer>
-            <PaginationComponent totalPages={totalPages} dataArr={initialData} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+            <PaginationComponent totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             <FooterContainerComponent />
         </Container>
 

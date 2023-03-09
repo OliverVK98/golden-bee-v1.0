@@ -14,12 +14,16 @@ import useAuthCheck from "../hooks/useAuthCheck";
 
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: clamp(3vh, 55px, 100px);
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 3%;
   box-shadow: 0px 0px 10px 1px gray;
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 998;
   
   @media (max-width: 768px) {
     font-size: 14px;
@@ -85,15 +89,11 @@ const HeaderComponent = () => {
   )
   const isSignInModalOpen = useSelector((state: RootState) => state.modalState.isSignInModalOpen);
   const dispatch = useDispatch();
-  const isSmallScreen = useMediaQuery('(max-width: 768px)');
+  const isSmallScreen = useMediaQuery('(max-width: 500px)');
   const totalCartItems = getTotalCartItemsCount(useSelector((state: RootState)=>state.cartState.cartItems));
 
   useAuthCheck();
   useSocialAuthCheck();
-
-  //TODO: SSG vs SSR for pages
-    // TODO: stripe in production doesn't track past orders
-    //TODO: make header sticky
 
   return (
     <HeaderContainer>
@@ -109,7 +109,6 @@ const HeaderComponent = () => {
 
         {!isSmallScreen && <Link href='/'>Home</Link>}
         {!isSmallScreen && <Link href='/all'>All Products</Link>}
-        <Link href='/'>Help</Link>
       </CustomHeaderRight>
       <CustomHeaderLeft>
         <CursorPointerWrapper onClick={() => dispatch(setIsCartOpen(!isCartOpen))}>

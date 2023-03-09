@@ -41,12 +41,22 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const userId = Number(event.data.object.metadata.userId);
                 const productList = Object.keys(productsData).map(key => Number(key));
                 const quantity = Object.values(productsData).map(value => Number(value));
+                const stripeEventId=event.data.object.id;
+
+                const orderExists = await prisma.pastOrders.findFirst({
+                    where: {
+                        stripeEventId
+                    }
+                })
+
+                if (orderExists) return;
 
                 await prisma.pastOrders.create({
                     data: {
                         userId,
                         productList,
-                        quantity
+                        quantity,
+                        stripeEventId
                     }
                 })
             }
@@ -57,12 +67,22 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const providerId = Number(event.data.object.metadata.providerId);
                 const productList = Object.keys(productsData).map(key => Number(key));
                 const quantity = Object.values(productsData).map(value => Number(value));
+                const stripeEventId=event.data.object.id;
+
+                const orderExists = await prisma.providerPastOrders.findFirst({
+                    where: {
+                        stripeEventId
+                    }
+                })
+
+                if (orderExists) return;
 
                 await prisma.providerPastOrders.create({
                     data: {
                         providerId,
                         productList,
-                        quantity
+                        quantity,
+                        stripeEventId
                     }
                 })
             }

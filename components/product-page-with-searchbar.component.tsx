@@ -103,7 +103,7 @@ const ProductPageWithSearchBarComponent: React.FC<IProductPageProps> = ({userInp
                         {filter[currentPage-1].map((itemInfo) => <FrontPageItemComponent isImageLoadPriority={true} key={itemInfo.productId} {...itemInfo}/>)}
                     </GridContainer>
                 )}
-            <PaginationComponent totalPages={totalPages} dataArr={initialData} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+            <PaginationComponent totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             <FooterContainerComponent />
         </Container>
 

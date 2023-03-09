@@ -25,7 +25,7 @@ const CartContainer = styled.div`
   width: 400px;
   ${(props: ICartProps) => props.isCartOpen!=null ? !props.isCartOpen ? "animation: fadeOut 0.5s ease-out;" : "animation: fadeIn 0.5s ease-out;" : ""}
   animation-fill-mode: forwards;
-  
+
   @media (max-width: 768px) {
     width: 300px;
   }
@@ -33,7 +33,7 @@ const CartContainer = styled.div`
   @media (max-width: 576px) {
     width: 270px;
   }
-  
+
 
   @keyframes fadeIn {
     from {
@@ -45,7 +45,7 @@ const CartContainer = styled.div`
       right: 0;
     }
   }
-  
+
   @keyframes fadeOut {
     from {
       opacity: 1;
@@ -209,10 +209,7 @@ const CartBodyContainer = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgb(241,241,241);
-  
-  @media (max-width: 576px) {
-    padding-left: px;
-  }
+
 `
 
 const TotalPriceContainer = styled.div`
@@ -244,7 +241,7 @@ const CartComponent = () => {
 
     const handleEscapeKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Escape" && isCartOpen!=null) {
-             dispatch(setIsCartOpen(false));
+            dispatch(setIsCartOpen(false));
         }
     };
 
@@ -268,7 +265,7 @@ const CartComponent = () => {
                     </HeaderLeftSide>
                     <HeaderRightSide>
                         <Image src="/icons/close.svg" alt="cart-logo" height={30} width={30}
-                                onClick={()=>dispatch(setIsCartOpen(!isCartOpen))}/>
+                               onClick={()=>dispatch(setIsCartOpen(!isCartOpen))}/>
                     </HeaderRightSide>
                 </HeaderCartContainer>
                 {cartItems.length===0 && <EmptyCartContainer>
@@ -287,7 +284,7 @@ const CartComponent = () => {
                     {
                         cartItems.map((item, index)=>(
                             <CartItemComponent key={index} {...item}/>
-                            ))
+                        ))
                     }
                 </CartBodyContainer>
                 <TotalPriceContainer>
@@ -296,9 +293,9 @@ const CartComponent = () => {
                     </div>
                     <TotalPriceAmountContainer>
                         ${roundDecimals(cartItems.reduce((totalPrice, item)=>{
-                            const actualPrice = (item.discountedPrice ? item.discountedPrice : item.price) * (item.quantity as number)
-                            return totalPrice+actualPrice;
-                        }, 0))}
+                        const actualPrice = (item.discountedPrice ? item.discountedPrice : item.price) * (item.quantity as number)
+                        return totalPrice+actualPrice;
+                    }, 0))}
                     </TotalPriceAmountContainer>
                 </TotalPriceContainer>
                 <Link href="/checkout">

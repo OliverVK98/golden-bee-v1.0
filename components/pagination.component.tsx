@@ -65,7 +65,6 @@ const ButtonArrowLeft = styled(ButtonArrowRight)`
 
 interface IPaginationProps {
     totalPages: number | null,
-    dataArr: IFrontPageItem[],
     currentPage: number,
     setCurrentPage: (index: number) => void,
 }

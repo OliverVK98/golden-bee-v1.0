@@ -10,30 +10,30 @@ import AuthService from "../utils/auth-api-helpers/auth-service";
 import {useRouter} from "next/router";
 import {setIsBurgerMenuOpen} from "../store/slices/isBurgerMenuOpenSlice";
 import React from "react";
+import Image from "next/image";
 
 interface  IBurgerProps {
     isBurgerMenuOpen: null | boolean
 }
 
 const BurgerMenuContainer = styled.div`
-  position: absolute;
-  top: max(5vh, 55px);
+  position: fixed;
+  top: 0;
   bottom: 0;
-  left: -250px;
+  left: -300px;
   z-index: 1000;
-  width: 250px;
-  background-color: white;
+  width: 300px;
+  background-color: rgb(247,247,247);
   display: flex;
   flex-direction: column;
-  font-size: 22px;
   gap: 100px;
-  padding-top: 30px;
+  padding-top: 10px;
 
   ${(props: IBurgerProps) => props.isBurgerMenuOpen!=null ? !props.isBurgerMenuOpen ? "animation: fadeOutMenu 0.5s ease-out;" : "animation: fadeInMenu 0.5s ease-out;" : ""}
   animation-fill-mode: forwards;
   
   @media (max-width: 576px) {
-    width: 150px;
+    width: 270px;
     font-size: 18px;
     gap: 50px;
   }
@@ -41,7 +41,7 @@ const BurgerMenuContainer = styled.div`
   @keyframes fadeInMenu {
     from {
       opacity: 0;
-      left: -250px;
+      left: -300px;
     }
     to {
       opacity: 1;
@@ -56,14 +56,15 @@ const BurgerMenuContainer = styled.div`
     }
     to {
       opacity: 0;
-      left: -250px;
+      left: -300px;
     }
   }
 `
 
 const TextContainer = styled.div`
-  text-align: left;
   padding-left: 30px;
+  font-size: 24px;
+  font-weight: bold;
 
   @media (max-width: 576px) {
     padding-left: 10px;
@@ -74,22 +75,28 @@ const GenericButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  text-align: center;
 `
 
 const UserSpecificButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  text-align: center;
 `
 
 const BlackBackground = styled.div`
   position: absolute;
-  top: max(5vh, 55px);;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0,0,0,0.55);
   z-index: 999;
+`
+
+const CloseButtonWrapper = styled.div`
+  align-self: flex-end;
 `
 
 const BurgerMenuComponent = () => {
@@ -124,6 +131,10 @@ const BurgerMenuComponent = () => {
             {isBurgerMenuOpen && <BlackBackground onClick={()=>dispatch(setIsBurgerMenuOpen(false))}/>}
             <BurgerMenuContainer isBurgerMenuOpen={isBurgerMenuOpen}>
                 <GenericButtonsContainer>
+                    <CloseButtonWrapper>
+                        <Image src="/icons/close.svg" alt="close-logo" height={30} width={30}
+                               onClick={()=>dispatch(setIsBurgerMenuOpen(false))}/>
+                    </CloseButtonWrapper>
                     <Link href="/">
                         <TextContainer onClick={()=>dispatch(setIsBurgerMenuOpen(false))}>
                             Home

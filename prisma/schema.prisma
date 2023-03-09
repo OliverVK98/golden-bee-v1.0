@@ -75,11 +75,12 @@ model SubscribptionEmailList {
 }
 
 model PastOrders {
-  orderId     Int      @id @default(autoincrement())
-  userId      Int
-  productList Int[]
-  quantity    Int[]
-  createdAt   DateTime @default(now())
+  orderId       Int      @id @default(autoincrement())
+  userId        Int
+  productList   Int[]
+  quantity      Int[]
+  createdAt     DateTime @default(now())
+  stripeEventId String
 }
 
 model ProviderUser {
@@ -89,9 +90,10 @@ model ProviderUser {
 }
 
 model ProviderPastOrders {
-  orderId     Int      @id @default(autoincrement())
-  providerId  Int
-  productList Int[]
-  quantity    Int[]
-  createdAt   DateTime @default(now())
+  orderId       Int      @id @default(autoincrement())
+  providerId    Int
+  productList   Int[]
+  quantity      Int[]
+  createdAt     DateTime @default(now())
+  stripeEventId String
 }
