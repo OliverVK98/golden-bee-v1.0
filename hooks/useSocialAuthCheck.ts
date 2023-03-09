@@ -20,7 +20,7 @@ const useSocialAuthCheck = () => {
         async function checkSession() {
             const session = await getSessionData();
             if(session === null) {
-                await signOut({callbackUrl: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`});
+                await signOut({callbackUrl: `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`});
                 dispatch(setIsUserAuthenticated(false));
                 dispatch(setProviderUserData({}));
             }

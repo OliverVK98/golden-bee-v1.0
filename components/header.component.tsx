@@ -92,6 +92,8 @@ const HeaderComponent = () => {
   useSocialAuthCheck();
 
   //TODO: SSG vs SSR for pages
+    // TODO: stripe in production doesn't track past orders
+    //TODO: make header sticky
 
   return (
     <HeaderContainer>

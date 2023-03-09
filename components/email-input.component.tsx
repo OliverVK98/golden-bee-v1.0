@@ -30,7 +30,7 @@ const SubmitButton = styled.button`
   cursor: pointer;
 
   @media (max-width: 576px) {
-    width: 70px;
+    width: 80px;
     font-size: 12px;
   }
 `

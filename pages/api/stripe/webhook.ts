@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-cors";
 import { buffer } from "micro";
 import prisma from "../../../lib/prisma";
+import Cors from "micro-cors";
 
 export const config = {
     api: {
@@ -9,15 +10,17 @@ export const config = {
     }
 }
 
+const cors = Cors({
+    allowMethods: ['POST', 'HEAD'],
+});
+
 interface IProductData {
     [key: string]: any;
 }
 
 const stripe = require('stripe')(process.env.STRIPE_KEY_SECRET);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    await runMiddlewareCors(req, res);
-
+const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         const buf = await buffer(req);
         const sig = req.headers['stripe-signature'];
@@ -29,7 +32,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             event  = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
         } catch (e: any) {
-            console.log(`Webhook error: ${e.message}`);
             return res.status(400).send(`Webhook error: ${e.message}`);
         }
 
@@ -74,3 +76,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(405).end('Method Not Allowed');
     }
 }
+
+export default cors(webhookHandler as any);

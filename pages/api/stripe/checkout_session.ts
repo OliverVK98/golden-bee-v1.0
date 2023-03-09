@@ -1,7 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-cors";
 import createCheckoutSession from "../../../utils/stripe/create-checkout-session";
-import prisma from "../../../lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     await runMiddlewareCors(req, res);
