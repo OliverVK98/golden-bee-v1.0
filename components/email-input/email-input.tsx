@@ -72,6 +72,13 @@ const ErrorContainer = styled.div`
   color: red;
 `
 
+const SuccessContainer = styled.div`
+  justify-self: center;
+  margin-top: -18px;
+  font-size: 14px;
+  color: green;
+`
+
 interface IEmailProps {
     mainColor: "gray" | "white",
     title: string
@@ -83,14 +90,29 @@ interface IFormValues {
 
 const EmailInput: React.FC<IEmailProps> = ({mainColor, title}) => {
     const {register, formState: {errors}, handleSubmit} = useForm<IFormValues>({resolver: emailResolver});
-    const [emailExists, setEmailExists] = useState(false)
+    const [emailExists, setEmailExists] = useState(false);
+    const [emailSubscribed, setEmailSubscribed] = useState(false);
+
+    const notifyEmailSubscribed = () => {
+        setEmailSubscribed(true);
+        setTimeout(()=>{
+            setEmailSubscribed(false);
+        }, 5000);
+    }
+
+    const notifyEmailAlreadySubscribed = () => {
+        setEmailExists(true);
+        setTimeout(()=>{
+            setEmailExists(false);
+        }, 5000);
+    }
 
     const submitEmail = async (email: string) => {
         try {
-            setEmailExists(false);
-            await EmailService.submitUserEmail(email);
+            const response = await EmailService.submitUserEmail(email);
+            if (response.status===200) notifyEmailSubscribed();
         } catch (e: any) {
-            if (e.response.data.error === "User already subscribed") setEmailExists(true);
+            if (e.response.data.error === "User already subscribed") notifyEmailAlreadySubscribed();
         }
     }
 
@@ -103,6 +125,7 @@ const EmailInput: React.FC<IEmailProps> = ({mainColor, title}) => {
           </Form>
             {errors["email"]?.message && <ErrorContainer>{(errors["email"] as FieldError).message }</ErrorContainer>}
             {emailExists && <ErrorContainer>This email is already subscribed</ErrorContainer>}
+            {emailSubscribed && <SuccessContainer>Email successfully added to the subscription list</SuccessContainer>}
         </InputContainer>
       )
 }
