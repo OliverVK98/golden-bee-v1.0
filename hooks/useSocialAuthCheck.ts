@@ -3,6 +3,7 @@ import {signOut, getSession} from "next-auth/react";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsUserAuthenticated, setProviderUserData} from "../store/slices/userSlice";
 import {RootState} from "../store/store";
+import {WEBSITE_URL} from "../config/const";
 
 const useSocialAuthCheck = () => {
     const userData = useSelector((state: RootState) => state.userState.userData);
@@ -20,7 +21,7 @@ const useSocialAuthCheck = () => {
         async function checkSession() {
             const session = await getSessionData();
             if(session === null) {
-                await signOut({callbackUrl: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`});
+                await signOut({callbackUrl: WEBSITE_URL});
                 dispatch(setIsUserAuthenticated(false));
                 dispatch(setProviderUserData({}));
             }

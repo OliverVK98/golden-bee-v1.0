@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import styled from "styled-components";
 import {FieldError, useForm} from "react-hook-form";
 import {changePasswordResolver} from "../../utils/yup-form-schemas/change-password-schema";
-import ButtonLoaderWhiteComponent from "../../components/button-loader-white.component";
+import ButtonLoaderWhite from "../../components/button-loader-white";
 import AuthService from "../../utils/auth-api-helpers/auth-service";
 
 const TopLevelContainer = styled.div`
@@ -157,7 +157,7 @@ const ChangePassword = () => {
                 {errors["confirmNewPassword"]?.message && <ErrorContainer>{(errors["confirmNewPassword"] as FieldError).message }</ErrorContainer>}
                 <CustomButton>
                     {
-                        isLoading ? <ButtonLoaderWhiteComponent/> : "Update Password"
+                        isLoading ? <ButtonLoaderWhite/> : "Update Password"
                     }
                 </CustomButton>
             </FormContainer>

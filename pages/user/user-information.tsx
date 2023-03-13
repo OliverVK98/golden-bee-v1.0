@@ -3,11 +3,12 @@ import {RootState} from "../../store/store";
 import React, {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";
 import styled from "styled-components";
-import UserInfoInputComponent from "../../components/user-info-input.component";
-import $api from "../../lib/axios";
+import UserInfoInput from "../../components/user-info-input";
 import {setUserData} from "../../store/slices/userSlice";
-import ButtonLoaderWhiteComponent from "../../components/button-loader-white.component";
+import ButtonLoaderWhite from "../../components/button-loader-white";
 import AuthService from "../../utils/auth-api-helpers/auth-service";
+import {useForm, FormProvider, FieldError} from "react-hook-form";
+import {userInformationResolver} from "../../utils/yup-form-schemas/user-information-schema";
 
 const TopLevelContainer = styled.div`
   display: flex;
@@ -23,6 +24,17 @@ const ContentContainer = styled.div`
   flex-direction: column;
   font-size: 30px;
   gap: 30px;
+`
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 20px;
+
+  @media (max-width: 576px) {
+    gap: 10px;
+  }
 `
 
 const CustomButton = styled.button`
@@ -61,85 +73,86 @@ const ErrorContainer = styled.div`
   align-self: flex-start;
 `
 
+interface IFormValues {
+    firstName: string,
+    email: string,
+    lastName: string
+}
+
 
 const UserInformation = () => {
-    const isAuth = useSelector((state: RootState) => state.userState.isUserAuthenticated);
-    const {firstName, email, lastName} = useSelector((state: RootState) => state.userState.userData);
-    const [isEmailEditable, setIsEmailEditable] = useState(false);
-    const [isFirstNameEditable, setIsFirstNameEditable] = useState(false);
-    const [isLastNameEditable, setIsLastNameEditable] = useState(false);
-    const [validEmailError, setValidEmailError] = useState(false);
-    const firstNameRef = useRef<HTMLInputElement>({} as HTMLInputElement);
-    const lastNameRef = useRef<HTMLInputElement>({} as HTMLInputElement);
-    const emailRef = useRef<HTMLInputElement>({} as HTMLInputElement);
     const router = useRouter();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
+    const [isInputEditable, setIsInputEditable] = useState({
+        firstName: false,
+        lastName: false,
+        email: false
+    })
+    const isChanged = Object.values(isInputEditable).includes(true)
+
     const userId = useSelector((state: RootState) => state.userState.userData.userId);
+    const isAuth = useSelector((state: RootState) => state.userState.isUserAuthenticated);
+    const {firstName, email, lastName} = useSelector((state: RootState) => state.userState.userData);
+
+    const methods = useForm<IFormValues>({resolver: userInformationResolver, defaultValues:  {firstName, lastName, email} });
+    const isFormDirty = methods.formState.isDirty
 
     useEffect(() => {
-        if (!isAuth || !userId) {
+        if (!userId) {
             router.push('/404');
         }
     }, [isAuth]);
 
-    if (!isAuth || !userId) {
+    if (!userId) {
         return null;
     }
 
-    const isEmail = (input: string) => {
-        const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-        return pattern.test(input);
+    const onClickHandler = async (values: IFormValues) => {
+        if(!isFormDirty){
+            setIsInputEditable({
+                firstName: false,
+                lastName: false,
+                email: false
+            })
+            return
+        }
+
+        try {
+            setIsLoading(true);
+            const response = await AuthService.updateUserInformation(values.firstName, values.lastName, values.email);
+            dispatch(setUserData(response.data));
+            setIsLoading(false);
+            setIsInputEditable({
+                firstName: false,
+                lastName: false,
+                email: false
+            })
+
+        } catch (e: any) {
+            console.log(e);
+        }
     }
 
-    const onClickHandler = async () => {
-        setValidEmailError(false);
-        if (firstName===firstNameRef.current?.value) {
-            setIsFirstNameEditable(false);
-        }
-        if (lastName===lastNameRef.current?.value) {
-            setIsLastNameEditable(false);
-        }
-        if (email===emailRef.current?.value) {
-            setIsEmailEditable(false);
-        }
-
-        if (emailRef.current?.value!=undefined && !isEmail(emailRef.current?.value)) {
-            setValidEmailError(true);
-            return;
-        }
-
-        if (firstNameRef.current&&firstName!=firstNameRef.current?.value ||
-            lastNameRef.current&&lastName!=lastNameRef.current?.value ||
-            emailRef.current&&email!=emailRef.current?.value) {
-
-            try {
-                setIsLoading(true);
-                const response = await AuthService.updateUserInformation(firstNameRef.current?.value, lastNameRef.current?.value, emailRef.current?.value);
-                dispatch(setUserData(response.data));
-                setIsLoading(false);
-                setIsFirstNameEditable(false);
-                setIsLastNameEditable(false);
-                setIsEmailEditable(false);
-            } catch (e: any) {
-                console.log(e);
-            }
-        }
-    }
 
     return (
         <TopLevelContainer>
-                <ContentContainer>
-                    <UserInfoInputComponent ref={firstNameRef} isEditable={isFirstNameEditable} setIsEditable={setIsFirstNameEditable} label="First Name" infoToDisplay={firstName}/>
-                    <UserInfoInputComponent ref={lastNameRef} isEditable={isLastNameEditable} setIsEditable={setIsLastNameEditable} label="Last Name" infoToDisplay={lastName}/>
-                    <UserInfoInputComponent ref={emailRef} isEditable={isEmailEditable} setIsEditable={setIsEmailEditable} label="Email" infoToDisplay={email}/>
-                    {
-                        validEmailError && <ErrorContainer>Please enter a valid email address</ErrorContainer>
-                    }
-                    {(isEmailEditable || isFirstNameEditable || isLastNameEditable) && <CustomButton disabled={isLoading} onClick={onClickHandler}>{
-                        isLoading ? <ButtonLoaderWhiteComponent/> : "Save changes"
+            <FormProvider {...methods}>
+                <FormContainer onSubmit={methods.handleSubmit((data)=> onClickHandler(data))}>
+                    <UserInfoInput setIsInputEditable={setIsInputEditable}  isEditable={isInputEditable}  label="First Name" initVal={firstName} name="firstName"/>
+                    {methods.formState.errors["firstName"]?.message && <ErrorContainer>{(methods.formState.errors["firstName"] as FieldError).message }</ErrorContainer>}
+                    <UserInfoInput setIsInputEditable={setIsInputEditable} isEditable={isInputEditable}  label="Last Name" initVal={lastName} name="lastName"/>
+                    {methods.formState.errors["lastName"]?.message && <ErrorContainer>{(methods.formState.errors["lastName"] as FieldError).message }</ErrorContainer>}
+                    <UserInfoInput setIsInputEditable={setIsInputEditable}  isEditable={isInputEditable}  label="Email" initVal={email} name="email"/>
+                    {methods.formState.errors["email"]?.message && <ErrorContainer>{(methods.formState.errors["email"] as FieldError).message }</ErrorContainer>}
+                    {isChanged && <CustomButton type="submit"  disabled={isLoading} >{
+                        isLoading ? <ButtonLoaderWhite/> : "Save changes"
                     }</CustomButton>}
-                </ContentContainer>
+                </FormContainer>
+            </FormProvider>
+            <ContentContainer>
+
+            </ContentContainer>
         </TopLevelContainer>
     )
 }

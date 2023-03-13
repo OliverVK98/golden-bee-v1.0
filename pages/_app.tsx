@@ -1,20 +1,20 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import HeaderComponent from "../components/header.component";
+import Header from "../components/header/header";
 import {ApolloProvider} from "@apollo/client";
 import apolloClient from "../lib/apollo";
-import SignInModalComponent from "../components/sign-in-modal.component";
-import SignUpModalComponent from "../components/sign-up-modal.component";
+import SignInModal from "../components/sign-in-modal/sign-in-modal";
+import SignUpModal from "../components/sign-up-modal/sign-up-modal";
 import {Provider} from "react-redux"
 import {store} from "../store/store";
-import CartComponent from "../components/cart.component";
+import Cart from "../components/cart";
 import {PersistGate} from "redux-persist/integration/react";
 import {persistStore} from "redux-persist";
 import {useRouter} from "next/router";
 import {ReactElement, ReactNode, useEffect} from "react";
 import {SessionProvider} from "next-auth/react";
 import {NextPage} from "next";
-import BurgerMenuComponent from "../components/burger-menu.component";
+import BurgerMenu from "../components/burger-menu";
 import Head from "next/head";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -41,10 +41,10 @@ export default function App({ Component, pageProps}: AppPropsWithLayout) {
                                 <title>Golden Bee</title>
                             </Head>
                             <Component {...pageProps} />
-                            <SignInModalComponent/>
-                            <SignUpModalComponent/>
-                            <CartComponent/>
-                            <BurgerMenuComponent/>
+                            <SignInModal/>
+                            <SignUpModal/>
+                            <Cart/>
+                            <BurgerMenu/>
                         </ApolloProvider>
                     </SessionProvider>
                 </PersistGate>
@@ -60,12 +60,12 @@ export default function App({ Component, pageProps}: AppPropsWithLayout) {
                         <Head>
                             <title>Golden Bee</title>
                         </Head>
-                        <HeaderComponent key={Math.random()}/>
+                        <Header key={Math.random()}/>
                         <Component {...pageProps} />
-                        <SignInModalComponent />
-                        <SignUpModalComponent />
-                        <CartComponent />
-                        <BurgerMenuComponent />
+                        <SignInModal />
+                        <SignUpModal />
+                        <Cart />
+                        <BurgerMenu />
                     </ApolloProvider>
                 </SessionProvider>
             </PersistGate>

@@ -1,6 +1,6 @@
 import apolloClient from "../../lib/apollo";
 import React from "react";
-import ProductPageComponent from "../../components/product-page.component";
+import ProductPage from "../../components/product-page/product-page";
 import {
     productsFromSpecificCollection,
 } from "../../graphql/queries/queries";
@@ -29,7 +29,7 @@ const SilverStyleJewelryCollectionComponent: React.FC<IAllProductsProps> = ({dat
     return (
         <ContentContainer>
             <CustomTitle>Silver Style Jewelry</CustomTitle>
-            <ProductPageComponent initialData={data}/>
+            <ProductPage initialData={data}/>
         </ContentContainer>
     )
 }

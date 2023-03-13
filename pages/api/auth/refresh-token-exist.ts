@@ -1,5 +1,4 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import TokenService from "../../../utils/auth-api-helpers/token-service";
 import Cookie from "cookies";
 import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-cors";
 

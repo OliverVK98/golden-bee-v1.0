@@ -1,9 +1,10 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import Cors from "cors";
+import {WEBSITE_URL} from "../../config/const";
 
 const cors = Cors({
     methods: ['POST', 'GET', 'HEAD'],
-    origin: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`,
+    origin: WEBSITE_URL,
     allowedHeaders: ['Content-Type', 'Authorization'],
 })
 

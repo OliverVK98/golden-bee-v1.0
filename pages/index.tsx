@@ -1,14 +1,14 @@
-import Head from 'next/head'
-import MainPageBannerComponent from "../components/main-page-banner.component";
-import ItemsCarouselFourComponent from "../components/items-carousel-four.component";
+import MainPageBanner from "../components/main-page-banner/main-page-banner";
+import ItemsCarouselFour from "../components/items-carousel-four/items-carousel-four";
 import styled from "styled-components";
 import Image from "next/legacy/image";
-import EmailInputComponent from "../components/email-input.component";
-import React, {useEffect, useState} from "react";
-import ItemsByCollectionOrStyleComponent from "../components/items-by-collection-or-style.component";
+import EmailInput from "../components/email-input";
+import React from "react";
+import ItemsByCollectionOrStyle from "../components/items-by-collection-or-style/items-by-collection-or-style";
 import requestItemsServer from "../utils/request-items-server";
-import ItemsCarouselTwoComponent from "../components/items-carousel-two.component";
+import ItemsCarouselTwo from "../components/items-carousel-two/items-carousel-two";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {BANNER_IMAGE_ONE_URL, BANNER_IMAGE_TWO_URL} from "../config/const";
 
 const MainPageContainer = styled.div`
   width: 100vw;
@@ -104,12 +104,12 @@ const Home: React.FC<IStartProps> = ({dataNewOne,dataNewTwo, dataNewThree, dataT
       <div>
         <main>
           <MainPageContainer>
-            <MainPageBannerComponent/>
+            <MainPageBanner/>
             {
-              !isSmallScreen && <ItemsCarouselFourComponent dataOne={dataTrendingOne} dataTwo={dataTrendingTwo} dataThree={dataTrendingThree} title={"Trending now"} />
+              !isSmallScreen && <ItemsCarouselFour dataOne={dataTrendingOne} dataTwo={dataTrendingTwo} dataThree={dataTrendingThree} title={"Trending now"} />
             }
             {
-                isSmallScreen && <ItemsCarouselTwoComponent dataOne={dataTrendingOne} dataTwo={dataTrendingTwo} dataThree={dataTrendingThree} title={"Trending now"} />
+                isSmallScreen && <ItemsCarouselTwo dataOne={dataTrendingOne} dataTwo={dataTrendingTwo} dataThree={dataTrendingThree} title={"Trending now"} />
             }
             <BannerText>
               <h1>
@@ -120,21 +120,19 @@ const Home: React.FC<IStartProps> = ({dataNewOne,dataNewTwo, dataNewThree, dataT
               </p>
             </BannerText>
             {
-              !isSmallScreen && <ItemsCarouselFourComponent dataOne={dataNewOne} dataTwo={dataNewTwo} dataThree={dataNewThree} title={"New Arrivals"} />
+              !isSmallScreen && <ItemsCarouselFour dataOne={dataNewOne} dataTwo={dataNewTwo} dataThree={dataNewThree} title={"New Arrivals"} />
             }
             {
-              isSmallScreen && <ItemsCarouselTwoComponent dataOne={dataNewOne} dataTwo={dataNewTwo} dataThree={dataNewThree} title={"New Arrivals"} />
+              isSmallScreen && <ItemsCarouselTwo dataOne={dataNewOne} dataTwo={dataNewTwo} dataThree={dataNewThree} title={"New Arrivals"} />
             }
             <ImageContainer>
-              <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758"
-                     alt="banner-image" layout={"fill"} objectFit="cover" />
+              <Image src={BANNER_IMAGE_ONE_URL} alt="banner-image" layout={"fill"} objectFit="cover" />
             </ImageContainer>
-            <ItemsByCollectionOrStyleComponent isStyle={false}/>
-            <EmailInputComponent mainColor={"gray"} title={"Subscribe for exclusive deals"}/>
-            <ItemsByCollectionOrStyleComponent isStyle={true}/>
+            <ItemsByCollectionOrStyle isStyle={false}/>
+            <EmailInput mainColor={"gray"} title={"Subscribe for exclusive deals"}/>
+            <ItemsByCollectionOrStyle isStyle={true}/>
             <ImageContainer>
-              <Image src="https://cdn.shopify.com/s/files/1/0457/5648/1703/files/Join_the_Movement_to_Save_Our_Buzzing_Friends_39a722de-5768-4689-84f6-6393f7c5088d_1728x.jpg?v=1623903777"
-                     alt="banner-image" layout={"fill"} objectFit="cover" />
+              <Image src={BANNER_IMAGE_TWO_URL} alt="banner-image" layout={"fill"} objectFit="cover" />
             </ImageContainer>
           </MainPageContainer>
         </main>

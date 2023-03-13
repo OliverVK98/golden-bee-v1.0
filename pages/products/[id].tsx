@@ -3,13 +3,13 @@ import React, {useState} from "react";
 import Image from "next/image";
 import {IDataItem} from "../../data/data";
 import styles from "../../styles/FrontImage.module.css"
-import {gql, useQuery} from "@apollo/client";
+import {gql} from "@apollo/client";
 import apolloClient from "../../lib/apollo";
-import EmailInputComponent from "../../components/email-input.component";
-import FooterContainerComponent from "../../components/footer-container.component";
+import EmailInput from "../../components/email-input/email-input";
+import FooterContainer from "../../components/footer-container/footer-container";
 import {useDispatch} from "react-redux";
 import {addCartItems} from "../../store/slices/cartSlice";
-import ItemsSuggestionComponent from "../../components/items-suggestion.component";
+import ItemsSuggestion from "../../components/items-suggestion/items-suggestion";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ProductPageContainer = styled.div`
@@ -360,9 +360,9 @@ const ProductPage:React.FC<IProductPageProps> = ({ProductById}) => {
                                                                    width={isLaptopScreen ? 200 :280} height={isLaptopScreen ? 200 :280} className={styles.imageRound} priority={true}/>)
                 }
             </BottomSectionContainer>
-            <ItemsSuggestionComponent/>
-            <EmailInputComponent mainColor={"white"} title={"SUBSCRIBE FOR A CHANCE TO WIN A $100 GIFT CARD"}/>
-            <FooterContainerComponent/>
+            <ItemsSuggestion/>
+            <EmailInput mainColor={"white"} title={"SUBSCRIBE FOR A CHANCE TO WIN A $100 GIFT CARD"}/>
+            <FooterContainer/>
         </ProductPageContainer>
     )
 }

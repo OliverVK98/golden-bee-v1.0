@@ -3,12 +3,10 @@ import {pastOrdersByUserId, providerPastOrdersByUserId} from "../../graphql/quer
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import styled from "styled-components";
-import PastOrderComponent from "../../components/past-order.component";
-import {IPastOrder} from "../../components/past-order.component";
+import PastOrder from "../../components/past-order/past-order";
+import {IPastOrder} from "../../components/past-order/past-order";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
-import {mockSession} from "next-auth/client/__tests__/helpers/mocks";
-import user = mockSession.user;
 
 const Container = styled.div`
   display: flex;
@@ -63,8 +61,8 @@ const PastOrders = () => {
                 loading && <OrdersContainer>
                 {
                     <>
-                        <PastOrderComponent productList={[0]} quantity={[1]} createdAt="skeleton" isSkeleton={true}/>
-                        <PastOrderComponent productList={[0]} quantity={[1]} createdAt="skeleton" isSkeleton={true}/>
+                        <PastOrder productList={[0]} quantity={[1]} createdAt="skeleton" isSkeleton={true}/>
+                        <PastOrder productList={[0]} quantity={[1]} createdAt="skeleton" isSkeleton={true}/>
                     </>
                 }
                 </OrdersContainer>
@@ -73,7 +71,7 @@ const PastOrders = () => {
             {
                 !loading && <OrdersContainer>
                 {
-                    userOrders?.map((order: IPastOrder, index: number) => <PastOrderComponent key={index} {...order}/>)
+                    userOrders?.map((order: IPastOrder, index: number) => <PastOrder key={index} {...order}/>)
                 }
                 </OrdersContainer>
             }

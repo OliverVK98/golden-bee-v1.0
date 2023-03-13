@@ -1,6 +1,7 @@
 import roundDecimals from "../round-decimals";
 import {ICartItem} from "../../store/slices/cartSlice";
 import {NextApiResponse} from "next";
+import {WEBSITE_URL} from "../../config/const";
 
 const stripe = require('stripe')(process.env.STRIPE_KEY_SECRET);
 
@@ -41,8 +42,8 @@ const createCheckoutSession = async (cartItems: ICartItem[], res: NextApiRespons
                 }
             }),
             mode: 'payment',
-            success_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/user/order-successful`,
-            cancel_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/user/order-failed`,
+            success_url: `${WEBSITE_URL}/user/order-successful`,
+            cancel_url: `${WEBSITE_URL}/user/order-failed`,
             metadata,
         });
         res.status(200).json({url: session.url, cartItems});

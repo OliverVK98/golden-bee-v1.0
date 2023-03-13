@@ -4,6 +4,7 @@ import {IAuthResponse} from "../utils/auth-api-helpers/auth-service";
 import {setIsUserAuthenticated, setUserData} from "../store/slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/store";
+import {WEBSITE_URL} from "../config/const";
 
 const useAuthCheck = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const useAuthCheck = () => {
         const isLoggedIn = async () => {
             if (isUserAuthenticated) {
                 try {
-                    await axios.get(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/refresh-token-exist`, {withCredentials: true})
+                    await axios.get(`${WEBSITE_URL}/api/auth/refresh-token-exist`, {withCredentials: true})
                 } catch (e) {
                     localStorage.removeItem("accessToken");
                     dispatch(setIsUserAuthenticated(false));
@@ -25,7 +26,7 @@ const useAuthCheck = () => {
 
             if (localStorage.getItem("accessToken")&&isUserAuthenticated) {
                 try {
-                    const response = await axios.get<IAuthResponse>(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
+                    const response = await axios.get<IAuthResponse>(`${WEBSITE_URL}/api/auth/refresh`, {withCredentials: true});
                     if (response.status===200) {
                         localStorage.setItem("accessToken", response.data.accessToken);
                         dispatch(setUserData(response.data.user));
@@ -40,7 +41,7 @@ const useAuthCheck = () => {
             } else {
                 if (isUserAuthenticated) {
                     try {
-                        const response =  await axios.get<IAuthResponse>(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/refresh`, {withCredentials: true});
+                        const response =  await axios.get<IAuthResponse>(`${WEBSITE_URL}/api/auth/refresh`, {withCredentials: true});
                         if (response.status===200) localStorage.setItem("accessToken", response.data.accessToken);
                     } catch (e) {
                         dispatch(setIsUserAuthenticated(false));

@@ -1,5 +1,3 @@
-import {PastOrdersQuery} from "./types";
-
 export const resolvers = {
     Query: {
         ProductById: async (root: any, args: any, ctx: any) => await ctx.prisma.product.findUnique({

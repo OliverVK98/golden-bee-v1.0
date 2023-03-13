@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import CheckoutItemComponent from "../components/checkout-item.component";
+import CheckoutItem from "../components/checkout-item";
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
 import Image from "next/image";
 import Link from "next/link";
 import roundDecimals from "../utils/round-decimals";
-import GuestOrUserComponent from "../components/guest-or-user.component";
+import GuestOrUser from "../components/guest-or-user/guest-or-user";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CheckoutContainer = styled.div`
@@ -146,7 +146,7 @@ const Checkout = () => {
             </TopTextContainer>
             <CartItemsContainer>
                 {
-                    cartItems.map((item, index) => <CheckoutItemComponent key={index} {...item}/>)
+                    cartItems.map((item, index) => <CheckoutItem key={index} {...item}/>)
                 }
             </CartItemsContainer>
             <TotalContainer>
@@ -156,7 +156,7 @@ const Checkout = () => {
                 }, 0))
             }
             </TotalContainer>
-            <GuestOrUserComponent cartItems={cartItems}/>
+            <GuestOrUser cartItems={cartItems}/>
         </CheckoutContainer>
     )
 }

@@ -3,9 +3,9 @@ import React, {useEffect, useRef, useState} from "react";
 import {
     frontPageProductDataQuery,
 } from "../graphql/queries/queries";
-import SearchBarComponent from "../components/search-bar.component";
+import SearchBar from "../components/search-bar/search-bar";
 import styled from "styled-components";
-import ProductPageWithSearchBarComponent from "../components/product-page-with-searchbar.component";
+import ProductPageWithSearchbar from "../components/product-page-with-searchbar/product-page-with-searchbar";
 
 export interface IFrontPageItem{
     productId: number,
@@ -96,8 +96,8 @@ const AllProductsComponent: React.FC<IAllProductsProps> = ({initialData}) => {
     return (
         <ContentContainer>
             <CustomTitle>All Products</CustomTitle>
-            <SearchBarComponent ref={parentRef} dropdownOpen={dropdownOpen} setDropdownOpen={setDropdownOpen} userInput={userInput} setUserInput={setUserInput} renderData={renderData} setFilteredData={setFilteredData} setDisplayDataIndex={setDisplayDataIndex}/>
-            <ProductPageWithSearchBarComponent userInput={userInput} filteredData={filteredData} setRenderData={setRenderData} renderData={renderData} displayDataIndex={displayDataIndex} initialData={initialData}/>
+            <SearchBar ref={parentRef} dropdownOpen={dropdownOpen} setDropdownOpen={setDropdownOpen} userInput={userInput} setUserInput={setUserInput} renderData={renderData} setFilteredData={setFilteredData} setDisplayDataIndex={setDisplayDataIndex}/>
+            <ProductPageWithSearchbar userInput={userInput} filteredData={filteredData} setRenderData={setRenderData} renderData={renderData} displayDataIndex={displayDataIndex} initialData={initialData}/>
         </ContentContainer>
     )
 }

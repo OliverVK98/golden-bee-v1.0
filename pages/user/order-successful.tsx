@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import React, {useEffect} from "react";
-import ItemsSuggestionComponent from "../../components/items-suggestion.component";
+import ItemsSuggestion from "../../components/items-suggestion/items-suggestion";
 import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
-import UserOrderComponent from "../../components/user-order.component";
+import UserOrder from "../../components/user-order/user-order";
 import {IOrderData} from "../../store/slices/orderSlice";
 import {resetCart} from "../../store/slices/cartSlice";
 
@@ -35,8 +35,8 @@ const OrderSuccessful = () => {
         <Container>
             <h1>Thanks for purchasing our products!</h1>
             <p>We are processing your order and your order will be shipped soon</p>
-            <UserOrderComponent cartItems={orderedItems as IOrderData[]}/>
-            <ItemsSuggestionComponent/>
+            <UserOrder cartItems={orderedItems as IOrderData[]}/>
+            <ItemsSuggestion/>
         </Container>
     );
 }
