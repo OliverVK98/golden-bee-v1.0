@@ -36,7 +36,7 @@ const PastOrders = () => {
     const providerId = useSelector((state: RootState) => state.userState.providerUserData.providerId);
     const {data, loading} = useQuery(userId ? pastOrdersByUserId : providerPastOrdersByUserId, {
         variables: {
-            [userId ? "userId" : "providerId"] : userId ? userId : providerId,
+            [userId ? "userId" : "providerId"] : userId || providerId,
         }
     })
     const userOrders = data && data[userId ? "PastOrdersQuery" : "ProviderPastOrdersQuery"];

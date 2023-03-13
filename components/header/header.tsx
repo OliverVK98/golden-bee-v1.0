@@ -101,7 +101,7 @@ const Header = () => {
     <HeaderContainer>
       <CustomHeaderRight>
       {isSmallScreen && <BurgerButton/>}
-        <Link href="/pages">
+        <Link href="/">
           <LogoContainer>
             <LeftLogoText>Golden</LeftLogoText>
             <Image src="/icons/logo.jpg" height={50} width={50} alt="bee logo" />
@@ -109,8 +109,8 @@ const Header = () => {
           </LogoContainer>
         </Link>
 
-        {!isSmallScreen && <Link href='/pages'>Home</Link>}
-        {!isSmallScreen && <Link href='/pages/all'>All Products</Link>}
+        {!isSmallScreen && <Link href='/'>Home</Link>}
+        {!isSmallScreen && <Link href='/all'>All Products</Link>}
       </CustomHeaderRight>
       <CustomHeaderLeft>
         <CursorPointerWrapper onClick={() => dispatch(setIsCartOpen(!isCartOpen))}>

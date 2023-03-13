@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, {useState} from "react";
 import Image from "next/image";
-import {IDataItem} from "../../data/data";
 import styles from "../../styles/FrontImage.module.css"
 import {gql} from "@apollo/client";
 import apolloClient from "../../lib/apollo";
@@ -11,6 +10,18 @@ import {useDispatch} from "react-redux";
 import {addCartItems} from "../../store/slices/cartSlice";
 import ItemsSuggestion from "../../components/items-suggestion/items-suggestion";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
+export interface IDataItem {
+    productId?: number,
+    itemName: string,
+    rating: number,
+    price: number,
+    discountedPrice: number,
+    frontImageUrl: string,
+    extraImageUrls: string[],
+    bannerImageUrls: string[],
+    isAvailable: boolean
+}
 
 const ProductPageContainer = styled.div`
   display: flex;
