@@ -79,20 +79,25 @@ interface IFormValues {
     lastName: string
 }
 
+export interface IInputEditable {
+    [key: string]: boolean;
+    firstName: boolean;
+    lastName: boolean;
+    email: boolean;
+}
 
 const UserInformation = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
-    const [isInputEditable, setIsInputEditable] = useState({
+    const [isInputEditable, setIsInputEditable] = useState<IInputEditable>({
         firstName: false,
         lastName: false,
         email: false
-    })
+    });
     const isChanged = Object.values(isInputEditable).includes(true)
 
-    const userId = useSelector((state: RootState) => state.userState.userData.userId);
-    const isAuth = useSelector((state: RootState) => state.userState.isUserAuthenticated);
+    const {userData: {userId}, isUserAuthenticated} = useSelector((state: RootState) => state.userState);
     const {firstName, email, lastName} = useSelector((state: RootState) => state.userState.userData);
 
     const methods = useForm<IFormValues>({resolver: userInformationResolver, defaultValues:  {firstName, lastName, email} });
@@ -102,7 +107,7 @@ const UserInformation = () => {
         if (!userId) {
             router.push('/404');
         }
-    }, [isAuth]);
+    }, [isUserAuthenticated]);
 
     if (!userId) {
         return null;
@@ -121,6 +126,7 @@ const UserInformation = () => {
         try {
             setIsLoading(true);
             const response = await AuthService.updateUserInformation(values.firstName, values.lastName, values.email);
+            console.log(response.data);
             dispatch(setUserData(response.data));
             setIsLoading(false);
             setIsInputEditable({
@@ -134,16 +140,17 @@ const UserInformation = () => {
         }
     }
 
+    //TODO: if I change form to new value and then back to original is Dirty doesnt get triggered and info is not submitted
 
     return (
         <TopLevelContainer>
             <FormProvider {...methods}>
                 <FormContainer onSubmit={methods.handleSubmit((data)=> onClickHandler(data))}>
-                    <UserInfoInput setIsInputEditable={setIsInputEditable}  isEditable={isInputEditable}  label="First Name" initVal={firstName} name="firstName"/>
+                    <UserInfoInput setIsInputEditable={setIsInputEditable}  isInputEditable={isInputEditable}  label="First Name" initVal={firstName} name="firstName"/>
                     {methods.formState.errors["firstName"]?.message && <ErrorContainer>{(methods.formState.errors["firstName"] as FieldError).message }</ErrorContainer>}
-                    <UserInfoInput setIsInputEditable={setIsInputEditable} isEditable={isInputEditable}  label="Last Name" initVal={lastName} name="lastName"/>
+                    <UserInfoInput setIsInputEditable={setIsInputEditable} isInputEditable={isInputEditable}  label="Last Name" initVal={lastName} name="lastName"/>
                     {methods.formState.errors["lastName"]?.message && <ErrorContainer>{(methods.formState.errors["lastName"] as FieldError).message }</ErrorContainer>}
-                    <UserInfoInput setIsInputEditable={setIsInputEditable}  isEditable={isInputEditable}  label="Email" initVal={email} name="email"/>
+                    <UserInfoInput setIsInputEditable={setIsInputEditable}  isInputEditable={isInputEditable}  label="Email" initVal={email} name="email"/>
                     {methods.formState.errors["email"]?.message && <ErrorContainer>{(methods.formState.errors["email"] as FieldError).message }</ErrorContainer>}
                     {isChanged && <CustomButton type="submit"  disabled={isLoading} >{
                         isLoading ? <ButtonLoaderWhite/> : "Save changes"

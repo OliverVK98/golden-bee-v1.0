@@ -19,17 +19,16 @@ const Container = styled.div`
 const OrderSuccessful = () => {
     const router = useRouter();
     const prevPath = sessionStorage.getItem("currentPath");
-
-    if (prevPath!="/checkout") {
-        router.push("/")
-        return null;
-    }
-
     const orderedItems = useSelector((state: RootState) => state.orderState.orderData);
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(resetCart());
     });
+
+    if (prevPath!="/checkout") {
+        router.push("/")
+        return null;
+    }
 
     return (
         <Container>

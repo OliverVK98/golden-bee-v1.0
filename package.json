@@ -24,7 +24,6 @@
     "cookies": "^0.8.0",
     "cors": "^2.8.5",
     "deepmerge": "^4.2.2",
-    "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
@@ -50,6 +49,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^13.2.4",
     "@types/bcrypt": "^5.0.0",
     "@types/cookies": "^0.7.7",
     "@types/cors": "^2.8.13",
@@ -61,6 +61,8 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/styled-components": "^5.1.26",
+    "eslint": "^8.36.0",
+    "eslint-config-eslint": "^7.0.0",
     "typescript": "^4.9.5"
   }
 }

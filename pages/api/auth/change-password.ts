@@ -3,21 +3,7 @@ import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-
 import bcrypt from "bcrypt";
 import checkIsUserAuth from "../../../utils/auth-api-helpers/check-is-user-auth";
 import {IUser, userDto} from "../../../utils/auth-api-helpers/user-dto";
-
-interface IUpdatedData {
-    firstName?: string,
-    lastName?: string,
-    email?: string
-}
-
-interface IUserData {
-    email: string,
-    userId: number,
-    lastName: string,
-    firstName: string,
-    iat: number,
-    exp: number
-}
+import prisma from "../../../lib/prisma";
 
 export default async function handler(
     req: NextApiRequest,

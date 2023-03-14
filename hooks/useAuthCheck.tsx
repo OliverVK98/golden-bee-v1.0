@@ -8,23 +8,21 @@ import {WEBSITE_URL} from "../config/const";
 
 const useAuthCheck = () => {
     const dispatch = useDispatch();
-    const isUserAuthenticated = useSelector((state: RootState) => state.userState.isUserAuthenticated);
-    const providerUserData = useSelector((state: RootState) => state.userState.providerUserData);
+    const { isUserAuthenticated, providerUserData } = useSelector((state: RootState) => state.userState);
 
     useEffect( ()=> {
         if (Object.keys(providerUserData).length > 0) return;
         const isLoggedIn = async () => {
-            if (isUserAuthenticated) {
-                try {
-                    await axios.get(`${WEBSITE_URL}/api/auth/refresh-token-exist`, {withCredentials: true})
-                } catch (e) {
-                    localStorage.removeItem("accessToken");
-                    dispatch(setIsUserAuthenticated(false));
-                    dispatch(setUserData({}));
-                }
+            try {
+                await axios.get(`${WEBSITE_URL}/api/auth/refresh-token-exist`, {withCredentials: true})
+            } catch (e) {
+                localStorage.removeItem("accessToken");
+                dispatch(setIsUserAuthenticated(false));
+                dispatch(setUserData({}));
+                return;
             }
 
-            if (localStorage.getItem("accessToken")&&isUserAuthenticated) {
+            if (localStorage.getItem("accessToken")) {
                 try {
                     const response = await axios.get<IAuthResponse>(`${WEBSITE_URL}/api/auth/refresh`, {withCredentials: true});
                     if (response.status===200) {
@@ -39,17 +37,9 @@ const useAuthCheck = () => {
                     dispatch(setUserData({}));
                 }
             } else {
-                if (isUserAuthenticated) {
-                    try {
-                        const response =  await axios.get<IAuthResponse>(`${WEBSITE_URL}/api/auth/refresh`, {withCredentials: true});
-                        if (response.status===200) localStorage.setItem("accessToken", response.data.accessToken);
-                    } catch (e) {
-                        dispatch(setIsUserAuthenticated(false));
-                        dispatch(setUserData({}));
-                    }
-                }
+                dispatch(setIsUserAuthenticated(false));
+                dispatch(setUserData({}));
             }
-
         }
         if (isUserAuthenticated) isLoggedIn();
     }, []);

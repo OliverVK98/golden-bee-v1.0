@@ -2,20 +2,12 @@ import {NextApiRequest, NextApiResponse} from "next";
 import {runMiddlewareCors} from "../../../utils/auth-api-helpers/run-middleware-cors";
 import {IUser, userDto} from "../../../utils/auth-api-helpers/user-dto";
 import checkIsUserAuth from "../../../utils/auth-api-helpers/check-is-user-auth";
+import prisma from "../../../lib/prisma";
 
 interface IUpdatedData {
     firstName?: string,
     lastName?: string,
     email?: string
-}
-
-interface IUserData {
-    email: string,
-    userId: number,
-    lastName: string,
-    firstName: string,
-    iat: number,
-    exp: number
 }
 
 export default async function handler(

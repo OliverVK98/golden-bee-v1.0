@@ -4,10 +4,6 @@ import Image from "next/legacy/image";
 import CustomRoundButton from "../round-button/round-button";
 import Link from "next/link";
 
-interface IButtonProps {
-    isPrimary: boolean
-}
-
 const Banner = styled.div`
   transition: all .3s ease;
   background-size: 100vw 30vh;

@@ -1,6 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {runMiddlewareCors} from "../../utils/auth-api-helpers/run-middleware-cors";
 import {authMiddleware} from "../../utils/auth-api-helpers/auth-middleware";
+import prisma from "../../lib/prisma";
 
 interface IAuthData {
     email: string,

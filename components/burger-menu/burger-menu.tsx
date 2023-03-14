@@ -115,7 +115,7 @@ const BurgerMenu = () => {
                 dispatch(setProviderUserData({}));
                 router.push("/")
             } else {
-                const response = await AuthService.logout();
+                await AuthService.logout();
                 localStorage.removeItem("accessToken");
                 dispatch(setIsUserAuthenticated(false));
                 dispatch(setUserData({} as IUserData));
