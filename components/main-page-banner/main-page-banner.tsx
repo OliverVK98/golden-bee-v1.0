@@ -87,7 +87,7 @@ const MainPageBanner: FunctionComponent = (): ReactElement => {
         <Banner>
             <AnimationContainer key={Math.random()}>
                 {isPrimary ? "Holiday Gift Guide" : "Share Your Love"}
-                <Link href="/pages/all">
+                <Link href="/all">
                     <CustomShopButton>Shop now</CustomShopButton>
                 </Link>
             </AnimationContainer>

@@ -298,7 +298,7 @@ const Cart = () => {
                     }, 0))}
                     </TotalPriceAmountContainer>
                 </TotalPriceContainer>
-                <Link href="/pages/checkout">
+                <Link href="/checkout">
                     <CheckoutButton onClick={()=>dispatch(setIsCartOpen(!isCartOpen))}>
                         Checkout
                     </CheckoutButton>

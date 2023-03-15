@@ -135,12 +135,12 @@ const BurgerMenu = () => {
                         <Image src="/icons/close.svg" alt="close-logo" height={30} width={30}
                                onClick={()=>dispatch(setIsBurgerMenuOpen(false))}/>
                     </CloseButtonWrapper>
-                    <Link href="/pages">
+                    <Link href="/">
                         <TextContainer onClick={()=>dispatch(setIsBurgerMenuOpen(false))}>
                             Home
                         </TextContainer>
                     </Link>
-                    <Link href="/pages/all">
+                    <Link href="/all">
                         <TextContainer onClick={()=>dispatch(setIsBurgerMenuOpen(false))}>
                             All Products
                         </TextContainer>
