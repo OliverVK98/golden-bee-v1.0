@@ -1,4 +1,4 @@
-export const WEBSITE_URL = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+export const WEBSITE_URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
 
 export const BANNER_IMAGE_ONE_URL = "https://cdn.shopify.com/s/files/1/0457/5648/1703/files/BEE-ing_Kind_is_a_Lifestyle_2048x.jpg?v=1623903758";
 

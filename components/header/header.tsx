@@ -95,8 +95,6 @@ const Header = () => {
   useAuthCheck();
   useSocialAuthCheck();
 
-  //TODO: + - on product page mobile off, sign out of login (not social) doesnt redirect
-
   return (
     <HeaderContainer>
       <CustomHeaderRight>

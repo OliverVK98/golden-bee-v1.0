@@ -17,15 +17,6 @@ const TopLevelContainer = styled.div`
   padding-top: 200px;
 `
 
-const ContentContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  font-size: 30px;
-  gap: 30px;
-`
-
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
@@ -133,14 +124,12 @@ const UserInformation = () => {
                 firstName: false,
                 lastName: false,
                 email: false
-            })
-
+            });
+            methods.reset({ firstName: response.data.firstName, lastName: response.data.lastName, email: response.data.email });
         } catch (e: any) {
             console.log(e);
         }
     }
-
-    //TODO: if I change form to new value and then back to original is Dirty doesnt get triggered and info is not submitted
 
     return (
         <TopLevelContainer>
@@ -157,9 +146,6 @@ const UserInformation = () => {
                     }</CustomButton>}
                 </FormContainer>
             </FormProvider>
-            <ContentContainer>
-
-            </ContentContainer>
         </TopLevelContainer>
     )
 }
